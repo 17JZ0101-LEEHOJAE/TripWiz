@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "308256010348",
+    "firebase_url": "https://tripwiz-21055.firebaseio.com",
+    "project_id": "tripwiz-21055",
+    "storage_bucket": "tripwiz-21055.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308256010348:android:e7dec5be3b913b7704a849",
+        "android_client_info": {
+          "package_name": "com.jz_jec_g01.tripwiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308256010348-epj07brbud9n5nl2cdt8oopo5u875cbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtEVwHX3eI1VtdKzJCQikIjqEjcRMV2xo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308256010348-epj07brbud9n5nl2cdt8oopo5u875cbh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
