@@ -11,7 +11,7 @@
         android:layout_width="137dp"
         android:layout_height="54dp"
         android:layout_marginTop="28dp"
-        android:text="TripWiz"
+        android:text="@string/tripwiz"
         android:textColor="#000"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,12 +25,12 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="44dp"
         android:ems="10"
-        android:hint="メールアドレス"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -44,7 +44,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/buttonLogin"

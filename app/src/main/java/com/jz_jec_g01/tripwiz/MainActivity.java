@@ -2,6 +2,7 @@ package com.jz_jec_g01.tripwiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.time.Instant;
 
 public class MainActivity extends AppCompatActivity {
     private EditText editTextMailAddress;
@@ -26,22 +29,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         init();
 
-        InputFilter inputFilterMail = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end,
-                                       Spanned dest, int dstart, int dend) {
-                if(source.toString().matches("^[0-9a-zA-Z@¥.¥_¥¥-]$")) {
-                    return source;
-                } else {
-                    return "";
-                }
-            }
-        };
-
-        InputFilter[] filtersMail = new InputFilter[] { inputFilterMail };
-        editTextMailAddress.setFilters(filtersMail);
+//        InputFilter inputFilterMail = new InputFilter() {
+//            @Override
+//            public CharSequence filter(CharSequence source, int start, int end,
+//                                       Spanned dest, int dstart, int dend) {
+//                if(source.toString().matches("^[0-9a-zA-Z@¥.¥_¥¥-]$")) {
+//                    return source;
+//                } else {
+//                    return "";
+//                }
+//            }
+//        };
+//
+//        InputFilter[] filtersMail = new InputFilter[] { inputFilterMail };
+//        editTextMailAddress.setFilters(filtersMail);
 //
 //        InputFilter inputFilterPass = new InputFilter() {
 //            @Override
@@ -61,18 +66,9 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mailAddress = editTextMailAddress.getText().toString();
-                String password = editTextPassword.getText().toString();
-//                EditText mailErr = findViewById(R.id.editTextMailAddress);
-                EditText passErr = findViewById(R.id.editTextPassword);
+                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
 
-                if(!mailAddress.isEmpty() && !password.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "ログインします", Toast.LENGTH_SHORT).show();
-                } else if(!mailAddress.isEmpty() && password.isEmpty()) {
-                    passErr.setError("パスワードを入力してください");
-                } else {
-                    Toast.makeText(getApplicationContext(), "メールアドレスとパスワードが\n入力されていません", Toast.LENGTH_SHORT).show();
-                }
+                startActivity(intent);
             }
         });
     }
