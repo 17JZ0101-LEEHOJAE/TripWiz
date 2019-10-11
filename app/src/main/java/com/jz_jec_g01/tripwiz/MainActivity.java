@@ -3,6 +3,7 @@ package com.jz_jec_g01.tripwiz;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,14 +29,26 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonLogout;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private TextView textViewSignup;
+
 
     public void init() {
         editTextMailAddress = findViewById(R.id.editTextMailAddress);
         editTextPassword = findViewById(R.id.editTextPassword);
-        buttonLogin = findViewById(R.id.buttonLogin);
+        textViewSignup = findViewById(R.id.textViewSignup);
+        buttonLogin = findViewById(R.id.buttonSignup);
         buttonLogout = findViewById(R.id.buttonLogout);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        textViewSignup.setClickable(true);
+        textViewSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -102,6 +116,11 @@ public class MainActivity extends AppCompatActivity {
                 editTextPassword.setText("");
             }
         });
+
+
+
+
+
     }
 
     @Override
@@ -109,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(null);
+        updateUI(currentUser);
     }
 
     private void signIn(String email, String password) {
@@ -137,7 +156,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         // [END sign_in_with_email]
+
+
+
+
     }
+
 
     private boolean validateForm() {
         boolean valid = true;
@@ -166,14 +190,14 @@ public class MainActivity extends AppCompatActivity {
         if (user != null) {
             findViewById(R.id.editTextMailAddress).setVisibility(View.GONE);
             findViewById(R.id.editTextPassword).setVisibility(View.GONE);
-            findViewById(R.id.buttonLogin).setVisibility(View.GONE);
+            findViewById(R.id.buttonSignup).setVisibility(View.GONE);
             findViewById(R.id.textViewResetPass).setVisibility(View.GONE);
             findViewById(R.id.textViewLoginRe).setVisibility(View.VISIBLE);
             findViewById(R.id.buttonLogout).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.editTextMailAddress).setVisibility(View.VISIBLE);
             findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
-            findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonSignup).setVisibility(View.VISIBLE);
             findViewById(R.id.textViewResetPass).setVisibility(View.VISIBLE);
             findViewById(R.id.textViewLoginRe).setVisibility(View.GONE);
             findViewById(R.id.buttonLogout).setVisibility(View.GONE);

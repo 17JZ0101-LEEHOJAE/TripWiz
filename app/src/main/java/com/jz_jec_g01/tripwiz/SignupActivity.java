@@ -1,121 +1,113 @@
 package com.jz_jec_g01.tripwiz;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-
-import android.content.res.ColorStateList;
+import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
-
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class SignupActivity extends Fragment implements OnClickListener {
-    private static View view;
-    private static EditText fullName, emailId, mobileNumber, location,
-            password, confirmPassword;
-    private static TextView login;
-    private static Button signUpButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
 
-    public SignupActivity() {
+public class SignupActivity extends AppCompatActivity {
+    private EditText inputEmail;
+    private EditText inputPassword;
+    private FirebaseAuth mAuth;
+    private Button btnSignUp;
+    private static  final String TAG = "debug";
 
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-       // view = inflater.inflate(R.layout.signup_layout, container, false);
-        initViews();
-        setListeners();
-        return view;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+        btnSignUp = (Button) findViewById(R.id.buttonSignup);
+        mAuth = FirebaseAuth.getInstance();
+        btnSignUp = (Button) findViewById(R.id.buttonSignup);
+        inputEmail = (EditText) findViewById(R.id.editTextMailAddress);
+        inputPassword = (EditText) findViewById(R.id.editTextPassword);
+
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = inputEmail.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
+
+
+                createAccount(email, password);
+            }
+
+        });
     }
-
-    // Initialize all views
-    private void initViews() {
-        fullName = (EditText) view.findViewById(R.id.fullName);
-        emailId = (EditText) view.findViewById(R.id.userEmailId);
-        mobileNumber = (EditText) view.findViewById(R.id.mobileNumber);
-        location = (EditText) view.findViewById(R.id.location);
-        password = (EditText) view.findViewById(R.id.password);
-        confirmPassword = (EditText) view.findViewById(R.id.confirmPassword);
-        signUpButton = (Button) view.findViewById(R.id.signUpBtn);
-
-
-        // Setting text selector over textviews
-       // XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
-        //try {
-        //    ColorStateList csl = ColorStateList.createFromXml(getResources(),
-         //           xrp);
-
-         //   login.setTextColor(csl);
-         //   terms_conditions.setTextColor(csl);
-        //} catch (Exception e) {
-        //}
-    }
-
-    // Set Listeners
-    private void setListeners() {
-        signUpButton.setOnClickListener(this);
-        login.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.signUpBtn:
-
-                // Call checkValidation method
-                checkValidation();
-                break;
-
+    private void createAccount(String email, String password) {
+        Log.d(TAG, "createAccount:" + email);
+        if (!validateForm()) {
+            return;
         }
 
+        //showProgressDialog();
+
+        // [START create_user_with_email]
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            //  updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(SignupActivity.this, "Authentication failed." + ((FirebaseAuthWeakPasswordException)task.getException()).getReason(), //画面にエラーを表示する
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(null);
+                        }
+
+                        // [START_EXCLUDE]
+                        // hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
+                });
+
+
+
+
+        // [END create_user_with_email]
+    }
+    private boolean validateForm() {
+        String email = inputEmail.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (password.length() < 6) {
+            Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else {
+            startActivity(new Intent(SignupActivity.this, MainActivity.class));
+            return true;
+        }
     }
 
-    // Check Validation Method
-    private void checkValidation() {
 
-        // Get all edittext texts
-        String getFullName = fullName.getText().toString();
-        String getEmailId = emailId.getText().toString();
-        String getMobileNumber = mobileNumber.getText().toString();
-        String getLocation = location.getText().toString();
-        String getPassword = password.getText().toString();
-        String getConfirmPassword = confirmPassword.getText().toString();
-
-        // Pattern match for email id
-        //Pattern p = Pattern.compile(Utils.regEx);
-        //Matcher m = p.matcher(getEmailId);
-
-        // Check if all strings are null or not
-        if (getFullName.equals("") || getFullName.length() == 0
-                || getEmailId.equals("") || getEmailId.length() == 0
-                || getMobileNumber.equals("") || getMobileNumber.length() == 0
-                || getLocation.equals("") || getLocation.length() == 0
-                || getPassword.equals("") || getPassword.length() == 0
-                || getConfirmPassword.equals("")
-                || getConfirmPassword.length() == 0)
-            Toast.makeText(getActivity(), "All fields are required.", Toast.LENGTH_SHORT).show();
-
-
-            // Check if email id valid or not
-       // else if (!m.find())
-       //     Toast.makeText(getActivity(), "Your Email Id is Invalid.", Toast.LENGTH_SHORT).show();
-
-            // Check if both password should be equal
-        else if (!getConfirmPassword.equals(getPassword))
-            Toast.makeText(getActivity(), "Both password doesn't match.", Toast.LENGTH_SHORT).show();
-
-            // Else do signup or do your stuff
-        else
-            Toast.makeText(getActivity(), "Do SignUp.", Toast.LENGTH_SHORT).show();
-
-    }
 }
