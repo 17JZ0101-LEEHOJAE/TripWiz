@@ -1,15 +1,29 @@
-¦ì¬‘®
-“ú•t / ŠÔ, –¼, 
-ƒtƒ@ƒCƒ‹€–Ú
+â€»ä½œæˆæ›¸å¼
+æ—¥ä»˜ / æ™‚é–“, ç½²å, 
+ãƒ•ã‚¡ã‚¤ãƒ«é …ç›®
 
-—á‚¦F“ú•t¨19.10.11
-@@@ŠÔ¨11:13
+ä¾‹ãˆï¼šæ—¥ä»˜â†’19.10.11
+ã€€ã€€ã€€æ™‚é–“â†’11:13
 
 
-EXV—š—ğ
-19.10.11 / 11:13@—›
+ãƒ»æ›´æ–°å±¥æ­´
+19.10.11 / 11:13ã€€æ
 	build.gradle(Module:app)
 	MainActivity.java
 	MainActivity.xml
+	
+
+19.10.11 / 15:05ã€€PHAM LAN
+	MainActivity.java
+	SignupActivity.xml
+	app\build.gradle
+	activity_main.xml
+	activity_signup.xml
+	AndroidMainfest.xml
+	
+	
+	
+	
+	
 
 
