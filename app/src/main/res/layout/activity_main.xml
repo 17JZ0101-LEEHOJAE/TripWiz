@@ -11,7 +11,7 @@
         android:layout_width="137dp"
         android:layout_height="54dp"
         android:layout_marginTop="28dp"
-        android:text="@string/tripwiz"
+        android:text="TripWiz"
         android:textColor="#000"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,38 +25,38 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="44dp"
         android:ems="10"
+        android:hint="メールアドレス"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="277dp"
         android:layout_height="42dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="44dp"
         android:ems="10"
         android:hint="パスワード"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress" />
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="131dp"
         android:layout_height="61dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:background="#FF9800"
         android:text="ログイン"
         android:textColor="#000"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewResetPass" />
 
@@ -64,7 +64,7 @@
         android:id="@+id/textViewResetPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="80dp"
         android:text="パスワードをお忘れの方はこちら"
         android:textColor="#000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,5 +78,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <TextView
+        android:id="@+id/textViewLoginRe"
+        android:layout_width="191dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="412dp"
+        android:text="ログイン成功"
+        android:textColor="#000"
+        android:textSize="30sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="131dp"
+        android:layout_height="61dp"
+        android:layout_marginBottom="128dp"
+        android:background="#FF9800"
+        android:text="ログアウト"
+        android:textColor="#000"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
