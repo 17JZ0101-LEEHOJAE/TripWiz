@@ -5,8 +5,8 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.jz_jec_g01.tripwiz"
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -27,6 +27,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
