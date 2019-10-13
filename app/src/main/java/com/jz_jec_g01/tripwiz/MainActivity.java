@@ -30,12 +30,14 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private TextView textViewSignup;
+    private TextView textViewResetPass;
 
 
     public void init() {
         editTextMailAddress = findViewById(R.id.editTextMailAddress);
         editTextPassword = findViewById(R.id.editTextPassword);
         textViewSignup = findViewById(R.id.textViewSignup);
+        textViewResetPass = findViewById(R.id.textViewResetPass);
         buttonLogin = findViewById(R.id.buttonSignup);
         buttonLogout = findViewById(R.id.buttonLogout);
         mAuth = FirebaseAuth.getInstance();
@@ -45,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        textViewResetPass.setClickable(true);
+        textViewResetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RequestActivity.class);
                 startActivity(intent);
             }
         });
@@ -156,10 +167,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         // [END sign_in_with_email]
-
-
-
-
     }
 
 
