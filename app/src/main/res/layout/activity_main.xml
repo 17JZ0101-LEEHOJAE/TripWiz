@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress" />
 
     <Button
-        android:id="@+id/buttonSignup"
+        android:id="@+id/buttonLogin"
         android:layout_width="131dp"
         android:layout_height="61dp"
         android:layout_marginTop="32dp"
@@ -59,6 +59,7 @@
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewResetPass" />
+
 
     <TextView
         android:id="@+id/textViewResetPass"
@@ -96,28 +97,35 @@
         android:id="@+id/buttonLogout"
         android:layout_width="131dp"
         android:layout_height="61dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="100dp"
         android:background="#FF9800"
         android:text="ログアウト"
         android:textColor="#000"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewSignup"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookLoginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="新規登録"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:layout_marginTop="44dp"
+        android:text="Button"
+        app:layout_constraintEnd_toStartOf="@+id/facebookLogoutBtn"
+        app:layout_constraintHorizontal_bias="0.361"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSignup"
-        app:layout_constraintVertical_bias="0.162"
-        android:clickable="true"
-        android:onClick="onClick"/>
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+
+    <Button
+        android:id="@+id/facebookLogoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="56dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

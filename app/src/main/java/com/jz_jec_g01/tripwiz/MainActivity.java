@@ -12,54 +12,58 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+//import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "EmailPassword";
+    private static final String emailTAG = "EmailPassword";
+    private static final String googleTAG = "GoogleActivity";
+    private static final String facebookTAG = "FacebookLogin";
+    private static final int RC_SIGN_IN = 9001;
     private EditText editTextMailAddress;
     private EditText editTextPassword;
     private Button buttonLogin;
     private Button buttonLogout;
+    private LoginButton faceBookLoginBtn;
+    private Button faceBookLogoutBtn;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private TextView textViewSignup;
-    private TextView textViewResetPass;
-
+    private CallbackManager callbackManager;
+//    private GoogleSignInClient googleSignInClient;
 
     public void init() {
         editTextMailAddress = findViewById(R.id.editTextMailAddress);
         editTextPassword = findViewById(R.id.editTextPassword);
-        textViewSignup = findViewById(R.id.textViewSignup);
-        textViewResetPass = findViewById(R.id.textViewResetPass);
-        buttonLogin = findViewById(R.id.buttonSignup);
+        buttonLogin = findViewById(R.id.buttonLogin);
         buttonLogout = findViewById(R.id.buttonLogout);
+        faceBookLoginBtn = findViewById(R.id.facebookLoginBtn);
+        faceBookLoginBtn.setReadPermissions("email", "public_profile");
+        faceBookLogoutBtn = findViewById(R.id.facebookLogoutBtn);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        textViewSignup.setClickable(true);
-        textViewSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        textViewResetPass.setClickable(true);
-        textViewResetPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RequestActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        callbackManager = CallbackManager.Factory.create();
     }
 
     @Override
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 EditText passErr = findViewById(R.id.editTextPassword);
 
                 if(!mailAddress.isEmpty() && !password.isEmpty()) {
-                    signIn(mailAddress, password);
+                    emailSignIn(mailAddress, password);
                 } else if(!mailAddress.isEmpty() && password.isEmpty()) {
                     passErr.setError("パスワードを入力してください");
                 } else {
@@ -121,17 +125,78 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                updateUI(currentUser);
+                updateUI(null);
                 editTextMailAddress.setText("");
                 editTextPassword.setText("");
             }
         });
 
+        faceBookLoginBtn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(facebookTAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
 
+            @Override
+            public void onCancel() {
+                Log.d(facebookTAG, "facebook:onCancel");
+                // [START_EXCLUDE]
+                updateUI(null);
+                // [END_EXCLUDE]
+            }
 
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(facebookTAG, "facebook:onError", error);
+                // [START_EXCLUDE]
+                updateUI(null);
+                // [END_EXCLUDE]
+            }
+        });
 
+        faceBookLogoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                LoginManager.getInstance().logOut();
+                updateUI(null);
+            }
+        });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result back to the Facebook SDK
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+    // [END on_activity_result]
+
+    // [START auth_with_facebook]
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(facebookTAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(facebookTAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(facebookTAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -142,8 +207,8 @@ public class MainActivity extends AppCompatActivity {
         updateUI(currentUser);
     }
 
-    private void signIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
+    private void emailSignIn(String email, String password) {
+        Log.d(emailTAG, "signIn:" + email);
         if (!validateForm()) {
             return;
         }
@@ -155,11 +220,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
+                            Log.d(emailTAG, "signInWithEmail:success");
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Log.w(emailTAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
@@ -169,6 +234,38 @@ public class MainActivity extends AppCompatActivity {
         // [END sign_in_with_email]
     }
 
+    private void googleSigIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+//        googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(googleTAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(googleTAG, "signInWithCredential:success");
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(googleTAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                }
+        });
+    }
 
     private boolean validateForm() {
         boolean valid = true;
@@ -192,19 +289,18 @@ public class MainActivity extends AppCompatActivity {
         return valid;
     }
 
-
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             findViewById(R.id.editTextMailAddress).setVisibility(View.GONE);
             findViewById(R.id.editTextPassword).setVisibility(View.GONE);
-            findViewById(R.id.buttonSignup).setVisibility(View.GONE);
+            findViewById(R.id.buttonLogin).setVisibility(View.GONE);
             findViewById(R.id.textViewResetPass).setVisibility(View.GONE);
             findViewById(R.id.textViewLoginRe).setVisibility(View.VISIBLE);
             findViewById(R.id.buttonLogout).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.editTextMailAddress).setVisibility(View.VISIBLE);
             findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
-            findViewById(R.id.buttonSignup).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
             findViewById(R.id.textViewResetPass).setVisibility(View.VISIBLE);
             findViewById(R.id.textViewLoginRe).setVisibility(View.GONE);
             findViewById(R.id.buttonLogout).setVisibility(View.GONE);
