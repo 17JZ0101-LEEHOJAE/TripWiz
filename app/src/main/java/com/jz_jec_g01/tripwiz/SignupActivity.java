@@ -31,11 +31,11 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        btnSignUp = (Button) findViewById(R.id.buttonSignup);
+        btnSignUp = findViewById(R.id.buttonSignup);
         mAuth = FirebaseAuth.getInstance();
-        btnSignUp = (Button) findViewById(R.id.buttonSignup);
-        inputEmail = (EditText) findViewById(R.id.editTextMailAddress);
-        inputPassword = (EditText) findViewById(R.id.editTextPassword);
+        btnSignUp = findViewById(R.id.buttonSignup);
+        inputEmail = findViewById(R.id.editTextMailAddress);
+        inputPassword = findViewById(R.id.editTextPassword);
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
