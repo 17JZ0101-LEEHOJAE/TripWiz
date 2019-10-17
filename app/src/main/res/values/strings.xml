@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">TripWiz</string>
+    <string name="facebook_app_id">473694246571043</string>
+    <string name="fb_login_protocol_scheme">fb473694246571043</string>
+    <string name="title_activity_template">template</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_tamplate">TamplateActivity</string>
     <string name="textViewUserName">UserName</string>
     <string name="editTextName"></string>
 
@@ -26,6 +33,5 @@
     <string name="spinnerMonth"></string>
     <string name="spinnerDay"></string>
     <string name="spinnerNationality"></string>
-
 
 </resources>
