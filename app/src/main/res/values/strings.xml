@@ -3,7 +3,8 @@
     <string name="textViewUserName">UserName</string>
     <string name="editTextName"></string>
 
-    <string name="facebook_app_id">473694246571043</string> <string name="fb_login_protocol_scheme">fb473694246571043</string>
+    <string name="facebook_app_id">473694246571043</string>
+    <string name="fb_login_protocol_scheme">fb473694246571043</string>
     <string name="textViewMailAddress">MailAddress</string>
     <string name="textViewPw">Password</string>
     <string name="textViewName">Name</string>
@@ -25,7 +26,6 @@
     <string name="spinnerMonth"></string>
     <string name="spinnerDay"></string>
     <string name="spinnerNationality"></string>
-
 
 
 </resources>
