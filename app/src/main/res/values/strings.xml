@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">TripWiz</string>
+<<<<<<< HEAD
     <string name="facebook_app_id">473694246571043</string>
     <string name="fb_login_protocol_scheme">fb473694246571043</string>
     <string name="title_activity_template">template</string>
@@ -7,4 +8,34 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_tamplate">TamplateActivity</string>
+=======
+    <string name="textViewUserName">UserName</string>
+    <string name="editTextName"></string>
+
+    <string name="facebook_app_id">473694246571043</string> <string name="fb_login_protocol_scheme">fb473694246571043</string>
+    <string name="textViewMailAddress">MailAddress</string>
+    <string name="textViewPw">Password</string>
+    <string name="textViewName">Name</string>
+    <string name="textViewGender">Gender</string>
+    <string name="textViewNationality">Nationality</string>
+    <string name="textViewBirthday">Birthday</string>
+    <string name="textViewYear">Year</string>
+    <string name="textViewMonth">Month</string>
+    <string name="textViewDay">Day</string>
+
+
+    <string name="radioButtonMale">Male</string>
+    <string name="radioButtonFeMale">Female</string>
+    <string name="radioButtonBusy">Busy</string>
+    <string name="radioButtonFree">Free</string>
+
+
+    <string name="spinnerYear"></string>
+    <string name="spinnerMonth"></string>
+    <string name="spinnerDay"></string>
+    <string name="spinnerNationality"></string>
+
+
+
+>>>>>>> 304fc7e7ec33b9263a43542b222306b4d3c2d9b3
 </resources>
