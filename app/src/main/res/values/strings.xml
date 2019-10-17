@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">TripWiz</string>
+<<<<<<< HEAD
+    <string name="facebook_app_id">473694246571043</string>
+    <string name="fb_login_protocol_scheme">fb473694246571043</string>
+    <string name="title_activity_template">template</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_tamplate">TamplateActivity</string>
+=======
     <string name="textViewUserName">UserName</string>
     <string name="editTextName"></string>
 
@@ -28,4 +37,5 @@
 
 
 
+>>>>>>> 304fc7e7ec33b9263a43542b222306b4d3c2d9b3
 </resources>
