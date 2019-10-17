@@ -229,7 +229,8 @@
         android:id="@+id/spinner4"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        tools:layout_editor_absoluteX="324dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
         tools:layout_editor_absoluteY="475dp" />
 
 
