@@ -3,7 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorMyPage">#CCFFCC</color>
+    <color name="colorProfile">#FFAC75</color>
     <color name="colorFollowButton">#006241</color>
+    <color name="colorRadioButtonBusy">#EE0000</color>
+    <color name="colorRadioButtonFree">#66FF33</color>
+    <color name="colorButtonEditProfile">#E6E6FA</color>
 </resources>
 
