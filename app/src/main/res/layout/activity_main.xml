@@ -32,12 +32,12 @@
         android:id="@+id/view2"
         android:layout_width="332dp"
         android:layout_height="1dp"
-        android:layout_marginTop="448dp"
+        android:layout_marginBottom="20dp"
         android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/facebookLoginBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextMailAddress"
@@ -53,12 +53,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
+
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="277dp"
         android:layout_height="42dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="パスワード"
         android:inputType="textPassword"
@@ -67,12 +68,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress" />
 
+    <TextView
+        android:id="@+id/textViewLoginRe"
+        android:layout_width="191dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="436dp"
+        android:text="ログイン成功"
+        android:textColor="#000"
+        android:textSize="30sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="163dp"
         android:layout_height="47dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:background="#FF9800"
         android:text="ログイン"
         android:textColor="#000"
@@ -85,31 +98,18 @@
         android:id="@+id/textViewResetPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="72dp"
         android:text="パスワードをお忘れの方はこちら"
         android:textColor="#000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
-    <TextView
-        android:id="@+id/textViewLoginRe"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="412dp"
-        android:text="ログイン成功"
-        android:textColor="#000"
-        android:textSize="30sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="154dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="56dp"
         android:background="#FF9800"
         android:text="ログアウト"
         android:textColor="#000"
@@ -119,39 +119,39 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebookLoginBtn"
-        android:layout_width="188dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="32dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/googleLoginBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleLoginBtn"
-        android:layout_width="196dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="140dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/textViewSignup"
         android:layout_width="149dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="120dp"
         android:text="新規会員登録はこちら"
         android:textColor="#000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleLoginBtn"
+        android:layout_width="226dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="176dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookLoginBtn"
+        android:layout_width="226dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="28dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/googleLoginBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
