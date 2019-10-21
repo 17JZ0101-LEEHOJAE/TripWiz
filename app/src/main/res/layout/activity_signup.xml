@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorMyPage"
     tools:context=".SignupActivity">
-
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -233,6 +231,5 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         tools:layout_editor_absoluteY="475dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
