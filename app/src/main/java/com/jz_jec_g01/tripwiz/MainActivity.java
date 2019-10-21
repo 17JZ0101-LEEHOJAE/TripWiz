@@ -154,6 +154,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+
         faceBookLoginBtn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -183,13 +190,6 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
-
         googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Pass the activity result back to the Facebook SDK
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
