@@ -15,9 +15,6 @@
         <activity
             android:name=".TamplateActivity"
             android:label="@string/title_activity_tamplate"></activity>
-        <activity
-            android:name=".template"
-            android:label="@string/title_activity_template" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

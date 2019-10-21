@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonLogout;
     private LoginButton faceBookLoginBtn;
     private SignInButton googleLoginBtn;
-//    private Button faceBookLogoutBtn;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private CallbackManager callbackManager;
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         buttonLogout = findViewById(R.id.buttonLogout);
         faceBookLoginBtn = findViewById(R.id.facebookLoginBtn);
         faceBookLoginBtn.setReadPermissions("email", "public_profile");
-//        faceBookLogoutBtn = findViewById(R.id.facebookLogoutBtn);
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -173,15 +171,6 @@ public class MainActivity extends AppCompatActivity {
                 updateUI(null);
             }
         });
-
-//        faceBookLogoutBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mAuth.signOut();
-//                LoginManager.getInstance().logOut();
-//                updateUI(null);
-//            }
-//        });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
