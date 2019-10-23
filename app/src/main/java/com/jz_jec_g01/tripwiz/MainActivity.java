@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button buttonLogin;
     private Button buttonLogout;
+
     private LoginButton faceBookLoginBtn;
     private SignInButton googleLoginBtn;
 //    private Button faceBookLogoutBtn;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         buttonLogout = findViewById(R.id.buttonLogout);
+
         faceBookLoginBtn = findViewById(R.id.facebookLoginBtn);
         faceBookLoginBtn.setReadPermissions("email", "public_profile");
 //        faceBookLogoutBtn = findViewById(R.id.facebookLogoutBtn);
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
