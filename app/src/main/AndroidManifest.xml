@@ -13,6 +13,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ProfilePageActivity"
             android:label="ProfilePageActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity
             android:name=".TamplateActivity"
             android:label="@string/title_activity_tamplate"></activity>

@@ -114,6 +114,9 @@ public class SignupActivity extends AppCompatActivity {
             //startActivity(new Intent(SignupActivity.this, ProfilePageActivity.class));
             return true;
         }
+    }
+
+
 
     }
 }
