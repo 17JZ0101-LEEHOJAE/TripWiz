@@ -38,7 +38,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONException;
+
 import java.io.IOException;
+import java.sql.SQLException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String emailTAG = "EmailPassword";
     private static final String googleTAG = "GoogleActivity";
     private static final String facebookTAG = "FacebookLogin";
-    final String url = "https://jz17g01.jec.ac.jp";
+    final String url = "http://10.210.20.161";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private static final int RC_SIGN_IN = 9001;
@@ -60,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button buttonLogin;
     private Button buttonLogout;
-
     private LoginButton faceBookLoginBtn;
     private SignInButton googleLoginBtn;
     private FirebaseAuth mAuth;
@@ -76,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         buttonLogout = findViewById(R.id.buttonLogout);
-
         faceBookLoginBtn = findViewById(R.id.facebookLoginBtn);
         faceBookLoginBtn.setReadPermissions("email", "public_profile");
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
@@ -93,9 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         init();
 
-
-
-
         // メールアドレスの入力フィルタリング
         InputFilter inputFilterMail = new InputFilter() {
             @Override
@@ -109,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        InputFilter[] filtersMail = new InputFilter[] { inputFilterMail };
-        editTextMailAddress.setFilters(filtersMail);
+        editTextMailAddress.setFilters(new InputFilter[]{inputFilterMail});
 
         // パスワードの入力フィルタリング
         InputFilter inputFilterPass = new InputFilter() {
@@ -125,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        InputFilter[] filtersPass = new InputFilter[] { inputFilterPass };
-        editTextPassword.setFilters(filtersPass);
+        editTextPassword.setFilters(new InputFilter[]{inputFilterPass});
 
         // 新規登録画面遷移
         textViewSignup.setClickable(true);
@@ -149,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // メールアドレスでログイン
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
                             }
                         });
                     }
@@ -175,9 +171,13 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
-                                if(!mailAddress.isEmpty() && !password.isEmpty()) {
-
-                                }
+//                                try {
+//
+//                                } catch(JSONException e) {
+//                                    e.printStackTrace();
+//                                } catch(IOException e) {
+//                                    e.printStackTrace();
+//                                }
                             }
                         });
                     }
