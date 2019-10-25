@@ -40,19 +40,19 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+//import okhttp3.Call;
+//import okhttp3.Callback;
+//import okhttp3.OkHttpClient;
+//import okhttp3.Request;
+//import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String emailTAG = "EmailPassword";
     private static final String googleTAG = "GoogleActivity";
     private static final String facebookTAG = "FacebookLogin";
     final String url = "https://jz17g01.jec.ac.jp";
-    final Request request = new Request.Builder().url(url).build();
-    final OkHttpClient client = new OkHttpClient.Builder().build();
+//    final Request request = new Request.Builder().url(url).build();
+//    final OkHttpClient client = new OkHttpClient.Builder().build();
     private static final int RC_SIGN_IN = 9001;
     private TextView textViewSignup;
     private TextView textViewResetPass;
@@ -151,37 +151,37 @@ public class MainActivity extends AppCompatActivity {
         // メールアドレスでログイン
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
+           @Override
             public void onClick(View v) {
-                String mailAddress = editTextMailAddress.getText().toString();
-                String password = editTextPassword.getText().toString();
-                EditText passErr = findViewById(R.id.editTextPassword);
-
-                client.newCall(request).enqueue(new Callback() {
-                    final Handler mHandler = new Handler(Looper.getMainLooper());
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
-                                if(!mailAddress.isEmpty() && !password.isEmpty()) {
-
-                                }
-                            }
-                        });
-                    }
-                });
+//                String mailAddress = editTextMailAddress.getText().toString();
+//                String password = editTextPassword.getText().toString();
+//                EditText passErr = findViewById(R.id.editTextPassword);
+//
+//                client.newCall(request).enqueue(new Callback() {
+//                    final Handler mHandler = new Handler(Looper.getMainLooper());
+//                    @Override
+//                    public void onFailure(Call call, IOException e) {
+//                        mHandler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Call call, Response response) throws IOException {
+//                        mHandler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+//                                if(!mailAddress.isEmpty() && !password.isEmpty()) {
+//
+//                                }
+//                            }
+//                        });
+//                    }
+//               });
 
 //                if(!mailAddress.isEmpty() && !password.isEmpty()) {
 //                    emailSignIn(mailAddress, password);

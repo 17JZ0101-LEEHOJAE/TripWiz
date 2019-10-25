@@ -8,5 +8,7 @@
     <color name="colorRadioButtonBusy">#EE0000</color>
     <color name="colorRadioButtonFree">#66FF33</color>
     <color name="colorButtonEditProfile">#E6E6FA</color>
+    <color name="colorLine">#6D6B6B</color>
+
 </resources>
 
