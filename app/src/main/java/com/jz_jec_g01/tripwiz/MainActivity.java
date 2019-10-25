@@ -38,9 +38,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 
 import okhttp3.Call;
@@ -148,12 +151,13 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mailAddress = editTextMailAddress.getText().toString();
+                String mailaddress = editTextMailAddress.getText().toString();
                 String password = editTextPassword.getText().toString();
                 EditText passErr = findViewById(R.id.editTextPassword);
 
                 client.newCall(request).enqueue(new Callback() {
                     final Handler mHandler = new Handler(Looper.getMainLooper());
+
                     @Override
                     public void onFailure(Call call, IOException e) {
                         mHandler.post(new Runnable() {
@@ -168,16 +172,21 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         mHandler.post(new Runnable() {
+
                             @Override
                             public void run() {
                                 Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
-//                                try {
-//
-//                                } catch(JSONException e) {
-//                                    e.printStackTrace();
-//                                } catch(IOException e) {
-//                                    e.printStackTrace();
-//                                }
+                                try {
+                                    URL url =  new URL ("http://10.210.20.161/login/login.php");
+                                    String data = URLEncoder.encode("mailAddress", "UTF-8") + "=" +
+                                            URLEncoder.encode(mailaddress, "UTF-8");
+                                    data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
+                                            URLEncoder.encode(password, "UTF-8");
+                                } catch(JSONException e) {
+                                    e.printStackTrace();
+                                } catch(IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
                     }
