@@ -182,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
                                             URLEncoder.encode(mailaddress, "UTF-8");
                                     data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
                                             URLEncoder.encode(password, "UTF-8");
-                                } catch(JSONException e) {
-                                    e.printStackTrace();
+//                                } catch(JSONException e) {
+//                                    e.printStackTrace();
                                 } catch(IOException e) {
                                     e.printStackTrace();
                                 }
