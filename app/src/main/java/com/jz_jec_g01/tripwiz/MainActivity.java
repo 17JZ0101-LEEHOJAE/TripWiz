@@ -40,9 +40,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 
@@ -172,18 +177,32 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         mHandler.post(new Runnable() {
-
                             @Override
                             public void run() {
                                 Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+
+                                String url = "http://10.210.20.161/login/login.php";
+                                Request request = new Request.Builder()
+                                        .url(url)
+                                        .get()
+                                        .build();
+
+                                OkHttpClient client = new OkHttpClient.Builder().build();
+
                                 try {
-                                    URL url =  new URL ("http://10.210.20.161/login/login.php");
-                                    String data = URLEncoder.encode("mailAddress", "UTF-8") + "=" +
-                                            URLEncoder.encode(mailaddress, "UTF-8");
-                                    data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
-                                            URLEncoder.encode(password, "UTF-8");
-//                                } catch(JSONException e) {
-//                                    e.printStackTrace();
+                                    client.newCall(request).execute();
+
+                                    String jsonData = response.body().string();
+                                    try {
+                                        JSONArray jArray = new JSONArray(jsonData);
+                                        String tempStr;
+                                        for(int i = 0; i < jArray.length(); i++) {
+                                            tempStr = jArray.getJSONObject(i).getString("mailAddress");
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 } catch(IOException e) {
                                     e.printStackTrace();
                                 }
@@ -249,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Emailログインのメソッド
     private void emailSignIn(String email, String password) {
         Log.d(emailTAG, "signIn:" + email);
         if (!validateForm()) {
@@ -383,14 +403,12 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.editTextPassword).setVisibility(View.GONE);
             findViewById(R.id.buttonLogin).setVisibility(View.GONE);
             findViewById(R.id.textViewResetPass).setVisibility(View.GONE);
-            findViewById(R.id.textViewLoginRe).setVisibility(View.VISIBLE);
             findViewById(R.id.buttonLogout).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.editTextMailAddress).setVisibility(View.VISIBLE);
             findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
             findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
             findViewById(R.id.textViewResetPass).setVisibility(View.VISIBLE);
-            findViewById(R.id.textViewLoginRe).setVisibility(View.GONE);
             findViewById(R.id.buttonLogout).setVisibility(View.GONE);
         }
     }

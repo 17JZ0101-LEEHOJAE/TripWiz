@@ -29,6 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
+
     <View
         android:id="@+id/view2"
         android:layout_width="332dp"
@@ -39,8 +40,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
-
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+        app:layout_constraintVertical_bias="0.723" />
 
     <EditText
         android:id="@+id/editTextMailAddress"
@@ -61,7 +62,7 @@
         android:layout_width="277dp"
         android:layout_height="42dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="パスワード"
         android:inputType="textPassword"
@@ -70,24 +71,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress" />
 
-    <TextView
-        android:id="@+id/textViewLoginRe"
-        android:layout_width="191dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="8dp"
-        android:text="ログイン成功"
-        android:textColor="#000"
-        android:textSize="30sp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
-
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="163dp"
         android:layout_height="47dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:background="#FF9800"
         android:text="ログイン"
         android:textColor="#000"
@@ -100,18 +88,18 @@
         android:id="@+id/textViewResetPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         android:text="パスワードをお忘れの方はこちら"
         android:textColor="#000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLoginRe" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="154dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="80dp"
         android:background="#FF9800"
         android:text="ログアウト"
         android:textColor="#000"
@@ -137,7 +125,7 @@
         android:id="@+id/googleLoginBtn"
         android:layout_width="226dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="32dp"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/textViewSignup"
         app:layout_constraintEnd_toEndOf="parent"
@@ -148,13 +136,13 @@
         android:id="@+id/facebookLoginBtn"
         android:layout_width="226dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="40dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/googleLoginBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
