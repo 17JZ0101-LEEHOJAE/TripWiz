@@ -1,14 +1,14 @@
-package com.jz_jec_g01.tripwiz.ui.notifications;
+package com.jz_jec_g01.tripwiz.ui.talk;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class TalkViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public TalkViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
     }

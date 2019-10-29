@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
@@ -16,7 +17,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:itemBackground="@color/colorButtonNav"
+        app:itemIconTint="@color/browser_actions_bg_grey"
+        app:itemTextColor="@color/browser_actions_bg_grey"
+        app:menu="@menu/bottom_nav_menu"/>
 
     <fragment
         android:id="@+id/nav_host_fragment"

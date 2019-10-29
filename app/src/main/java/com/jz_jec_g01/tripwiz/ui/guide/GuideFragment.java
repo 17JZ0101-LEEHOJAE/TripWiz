@@ -1,4 +1,4 @@
-package com.jz_jec_g01.tripwiz.ui.notifications;
+package com.jz_jec_g01.tripwiz.ui.guide;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.jz_jec_g01.tripwiz.R;
 
-public class NotificationsFragment extends Fragment {
+public class GuideFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private GuideViewModel guideViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(this, new Observer<String>() {
+        guideViewModel =
+                ViewModelProviders.of(this).get(GuideViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_guide, container, false);
+        final TextView textView = root.findViewById(R.id.text_guide);
+        guideViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

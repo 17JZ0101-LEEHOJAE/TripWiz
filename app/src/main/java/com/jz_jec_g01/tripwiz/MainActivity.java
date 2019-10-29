@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!mailAddress.isEmpty() && !password.isEmpty()) {
                     emailSignIn(mailAddress, password);
+                    Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
+                    startActivity(intent);
                 } else if(!mailAddress.isEmpty() && password.isEmpty()) {
                     passErr.setError("パスワードを入力してください");
                 } else {

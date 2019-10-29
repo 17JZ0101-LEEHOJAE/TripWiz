@@ -1,4 +1,4 @@
-package com.jz_jec_g01.tripwiz.ui.dashboard;
+package com.jz_jec_g01.tripwiz.ui.talk;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.jz_jec_g01.tripwiz.R;
 
-public class DashboardFragment extends Fragment {
+public class TalkFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private TalkViewModel talkViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(this, new Observer<String>() {
+        talkViewModel =
+                ViewModelProviders.of(this).get(TalkViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_talk, container, false);
+        final TextView textView = root.findViewById(R.id.text_talk);
+        talkViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
