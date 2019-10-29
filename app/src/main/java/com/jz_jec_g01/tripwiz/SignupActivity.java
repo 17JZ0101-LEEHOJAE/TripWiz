@@ -43,11 +43,10 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-
-
                 createAccount(email, password);
+                Intent intent = new Intent(SignupActivity.this, ProfilePageActivity.class);
+                startActivity(intent);
             }
-
         });
     }
     private void createAccount(String email, String password) {
@@ -55,12 +54,10 @@ public class SignupActivity extends AppCompatActivity {
         if (!validateForm()) {
             return;
         }
-
         //showProgressDialog();
-
         // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password).
+                addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -80,13 +77,23 @@ public class SignupActivity extends AppCompatActivity {
                         // hideProgressDialog();
                         // [END_EXCLUDE]
                     }
+
                 });
+
 
 
 
 
         // [END create_user_with_email]
     }
+
+    /**
+     *入力内容のフォームが正しいかどうかチェックするメソッド
+     *  @return　false 正しくなかったら登録しない
+     *  @return　true 入力内容正しかったら登録する
+     *
+     */
+
     private boolean validateForm() {
         String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString().trim();
@@ -104,11 +111,8 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         }
         else {
-            startActivity(new Intent(SignupActivity.this, MainActivity.class));
+            //startActivity(new Intent(SignupActivity.this, ProfilePageActivity.class));
             return true;
         }
     }
-
-
-
 }

@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
     implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
