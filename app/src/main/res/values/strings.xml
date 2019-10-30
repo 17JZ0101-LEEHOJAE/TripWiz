@@ -21,8 +21,6 @@
     <string name="textViewYear">Year</string>
     <string name="textViewMonth">Month</string>
     <string name="textViewDay">Day</string>
-
-
     <string name="textViewUserNameProfile">NIHON DENSHI</string>
     <string name="buttonEditProfile">情報編集</string>
     <string name="textViewLanguage">言語：</string>
