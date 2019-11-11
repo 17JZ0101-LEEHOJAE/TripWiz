@@ -44,7 +44,8 @@ public class SignupActivity extends AppCompatActivity {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 createAccount(email, password);
-                Intent intent = new Intent(SignupActivity.this, ProfilePageActivity.class);
+                //Intent intent = new Intent(SignupActivity.this, TimeLineActivity.class);
+                Intent intent = new Intent(SignupActivity.this, ProfilePageActivity.class); //新規登録画面からプロフィール画面へ遷移
                 startActivity(intent);
             }
         });
