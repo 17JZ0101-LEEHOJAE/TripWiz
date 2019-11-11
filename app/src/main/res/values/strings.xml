@@ -10,7 +10,9 @@
     <string name="title_activity_tamplate">TamplateActivity</string>
     <string name="textViewUserName">UserName</string>
     <string name="editTextName"></string>
-
+    <string name="title_guide">Guide</string>
+    <string name="title_talk">Talk</string>
+    <string name="title_myPage">MyPage</string>
     <string name="textViewMailAddress">MailAddress</string>
     <string name="textViewPw">Password</string>
     <string name="textViewName">Name</string>
@@ -47,6 +49,9 @@
     <string name="spinnerMonth"></string>
     <string name="spinnerDay"></string>
     <string name="spinnerNationality"></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 <!--  タイムライン画面  -->
     <string name="buttonSearchWord">検索</string>

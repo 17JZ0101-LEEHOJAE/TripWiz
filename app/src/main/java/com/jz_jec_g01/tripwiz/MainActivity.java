@@ -40,9 +40,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 
@@ -160,10 +165,54 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mailaddress = editTextMailAddress.getText().toString();
+                String mailAddress = editTextMailAddress.getText().toString();
                 String password = editTextPassword.getText().toString();
                 EditText passErr = findViewById(R.id.editTextPassword);
 
+//                client.newCall(request).enqueue(new Callback() {
+//                    final Handler mHandler = new Handler(Looper.getMainLooper());
+//
+//                    @Override
+//                    public void onFailure(Call call, IOException e) {
+//                        mHandler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+//                                e.printStackTrace();
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Call call, Response response) throws IOException {
+//                        mHandler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+//
+//                                String url = "http://10.210.20.161/login/login.php";
+//                                Request request = new Request.Builder()
+//                                        .url(url)
+//                                        .get()
+//                                        .build();
+//
+//                                OkHttpClient client = new OkHttpClient.Builder().build();
+//
+//                                try {
+//                                    client.newCall(request).execute();
+//
+//                                    String jsonData = response.body().string();
+//                                    try {
+//                                        JSONArray jArray = new JSONArray(jsonData);
+//                                        String tempStr;
+//                                        for(int i = 0; i < jArray.length(); i++) {
+//                                            tempStr = jArray.getJSONObject(i).getString("mailAddress");
+//                                        }
+//
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                } catch(IOException e) {
                 client.newCall(request).enqueue(new Callback() {
                     final Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -192,6 +241,19 @@ public class MainActivity extends AppCompatActivity {
                                             URLEncoder.encode(password, "UTF-8");
 //                                } catch(JSONException e) {
 //                                    e.printStackTrace();
+//                                }
+//                            }
+//                        });
+//                    }
+//                });
+
+                if(!mailAddress.isEmpty() && !password.isEmpty()) {
+                    emailSignIn(mailAddress, password);
+                } else if(!mailAddress.isEmpty() && password.isEmpty()) {
+                    passErr.setError("パスワードを入力してください");
+                } else {
+                    Toast.makeText(getApplicationContext(), "メールアドレスとパスワードが\n入力されていません", Toast.LENGTH_SHORT).show();
+                }
                                 } catch(IOException e) {
                                     e.printStackTrace();
                                 }
@@ -286,6 +348,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Emailログインのメソッド
     private void emailSignIn(String email, String password) {
         Log.d(emailTAG, "signIn:" + email);
         if (!validateForm()) {
@@ -420,14 +483,14 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.editTextPassword).setVisibility(View.GONE);
             findViewById(R.id.buttonLogin).setVisibility(View.GONE);
             findViewById(R.id.textViewResetPass).setVisibility(View.GONE);
-            findViewById(R.id.textViewLoginRe).setVisibility(View.VISIBLE);
-            findViewById(R.id.buttonLogout).setVisibility(View.VISIBLE);
+//            findViewById(R.id.buttonLogout).setVisibility(View.VISIBLE);
+            Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
+            startActivity(intent);
         } else {
             findViewById(R.id.editTextMailAddress).setVisibility(View.VISIBLE);
             findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
             findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
             findViewById(R.id.textViewResetPass).setVisibility(View.VISIBLE);
-            findViewById(R.id.textViewLoginRe).setVisibility(View.GONE);
             findViewById(R.id.buttonLogout).setVisibility(View.GONE);
         }
     }

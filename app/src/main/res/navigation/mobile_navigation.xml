@@ -12,14 +12,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.jz_jec_g01.tripwiz.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_guide"
+        android:name="com.jz_jec_g01.tripwiz.ui.guide.GuideFragment"
+        android:label="@string/title_guide"
+        tools:layout="@layout/fragment_guide" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.jz_jec_g01.tripwiz.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_talk"
+        android:name="com.jz_jec_g01.tripwiz.ui.talk.TalkFragment"
+        android:label="@string/title_talk"
+        tools:layout="@layout/fragment_talk" />
+    <fragment
+        android:id="@+id/navigation_myPage"
+        android:name="com.jz_jec_g01.tripwiz.ui.myPage.MyPageFragment"
+        android:label="@string/title_myPage"
+        tools:layout="@layout/fragment_my_page" />
 </navigation>
