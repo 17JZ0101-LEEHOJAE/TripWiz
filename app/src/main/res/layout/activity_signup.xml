@@ -39,25 +39,25 @@
         android:id="@+id/editTextPassword"
         android:layout_width="240dp"
         android:layout_height="40dp"
-        android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="パスワード"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.616"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewMailAddress"
         app:layout_constraintTop_toBottomOf="@+id/editTextMailAddress" />
 
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="240dp"
         android:layout_height="40dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="28dp"
         android:ems="10"
-        app:layout_constraintBottom_toTopOf="@+id/radioButton2"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
     <Button
         android:id="@+id/buttonSignup"
@@ -89,27 +89,23 @@
         android:id="@+id/textViewMailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="36dp"
         android:text="@string/textViewPw"
         android:textColor="#000"
         android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editTextPassword"
-        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMailAddress2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewMailAddress2" />
 
     <TextView
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="52dp"
         android:text="@string/textViewName"
         android:textColor="#000"
         android:textSize="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/editTextName"
-        app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMailAddress" />
 
@@ -157,15 +153,14 @@
         android:id="@+id/radioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="28dp"
         android:checked="true"
         android:text="@string/radioButtonMale"
         app:layout_constraintBottom_toTopOf="@+id/spinner"
-        app:layout_constraintEnd_toStartOf="@+id/radioButton2"
-        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toEndOf="@+id/textViewGender"
         app:layout_constraintTop_toBottomOf="@+id/editTextName"
-        app:layout_constraintVertical_bias="0.277" />
+        app:layout_constraintVertical_bias="0.142" />
 
     <RadioButton
         android:id="@+id/radioButton2"
@@ -176,8 +171,9 @@
         android:text="@string/radioButtonFeMale"
         app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.89"
-        app:layout_constraintStart_toEndOf="@+id/textViewGender" />
+        app:layout_constraintStart_toEndOf="@+id/radioButton"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Spinner
         android:id="@+id/spinner"

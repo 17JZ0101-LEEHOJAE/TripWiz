@@ -46,8 +46,4 @@
     <string name="spinnerMonth"></string>
     <string name="spinnerDay"></string>
     <string name="spinnerNationality"></string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>
