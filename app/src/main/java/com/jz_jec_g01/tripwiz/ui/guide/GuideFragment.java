@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.jz_jec_g01.tripwiz.R;
 
 
+
 public class GuideFragment extends Fragment {
 
     private EditText editText;

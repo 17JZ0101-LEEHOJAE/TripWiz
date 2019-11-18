@@ -8,7 +8,7 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/text_guide"
         android:layout_width="208dp"
         android:layout_height="39dp"
         android:layout_marginStart="60dp"
