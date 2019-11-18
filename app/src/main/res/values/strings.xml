@@ -12,6 +12,10 @@
     <string name="title_guide">Guide</string>
     <string name="title_talk">Talk</string>
     <string name="title_myPage">MyPage</string>
+    <string name="title_menu">Menu</string>
+    <string name="title_person">Person</string>
+    <string name="title_sharp">Sharp</string>
+    <string name="title_location">Location</string>
     <string name="textViewMailAddress">MailAddress</string>
     <string name="textViewPw">Password</string>
     <string name="textViewName">Name</string>

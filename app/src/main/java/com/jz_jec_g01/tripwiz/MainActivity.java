@@ -153,79 +153,81 @@ public class MainActivity extends AppCompatActivity {
                 EditText passErr = findViewById(R.id.editTextPassword);
 
                 if(!mailAddress.isEmpty() && !password.isEmpty()) {
-                    emailSignIn(mailAddress, password);
+//                    emailSignIn(mailAddress, password);
 
-//                    client.newCall(request).enqueue(new Callback() {
-//                        final Handler mHandler = new Handler(Looper.getMainLooper());
-//
-//                        @Override
-//                        public void onFailure(Call call, IOException e) {
-//                            mHandler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
-//                                    e.printStackTrace();
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onResponse(Call call, Response response) throws IOException {
-//                            mHandler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
-//
-//                                    String url = "http://10.210.20.161/Login.php";
-//                                    Request request = new Request.Builder()
-//                                            .url(url)
-//                                            .get()
-//                                            .build();
-//
-//                                    OkHttpClient client = new OkHttpClient.Builder().build();
-//                                    client.newCall(request).enqueue(new Callback() {
-//                                        @Override
-//                                        public void onFailure(Call call, IOException e) {
-//                                            mHandler.post(new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
-//                                                    e.printStackTrace();
-//                                                }
-//                                            });
-//                                        }
-//
-//                                        @Override
-//                                        public void onResponse(Call call, Response response) throws IOException {
-//                                            mHandler.post(new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    try {
-//                                                        String jsonData = response.body().string();
-//                                                        JSONArray jArray = new JSONArray(jsonData);
-//                                                        String tempStr;
-//                                                        for(int i = 0; i < jArray.length(); i++) {
-//                                                            tempStr = jArray.getJSONObject(i).getString("mailAddress");
-//                                                            if(mailAddress.equals(tempStr)) {
-//                                                                Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
-//                                                                break;
-//                                                            } else {
-//                                                                Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
-//                                                            }
-//                                                        }
-//                                                    } catch (JSONException e) {
-//                                                        e.printStackTrace();
-//                                                    } catch (IOException e) {
-//                                                        e.printStackTrace();
-//                                                    }
-//                                                }
-//                                            });
-//                                        }
-//                                    });
-//                                }
-//                            });
-//                        }
-//                    });
+                    client.newCall(request).enqueue(new Callback() {
+                        final Handler mHandler = new Handler(Looper.getMainLooper());
+
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+                                    e.printStackTrace();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+
+                                    String url = "http://10.210.20.161/Login.php";
+                                    Request request = new Request.Builder()
+                                            .url(url)
+                                            .get()
+                                            .build();
+
+                                    OkHttpClient client = new OkHttpClient.Builder().build();
+                                    client.newCall(request).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+                                                    e.printStackTrace();
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        String jsonData = response.body().string();
+                                                        JSONArray jArray = new JSONArray(jsonData);
+                                                        String tempStr;
+                                                        for(int i = 0; i < jArray.length(); i++) {
+                                                            tempStr = jArray.getJSONObject(i).getString("mailAddress");
+                                                            if(mailAddress.equals(tempStr)) {
+                                                                Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
+                                                                Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
+                                                                startActivity(intent);
+                                                                break;
+                                                            } else {
+                                                                Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 } else if(!mailAddress.isEmpty() && password.isEmpty()) {
                     passErr.setError("パスワードを入力してください");
                 } else {
