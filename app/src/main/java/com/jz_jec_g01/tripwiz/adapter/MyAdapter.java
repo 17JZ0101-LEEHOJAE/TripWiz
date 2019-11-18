@@ -1,4 +1,4 @@
-package com.jz_jec_g01.tripwiz.ui;
+package com.jz_jec_g01.tripwiz.adapter;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 //import android.support.v7.widget.RecyclerView;

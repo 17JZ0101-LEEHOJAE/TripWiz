@@ -1,4 +1,5 @@
 package com.jz_jec_g01.tripwiz;
+import com.jz_jec_g01.tripwiz.adapter.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,8 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 //import android.support.v7.widget.LinearLayoutManager;
 
 import android.os.Bundle;
-
-import com.jz_jec_g01.tripwiz.ui.MyAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,12 +37,12 @@ public class TimeLineActivity extends AppCompatActivity {
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
         RecyclerView.LayoutManager rLayoutManager = new LinearLayoutManager(this);
 
-        recyclerView.setLayoutManager(rLayoutManager);
+//        recyclerView.setLayoutManager(rLayoutManager);
 
 
         // 配列をArrayListにコピー
@@ -56,6 +55,6 @@ public class TimeLineActivity extends AppCompatActivity {
 
         // specify an adapter (see also next example)
         RecyclerView.Adapter rAdapter = new MyAdapter(itemImages, itemNames);
-        recyclerView.setAdapter(rAdapter);
+//        recyclerView.setAdapter(rAdapter);
     }
 }

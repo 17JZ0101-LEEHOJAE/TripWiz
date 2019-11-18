@@ -16,6 +16,9 @@
             android:name=".ProfilePageActivity"
             android:label="ProfilePageActivity"></activity>
         <activity
+            android:name=".TimeLineActivity"
+            android:label="TimeLineActivity"></activity>
+        <activity
             android:name=".TamplateActivity"
             android:label="@string/title_activity_tamplate"></activity>
         <activity android:name=".MainActivity">

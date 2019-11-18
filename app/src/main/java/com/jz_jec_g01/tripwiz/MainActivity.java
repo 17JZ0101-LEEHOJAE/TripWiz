@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String emailTAG = "EmailPassword";
     private static final String googleTAG = "GoogleActivity";
     private static final String facebookTAG = "FacebookLogin";
-    final String url = "http://10.210.20.161";
+    //final String url = "http://10.210.20.161"; //学校のパソコンのIPアドレス
+    final String url = "http://www.jz.jec.ac.jp/17jzg01"; //学校の端末のIPアドレス(スマホ)
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private static final int RC_SIGN_IN = 9001;
@@ -232,11 +233,14 @@ public class MainActivity extends AppCompatActivity {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(MainActivity.this, TimeLineActivity.class); //新規登録画面からプロフィール画面へ遷移
+                                startActivity(intent);
                                 try {
-                                    URL url =  new URL ("http://10.210.20.161/login/login.php");
+                                    //URL url =  new URL ("http://10.210.20.161/login/login.php");//学校のパソコンのIPアドレス
+                                    URL url =  new URL ("http://www.jz.jec.ac.jp/17jzg01/login/login.php");//学校の端末のIPアドレス(スマホ)
                                     String data = URLEncoder.encode("mailAddress", "UTF-8") + "=" +
-                                            URLEncoder.encode(mailaddress, "UTF-8");
+                                            URLEncoder.encode(mailAddress, "UTF-8");
                                     data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
                                             URLEncoder.encode(password, "UTF-8");
 //                                } catch(JSONException e) {
@@ -290,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
 //                        });
 //                    }
 //               });
-
+//
 //                if(!mailAddress.isEmpty() && !password.isEmpty()) {
 //                    emailSignIn(mailAddress, password);
 //                } else if(!mailAddress.isEmpty() && password.isEmpty()) {

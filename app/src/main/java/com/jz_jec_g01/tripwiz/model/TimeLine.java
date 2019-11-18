@@ -8,6 +8,7 @@ public class TimeLine {
     private Date Date;
     private String Status;
     private Bitmap UserImage;
+    private String UserName;
     private int Like;
     private String comment;
 
@@ -21,6 +22,14 @@ public class TimeLine {
 
     public java.util.Date getDate() {
         return Date;
+    }
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
     }
 
     public int getLike() {
