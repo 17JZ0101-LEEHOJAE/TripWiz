@@ -27,13 +27,13 @@ public class GuideFragment extends Fragment {
 //        searchWord args = new searchWord();
 //    }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_guide,container,false);
-        // 文字枠の非表示
-        findViewById(R.id.nav_view).setVisibility(View.INVISIBLE);
-
-    }
+//    public View onCreateView(@NonNull LayoutInflater inflater,
+//                             ViewGroup container, Bundle savedInstanceState) {
+//        return inflater.inflate(R.layout.fragment_guide,container,false);
+//        // 文字枠の非表示
+//        findViewById(R.id.nav_view).setVisibility(View.INVISIBLE);
+//
+//    }
 
 
 }
