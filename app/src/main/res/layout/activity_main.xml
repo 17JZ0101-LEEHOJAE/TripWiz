@@ -34,14 +34,12 @@
         android:id="@+id/view2"
         android:layout_width="332dp"
         android:layout_height="1dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="28dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toTopOf="@+id/facebookLoginBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-        app:layout_constraintVertical_bias="0.723" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
     <EditText
         android:id="@+id/editTextMailAddress"
@@ -99,26 +97,26 @@
         android:id="@+id/buttonLogout"
         android:layout_width="154dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="48dp"
         android:background="#FF9800"
         android:text="ログアウト"
         android:textColor="#000"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewSignup"
         android:layout_width="149dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="32dp"
         android:text="新規会員登録はこちら"
         android:textColor="#000"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.gms.common.SignInButton
@@ -136,13 +134,15 @@
         android:id="@+id/facebookLoginBtn"
         android:layout_width="226dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="28dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/googleLoginBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.981" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
