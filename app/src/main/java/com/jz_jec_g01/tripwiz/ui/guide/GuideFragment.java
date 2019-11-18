@@ -31,7 +31,7 @@ public class GuideFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_guide,container,false);
         // 文字枠の非表示
-        findViewById(R.id.nav_view).setVisibility(View.INVISIBLE);
+//        findViewById(R.id.nav_view).setVisibility(View.INVISIBLE);
 
     }
 
