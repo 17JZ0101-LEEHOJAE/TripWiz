@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String emailTAG = "EmailPassword";
     private static final String googleTAG = "GoogleActivity";
     private static final String facebookTAG = "FacebookLogin";
-    //final String url = "http://10.210.20.161"; 
-    final String url = "http://www.jz.jec.ac.jp/17jzg01"; 
+    //final String url = "http://10.210.20.161";
+    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private static final int RC_SIGN_IN = 9001;
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button buttonLogin;
     private Button buttonLogout;
-
     private LoginButton faceBookLoginBtn;
     private SignInButton googleLoginBtn;
     private FirebaseAuth mAuth;
@@ -82,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         buttonLogout = findViewById(R.id.buttonLogout);
-
         faceBookLoginBtn = findViewById(R.id.facebookLoginBtn);
         faceBookLoginBtn.setReadPermissions("email", "public_profile");
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
@@ -98,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-
-
-
 
         // メールアドレスの入力フィルタリング
         InputFilter inputFilterMail = new InputFilter() {
@@ -160,165 +155,86 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String mailAddress = editTextMailAddress.getText().toString();
-//                String password = editTextPassword.getText().toString();
-//                EditText passErr = findViewById(R.id.editTextPassword);
-//
-//                if(!mailAddress.isEmpty() && !password.isEmpty()) {
-//                    emailSignIn(mailAddress, password);
-//
-////                    client.newCall(request).enqueue(new Callback() {
-////                        final Handler mHandler = new Handler(Looper.getMainLooper());
-////
-////                        @Override
-////                        public void onFailure(Call call, IOException e) {
-////                            mHandler.post(new Runnable() {
-////                                @Override
-////                                public void run() {
-////                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
-////                                    e.printStackTrace();
-////                                }
-////                            });
-////                        }
-////
-////                        @Override
-////                        public void onResponse(Call call, Response response) throws IOException {
-////                            mHandler.post(new Runnable() {
-////                                @Override
-////                                public void run() {
-////                                    Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
-////
-////                                    String url = "http://10.210.20.161/Login.php";
-////                                    Request request = new Request.Builder()
-////                                            .url(url)
-////                                            .get()
-////                                            .build();
-////
-////                                    OkHttpClient client = new OkHttpClient.Builder().build();
-////                                    client.newCall(request).enqueue(new Callback() {
-////                                        @Override
-////                                        public void onFailure(Call call, IOException e) {
-////                                            mHandler.post(new Runnable() {
-////                                                @Override
-////                                                public void run() {
-////                                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
-////                                                    e.printStackTrace();
-////                                                }
-////                                            });
-////                                        }
-////
-////                                    } catch (JSONException e) {
-////                                        e.printStackTrace();
-////                                    }
-////                                } catch(IOException e) {
-//                client.newCall(request).enqueue(new Callback() {
-//                    final Handler mHandler = new Handler(Looper.getMainLooper());
-//
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        mHandler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
-//                                e.printStackTrace();
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        mHandler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                //Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
-//                                Intent intent = new Intent(MainActivity.this, TimeLineActivity.class); //新規登録画面からプロフィール画面へ遷移
-//                                startActivity(intent);
-//                                try {
-//                                    //URL url =  new URL ("http://10.210.20.161/login/login.php");
-//                                    URL url = new URL("http://www.jz.jec.ac.jp/17jzg01/login/login.php");
-//                                    String data = URLEncoder.encode("mailAddress", "UTF-8") + "=" +
-//                                            URLEncoder.encode(mailAddress, "UTF-8");
-//                                    data += "&" + URLEncoder.encode("password", "UTF-8") + "=" +
-//                                            URLEncoder.encode(password, "UTF-8");
-//                                } catch (JSONException e) {
-////                                    e.printStackTrace();
-////                                        @Override
-////                                        public void onResponse(Call call, Response response) throws IOException {
-////                                            mHandler.post(new Runnable() {
-////                                                @Override
-////                                                public void run() {
-////                                                    try {
-////                                                        String jsonData = response.body().string();
-////                                                        JSONArray jArray = new JSONArray(jsonData);
-////                                                        String tempStr;
-////                                                        for(int i = 0; i < jArray.length(); i++) {
-////                                                            tempStr = jArray.getJSONObject(i).getString("mailAddress");
-////                                                            if(mailAddress.equals(tempStr)) {
-////                                                                Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
-////                                                                break;
-////                                                            } else {
-////                                                                Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
-////                                                            }
-////                                                        }
-////                                                    } catch (JSONException e) {
-////                                                        e.printStackTrace();
-////                                                    } catch (IOException e) {
-////                                                        e.printStackTrace();
-////                                                    }
-////                                                }
-////                                            });
-////                                        }
-////                                    });
-//                                }
-////                            });
-//
-//                        }
-//                    });
-//                } else if(!mailAddress.isEmpty() && password.isEmpty()) {
-//                    passErr.setError("パスワードを入力してください");
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "メールアドレスとパスワードが\n入力されていません", Toast.LENGTH_SHORT).show();
-//                }
-//                                } catch(IOException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
                 String mailAddress = editTextMailAddress.getText().toString();
                 String password = editTextPassword.getText().toString();
                 EditText passErr = findViewById(R.id.editTextPassword);
 
-                client.newCall(request).enqueue(new Callback() {
-                    final Handler mHandler = new Handler(Looper.getMainLooper());
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(MainActivity.this, ProfilePageActivity.class);
-                                //Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
-                                if(!mailAddress.isEmpty() && !password.isEmpty()) {
-
-                                }
-                            }
-                        });
-                    }
-               });
-
                 if(!mailAddress.isEmpty() && !password.isEmpty()) {
-                    emailSignIn(mailAddress, password);
+//                    emailSignIn(mailAddress, password);
+
+                    client.newCall(request).enqueue(new Callback() {
+                        final Handler mHandler = new Handler(Looper.getMainLooper());
+
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+                                    e.printStackTrace();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+
+                                    String url = "http://10.210.20.161/Login.php";
+                                    Request request = new Request.Builder()
+                                            .url(url)
+                                            .get()
+                                            .build();
+
+                                    OkHttpClient client = new OkHttpClient.Builder().build();
+                                    client.newCall(request).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+                                                    e.printStackTrace();
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        String jsonData = response.body().string();
+                                                        JSONArray jArray = new JSONArray(jsonData);
+                                                        String tempStr;
+                                                        for(int i = 0; i < jArray.length(); i++) {
+                                                            tempStr = jArray.getJSONObject(i).getString("mailAddress");
+                                                            if(mailAddress.equals(tempStr)) {
+                                                                Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
+                                                                Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
+                                                                startActivity(intent);
+                                                                break;
+                                                            } else {
+                                                                Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 } else if(!mailAddress.isEmpty() && password.isEmpty()) {
                     passErr.setError("パスワードを入力してください");
                 } else {
@@ -460,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(googleTAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            IntentTamplate(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(googleTAG, "signInWithCredential:failure", task.getException());
@@ -483,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(facebookTAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            IntentTamplate(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(facebookTAG, "signInWithCredential:failure", task.getException());
