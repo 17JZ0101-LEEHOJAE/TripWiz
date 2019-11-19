@@ -5,8 +5,23 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import android.util.Log;
+
+//import com.google.gson.Gson;
+//import com.google.gson.reflect.TypeToken;
+
+import com.google.firebase.auth.UserInfo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
+    private static final String TAG = "DEBUG";
     private String name;
     private int Nationality;
     private int Age;
@@ -17,21 +32,40 @@ public class User implements Serializable {
     private String Area;
     private String MailAddress;
     private String PassWord;
-    private String GuidHistory;
+    private String GuideHistory;
     private boolean guideflag;
-    private int UserId;
     private Bitmap UserImage;
     private List<GuideTime> guideTimes;
+    private List<String> userId;
+
+    public static String getTAG() {
+        return TAG;
+    }
+
+    public List<String> getUserID() {
+        return userId;
+    }
+
+    public void setUserID(List<String> userID) {
+        this.userId = userId;
+    }
+
+    public boolean isGuideflag() {
+        return guideflag;
+    }
+
+    public void setGuideTimes(List<GuideTime> guideTimes) {
+        this.guideTimes = guideTimes;
+    }
 
     public List<GuideTime> getGuideTimes() { return guideTimes; }
     public int getAge() { return Age; }
     public int getGender() { return Gender; }
     public int getJob() { return Job; }
     public int getNationality() { return Nationality; }
-    public int getUserId() { return UserId; }
     public boolean isGuidflag() { return guideflag; }
     public String getArea() {return Area; }
-    public String getGuidHistory() {return GuidHistory; }
+    public String getGuidHistory() {return GuideHistory; }
     public String getLanguage() { return Language; }
     public String getMailAddress() {return MailAddress; }
     public String getName() { return name; }
@@ -45,19 +79,19 @@ public class User implements Serializable {
     public void setAge(int age) {Age = age; }
     public void setArea(String area) {Area = area; }
     public void setGender(int gender) { Gender = gender; }
-    public void setGuidflag(boolean guidflag) { this.guideflag = guideflag; }
-    public void setGuidHistory(String guidHistory) {GuidHistory = guidHistory; }
+    public void setGuideflag(boolean guideflag) { this.guideflag = guideflag; }
+    public void setGuideHistory(String guideHistory) {GuideHistory = guideHistory; }
     public void setJob(int job) { Job = job; }
     public void setLanguage(String language) { Language = language; }
     public void setMailAddress(String mailAddress) { MailAddress = mailAddress; }
     public void setName(String name) { this.name = name; }
     public void setNationality(int nationality) { Nationality = nationality; }
     public void setPassWord(String passWord) { PassWord = passWord; }
-    public void setUserId(int userId) { UserId = userId; }
 
     public User() {
         guideTimes = new ArrayList<>();
     }
+
     public String getGuideTime(int weekday) {
         String ret = "";
         for (int i = 0; i <= guideTimes.size(); i++) { //ガイドタイムの数分を数える
@@ -69,5 +103,4 @@ public class User implements Serializable {
         }
         return ret;
     }
-
 }
