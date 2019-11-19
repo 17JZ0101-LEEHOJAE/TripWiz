@@ -7,8 +7,8 @@
     tools:context=".TamplateActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="308dp"
-        android:layout_height="474dp"
+        android:layout_width="307dp"
+        android:layout_height="441dp"
         android:background="#F0F0E8E8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
             android:id="@+id/button3"
             android:layout_width="107dp"
             android:layout_height="54dp"
-            android:layout_marginBottom="52dp"
+            android:layout_marginBottom="88dp"
             android:background="#FF9800"
             android:gravity="center"
             android:text="検索"
@@ -40,39 +40,110 @@
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="99dp" />
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:text="年齢"
+            android:textColor="#000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
         <TextView
             android:id="@+id/textView23"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="141dp" />
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:text="性別"
+            android:textColor="#000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
         <TextView
             android:id="@+id/textView24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="185dp" />
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:text="地域"
+            android:textColor="#000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
         <TextView
             android:id="@+id/textView25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="227dp" />
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="24dp"
+            android:text="言語"
+            android:textColor="#000"
+            app:layout_constraintBottom_toTopOf="@+id/button3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView24"
+            app:layout_constraintVertical_bias="0.046" />
+
+        <Spinner
+            android:id="@+id/ageSpinner"
+            android:layout_width="120dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintStart_toEndOf="@+id/textView22"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+        <Spinner
+            android:id="@+id/spinner7"
+            android:layout_width="120dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintStart_toEndOf="@+id/textView24"
+            app:layout_constraintTop_toBottomOf="@+id/radioButton7" />
+
+        <Spinner
+            android:id="@+id/spinner8"
+            android:layout_width="120dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/button3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintStart_toEndOf="@+id/textView25"
+            app:layout_constraintTop_toBottomOf="@+id/spinner7"
+            app:layout_constraintVertical_bias="0.148" />
+
+        <RadioButton
+            android:id="@+id/radioButton7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="12dp"
+            android:text="男"
+            app:layout_constraintBottom_toBottomOf="@+id/radioButton8"
+            app:layout_constraintStart_toEndOf="@+id/textView23"
+            app:layout_constraintTop_toBottomOf="@+id/ageSpinner" />
+
+        <RadioButton
+            android:id="@+id/radioButton8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="女"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.307"
+            app:layout_constraintStart_toEndOf="@+id/radioButton7"
+            app:layout_constraintTop_toBottomOf="@+id/ageSpinner" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

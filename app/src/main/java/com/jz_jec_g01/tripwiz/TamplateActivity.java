@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,6 +23,13 @@ import androidx.navigation.ui.NavigationUI;
 public class TamplateActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private static final String TAG = "DEB";
+
+    private Spinner ageSpinner;
+
+    public void tampInit() {
+        ageSpinner = findViewById(R.id.ageSpinner);
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         /**
@@ -64,6 +75,34 @@ public class TamplateActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-    }
 
+        tampInit();
+
+//        for(int j = 18; i < 60; i++) {
+//
+//        }
+//
+//        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(
+//                this,
+//                android.R.layout.simple_spinner_item,
+//
+//        );
+//
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        ageSpinner.setAdapter(adapter);
+//
+//        ageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            // アイテムが選択されたとき
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                ageSpinner = (Spinner) parent;
+//                String item = (String) ageSpinner.getSelectedItem();
+//            }
+//            // アイテムが選択されなかったとき
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+    }
 }
