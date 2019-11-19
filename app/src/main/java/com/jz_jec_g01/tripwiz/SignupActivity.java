@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,11 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
+
 public class SignupActivity extends AppCompatActivity {
     private EditText inputEmail;
     private EditText inputPassword;
     private FirebaseAuth mAuth;
     private Button btnSignUp;
+    private String SpinerItems [] = {"Japan", "USA", "Korea", "Taiwan","Spain", "german"};
     private static  final String TAG = "debug";
 
 
@@ -36,6 +40,12 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.buttonSignup);
         inputEmail = findViewById(R.id.editTextMailAddress);
         inputPassword = findViewById(R.id.editTextPassword);
+        Spinner NatioSpinner = findViewById(R.id.NatioSpinner);
+
+        //ArrayAdapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.)
+
+
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +59,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
+
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
