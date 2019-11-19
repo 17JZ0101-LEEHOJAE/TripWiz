@@ -27,6 +27,7 @@ public class GuideFragment extends Fragment {
 //        searchWord args = new searchWord();
 //    }
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_guide,container,false);
