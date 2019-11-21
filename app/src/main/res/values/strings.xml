@@ -22,10 +22,8 @@
     <string name="textViewName">Name</string>
     <string name="textViewGender">Gender</string>
     <string name="textViewNationality">Nationality</string>
-    <string name="textViewBirthday">Birthday</string>
+    <string name="textViewBirthday">Age</string>
     <string name="textViewYear">Year</string>
-    <string name="textViewMonth">Month</string>
-    <string name="textViewDay">Day</string>
 
 <!--プロフィール画面-->
     <string name="textViewUserNameProfile">NIHON DENSHI</string>
@@ -60,4 +58,16 @@
 
 <!--  タイムライン画面  -->
     <string name="buttonSearchWord">検索</string>
+<!-- 　国リスト  -->
+    <string-array name="nationality_array">
+        <item>Japan</item>
+        <item>China</item>
+        <item>Korea</item>
+        <item>France</item>
+        <item>America</item>
+        <item>Thailand</item>
+        <item>Taiwan</item>
+        <item>Singapore</item>
+    </string-array>
+
 </resources>
