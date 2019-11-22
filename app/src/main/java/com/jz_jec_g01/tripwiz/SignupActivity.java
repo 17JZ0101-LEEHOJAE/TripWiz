@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -22,15 +25,29 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 
 public class SignupActivity extends AppCompatActivity {
     private EditText inputEmail;
     private EditText inputPassword;
     private FirebaseAuth mAuth;
+    final String url = "http://10.210.20.161";
+    final Request request = new Request.Builder().url(url).build();
+    final OkHttpClient client = new OkHttpClient.Builder().build();
     private Button btnSignUp;
-    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "台湾","スペイン", "ドイツ"};
-    private  String AgeSpinners[] = {"10代","20代","30代","40代","50代"};
-    private static  final String TAG = "debug";
+    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
+    private String AgeSpinners[] = {"10代", "20代", "30代", "40代", "50代"};
+    private RadioGroup ageGroup;
+    private static final String TAG = "debug";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +58,14 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.buttonSignup);
         inputEmail = findViewById(R.id.editTextMailAddress);
         inputPassword = findViewById(R.id.editTextPassword);
-        Spinner Natiospinner  = findViewById(R.id.NatioSpinner);
+        ageGroup = findViewById(R.id.radioGroupAge);
+        Spinner Natiospinner = findViewById(R.id.NatioSpinner);
         Spinner Agespinner = findViewById(R.id.AgeSpinner);
-/*************************Spinner***************************/
+
+        /************************* Spinner ***************************/
         //ArrayAdapter
-        ArrayAdapter<String> NatioAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, NatioSpinners);
-        ArrayAdapter<String> AgeAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AgeSpinners);
+        ArrayAdapter<String> NatioAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, NatioSpinners);
+        ArrayAdapter<String> AgeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, AgeSpinners);
 
         NatioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         AgeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -63,7 +82,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(getApplicationContext(), "国籍が\n選択されていません", Toast.LENGTH_SHORT).show();
+
             }
         });
         //AGEリスナーに登録
@@ -76,7 +95,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(getApplicationContext(), "年齢が\n選択されていません", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -86,8 +105,53 @@ public class SignupActivity extends AppCompatActivity {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 createAccount(email, password);
-                Intent intent = new Intent(SignupActivity.this, ProfilePageActivity.class);
-                startActivity(intent);
+                String nationality = Natiospinner.getSelectedItem().toString();
+                String age = Agespinner.getSelectedItem().toString();
+                int gender = ageGroup.getCheckedRadioButtonId();
+
+                final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+                String json = "{\"mailAddress\":\"" + email + "\", \"password\":\"" + password + "\", " +
+                        "\"gender\":\"" + gender + "\"";
+
+                RequestBody body = RequestBody.create(JSON, json);
+
+                if(validateForm() == true) {
+                    client.newCall(request).enqueue(new Callback() {
+                        final Handler mHandler = new Handler(Looper.getMainLooper());
+
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String url = "http://10.210.20.161/Singup.php";
+                            Request request = new Request.Builder()
+                                    .url(url)
+                                    .post(body)
+                                    .build();
+
+                            OkHttpClient client = new OkHttpClient.Builder().build();
+                            client.newCall(request).enqueue(new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+
+                                }
+
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
     }
@@ -107,34 +171,25 @@ public class SignupActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //  updateUI(user);
+                            Intent intent = new Intent(SignupActivity.this, ProfilePageActivity.class);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignupActivity.this, "Authentication failed." + ((FirebaseAuthWeakPasswordException)task.getException()).getReason(), //画面にエラーを表示する
+                            Toast.makeText(SignupActivity.this, "Authentication failed." + ((FirebaseAuthWeakPasswordException) task.getException()).getReason(), //画面にエラーを表示する
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
-
-                        // [START_EXCLUDE]
-                        // hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
 
                 });
-
-
-
-
-
         // [END create_user_with_email]
     }
 
     /**
-     *入力内容のフォームが正しいかどうかチェックするメソッド
-     *  @return　false 正しくなかったら登録しない
-     *  @return　true 入力内容正しかったら登録する
+     * 入力内容のフォームが正しいかどうかチェックするメソッド
      *
+     * @return　false 正しくなかったら登録しない
+     * @return　true 入力内容正しかったら登録する
      */
 
     private boolean validateForm() {
@@ -144,18 +199,13 @@ public class SignupActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             return false;
-        }
-        if (password.length() < 6) {
+        } else if (password.length() < 6) {
             Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        else {
-            //startActivity(new Intent(SignupActivity.this, ProfilePageActivity.class));
-            return true;
-        }
+        return true;
     }
 }
