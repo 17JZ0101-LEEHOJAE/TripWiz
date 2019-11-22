@@ -8,12 +8,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
+import android.widget.AdapterView.OnItemSelectedListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,9 +28,9 @@ public class SignupActivity extends AppCompatActivity {
     private EditText inputPassword;
     private FirebaseAuth mAuth;
     private Button btnSignUp;
-    private String SpinerItems [] = {"Japan", "USA", "Korea", "Taiwan","Spain", "german"};
+    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "台湾","スペイン", "ドイツ"};
+    private  String AgeSpinners[] = {"10代","20代","30代","40代","50代"};
     private static  final String TAG = "debug";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +41,44 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.buttonSignup);
         inputEmail = findViewById(R.id.editTextMailAddress);
         inputPassword = findViewById(R.id.editTextPassword);
-        Spinner NatioSpinner = findViewById(R.id.NatioSpinner);
-
+        Spinner Natiospinner  = findViewById(R.id.NatioSpinner);
+        Spinner Agespinner = findViewById(R.id.AgeSpinner);
+/*************************Spinner***************************/
         //ArrayAdapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.)
+        ArrayAdapter<String> NatioAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, NatioSpinners);
+        ArrayAdapter<String> AgeAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AgeSpinners);
 
+        NatioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        AgeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // spinner に adapter をセット
+        Natiospinner.setAdapter(NatioAdapter);
+        Agespinner.setAdapter(AgeAdapter);
+        //NATIOリスナーに登録
+        Natiospinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //アイテムが選択された時の処理
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(getApplicationContext(), "国籍が\n選択されていません", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //AGEリスナーに登録
+        Agespinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //アイテムが選択された時の処理
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(getApplicationContext(), "年齢が\n選択されていません", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
