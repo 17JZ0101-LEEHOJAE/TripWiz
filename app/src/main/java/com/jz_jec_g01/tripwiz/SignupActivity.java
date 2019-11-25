@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -24,6 +25,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -39,6 +44,7 @@ import okhttp3.Response;
 public class SignupActivity extends AppCompatActivity {
     private EditText inputEmail;
     private EditText inputPassword;
+    private EditText editTextName;
     private FirebaseAuth mAuth;
     final String url = "http://10.210.20.161";
     final Request request = new Request.Builder().url(url).build();
@@ -46,7 +52,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnSignUp;
     private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
     private String AgeSpinners[] = {"10代", "20代", "30代", "40代", "50代"};
-    private RadioGroup ageGroup;
+    private RadioGroup genderGroup;
     private static final String TAG = "debug";
 
     @Override
@@ -58,7 +64,8 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.buttonSignup);
         inputEmail = findViewById(R.id.editTextMailAddress);
         inputPassword = findViewById(R.id.editTextPassword);
-        ageGroup = findViewById(R.id.radioGroupAge);
+        genderGroup = findViewById(R.id.radioGroupGender);
+        editTextName = findViewById(R.id.editTextName);
         Spinner Natiospinner = findViewById(R.id.NatioSpinner);
         Spinner Agespinner = findViewById(R.id.AgeSpinner);
 
@@ -104,20 +111,34 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                createAccount(email, password);
                 String nationality = Natiospinner.getSelectedItem().toString();
                 String age = Agespinner.getSelectedItem().toString();
-                int gender = ageGroup.getCheckedRadioButtonId();
+                String name = editTextName.getText().toString().trim();
+                int checkedId = genderGroup.getCheckedRadioButtonId();
+                int gender = 0;
+
+                if(-1 != checkedId) {
+                    View radioButton = genderGroup.findViewById(checkedId);
+                    int radioId = genderGroup.indexOfChild(radioButton);
+                    RadioButton btnRadio = (RadioButton) genderGroup.getChildAt(radioId);
+                    String selection = (String) btnRadio.getText();
+                    if(selection.equals("男性")) {
+                        gender = 0;
+                    } else if(selection.equals("女性")) {
+                        gender = 1;
+                    }
+                }
 
                 final MediaType JSON = MediaType.get("application/json; charset=utf-8");
                 String json = "{\"mailAddress\":\"" + email + "\", \"password\":\"" + password + "\", " +
-                        "\"gender\":\"" + gender + "\"";
+                        "\"gender\":\"" + gender + "\", \"age\":\"" + age + "\", \"nationality\":\"" + nationality + "\", " +
+                        "\"name\":\"" + name + "\"}";
 
                 RequestBody body = RequestBody.create(JSON, json);
-
                 if(validateForm() == true) {
                     client.newCall(request).enqueue(new Callback() {
                         final Handler mHandler = new Handler(Looper.getMainLooper());
+
 
                         @Override
                         public void onFailure(Call call, IOException e) {
@@ -126,7 +147,7 @@ public class SignupActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            String url = "http://10.210.20.161/Singup.php";
+                            String url = "http://10.210.20.161/Signup.php";
                             Request request = new Request.Builder()
                                     .url(url)
                                     .post(body)
@@ -144,7 +165,7 @@ public class SignupActivity extends AppCompatActivity {
                                     mHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
-
+                                            Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
@@ -152,6 +173,7 @@ public class SignupActivity extends AppCompatActivity {
                         }
                     });
                 }
+//                createAccount(email, password);
             }
         });
     }

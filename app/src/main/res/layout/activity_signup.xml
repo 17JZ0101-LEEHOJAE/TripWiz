@@ -157,7 +157,7 @@
         app:layout_constraintVertical_bias="0.323" />
 
     <RadioGroup
-        android:id="@+id/radioGroupAge"
+        android:id="@+id/radioGroupGender"
         android:layout_width="213dp"
         android:layout_height="46dp"
         android:layout_marginTop="16dp"
@@ -175,14 +175,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="true"
-            android:text="@string/radioButtonMale" />
+            android:text="男性" />
 
         <RadioButton
             android:id="@+id/FradioButton"
             android:layout_width="101dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/radioButtonFeMale" />
+            android:text="女性" />
     </RadioGroup>
 
     <Spinner
