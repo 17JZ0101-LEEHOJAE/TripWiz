@@ -14,8 +14,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="@color/colorProfile"
-            android:layout_height="wrap_content">
+            android:layout_height="128dp"
+            android:background="@color/colorMain">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewUser"

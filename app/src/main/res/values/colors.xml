@@ -9,7 +9,7 @@
     <color name="colorRadioButtonFree">#66FF33</color>
     <color name="colorButtonEditProfile">#E6E6FA</color>
     <color name="colorButtonNav">#FF9800</color>
-
+    <color name="colorMain">#F8C259</color>
     <color name="colorLine">#6D6B6B</color>
 
 </resources>
