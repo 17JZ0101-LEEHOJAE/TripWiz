@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -68,11 +66,10 @@ public class SignupActivity extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextName);
         Spinner Natiospinner = findViewById(R.id.NatioSpinner);
         Spinner Agespinner = findViewById(R.id.AgeSpinner);
-
-        /************************* Spinner ***************************/
+/*************************Spinner***************************/
         //ArrayAdapter
-        ArrayAdapter<String> NatioAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, NatioSpinners);
-        ArrayAdapter<String> AgeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, AgeSpinners);
+        ArrayAdapter<String> NatioAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, NatioSpinners);
+        ArrayAdapter<String> AgeAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AgeSpinners);
 
         NatioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         AgeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -89,7 +86,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                Toast.makeText(getApplicationContext(), "国籍が\n選択されていません", Toast.LENGTH_SHORT).show();
             }
         });
         //AGEリスナーに登録
@@ -102,7 +99,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                Toast.makeText(getApplicationContext(), "年齢が\n選択されていません", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -198,7 +195,7 @@ public class SignupActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignupActivity.this, "Authentication failed." + ((FirebaseAuthWeakPasswordException) task.getException()).getReason(), //画面にエラーを表示する
+                            Toast.makeText(SignupActivity.this, "Authentication failed." + ((FirebaseAuthWeakPasswordException)task.getException()).getReason(), //画面にエラーを表示する
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -208,10 +205,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     /**
-     * 入力内容のフォームが正しいかどうかチェックするメソッド
+     *入力内容のフォームが正しいかどうかチェックするメソッド
+     *  @return　false 正しくなかったら登録しない
+     *  @return　true 入力内容正しかったら登録する
      *
-     * @return　false 正しくなかったら登録しない
-     * @return　true 入力内容正しかったら登録する
      */
 
     private boolean validateForm() {
