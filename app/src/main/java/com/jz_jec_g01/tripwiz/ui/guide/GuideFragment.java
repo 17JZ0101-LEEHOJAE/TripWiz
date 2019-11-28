@@ -14,6 +14,7 @@ public class GuideFragment extends Fragment {
     private TextView text_sample;
     private Button setbutton;
 
+
     public GuideFragment() {
 
     }
