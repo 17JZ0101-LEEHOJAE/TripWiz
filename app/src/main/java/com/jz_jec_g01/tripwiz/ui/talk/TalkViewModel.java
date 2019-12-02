@@ -11,7 +11,9 @@ public class TalkViewModel extends ViewModel {
     public TalkViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
+        TalkViewModel.init(messages);
     }
+
 
     public LiveData<String> getText() {
         return mText;

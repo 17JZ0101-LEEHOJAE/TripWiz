@@ -40,9 +40,6 @@
     <string name="textViewSat">土</string>
     <string name="textViewSun">日</string>
 
-
-    <string name="radioButtonMale">Male</string>
-    <string name="radioButtonFeMale">Female</string>
     <string name="radioButtonBusy">Busy</string>
     <string name="radioButtonFree">Free</string>
 

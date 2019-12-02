@@ -25,11 +25,10 @@ public class TamplateActivity extends AppCompatActivity {
 
     private static final String TAG = "DEB";
 
-    private Spinner ageSpinner;
 
-    public void tampInit() {
-        ageSpinner = findViewById(R.id.ageSpinner);
-    }
+//    public void tampInit() {
+//        ageSpinner = findViewById(R.id.ageSpinner);
+//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,16 +47,10 @@ public class TamplateActivity extends AppCompatActivity {
 
                 case R.id.navigation_guide:
                     Log.d(TAG, "Guideボタンクリック");
-                    // Fragmentを作成します
-                    GuideFragment fragment = new GuideFragment();
-                    // Fragmentの追加や削除といった変更を行う際は、Transactionを利用します
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    // 新しく追加を行うのでaddを使用します
-                    // 他にも、よく使う操作で、replace removeといったメソッドがあります
-                    // メソッドの1つ目の引数は対象のViewGroupのID、2つ目の引数は追加するfragment
-                    transaction.add(R.id.container, fragment);
-                    // 最後にcommitを使用することで変更を反映します
-                    transaction.commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.activity_main, GuideFragment.newInstance())
+                            .commit();
                     return true;
 
                 case R.id.navigation_talk:
@@ -89,33 +82,7 @@ public class TamplateActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        tampInit();
 
-//        for(int j = 18; i < 60; i++) {
-//
-//        }
-//
-//        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(
-//                this,
-//                android.R.layout.simple_spinner_item,
-//
-//        );
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        ageSpinner.setAdapter(adapter);
-//
-//        ageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            // アイテムが選択されたとき
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                ageSpinner = (Spinner) parent;
-//                String item = (String) ageSpinner.getSelectedItem();
-//            }
-//            // アイテムが選択されなかったとき
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
     }
+
 }

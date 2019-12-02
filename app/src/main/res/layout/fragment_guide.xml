@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TamplateActivity">
+    tools:context="ui.guide.GuideFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -288,8 +288,62 @@
     <RelativeLayout
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-16dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImage"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="306dp"
+            android:layout_marginBottom="626dp"
+            android:src="@drawable/guideicon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="124dp"
+            android:layout_marginEnd="315dp"
+            android:layout_marginBottom="572dp"
+            android:text="TextView" />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="451dp"
+            android:layout_marginTop="200dp"
+            android:isScrollContainer="false">
+
+            <LinearLayout
+                android:id="@+id/LinearLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="「表示」を押すとDBのデータを全件表示します" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="２つ目のTextView" />
+            </LinearLayout>
+        </ScrollView>
     </RelativeLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="307dp"
@@ -368,7 +422,7 @@
             android:layout_marginTop="24dp"
             android:text="言語"
             android:textColor="#000"
-            app:layout_constraintBottom_toTopOf="@+id/buttonSearchWord"
+            app:layout_constraintBottom_toTopOf="@+id/button3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView24"
             app:layout_constraintVertical_bias="0.046" />

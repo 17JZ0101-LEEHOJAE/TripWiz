@@ -6,32 +6,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
+import android.widget.TextView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import com.jz_jec_g01.tripwiz.R;
 
-
-
 public class GuideFragment extends Fragment {
-
-    private EditText editText;
-    private Button btnSearch;
-    private GuideViewModel guideViewModel;
-
-//    public static GuideFragment newInstace(int resourceId) {
-//        GuideFragment fragment = new GuideFragment();
-//        searchWord args = new searchWord();
-//    }
+    private TextView text_sample;
+    private Button setbutton;
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_guide,container,false);
+    public GuideFragment() {
+
     }
+
+    public static GuideFragment newInstance() {
+        return new GuideFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // 第３引数のbooleanは"container"にreturnするViewを追加するかどうか
+        //trueにすると最終的なlayoutに再度、同じView groupが表示されてしまうのでfalseでOKらしい
+        View v = inflater.inflate(R.layout.fragment_guide, container, false);
+        text_sample = v.findViewById(R.id.text_sample);
+        // ボタンを取得して、ClickListenerをセット
+        setbutton = (Button) v.findViewById(R.id.buttonSet);
+        setbutton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dispBody = "こんにちは";
+                EditText body = text_sample.findViewById(R.id.text_sample);
+                // 1番目:セットする文字列、2番目:TextView.BufferType.NORMAL
+                body.setText(dispBody, TextView.BufferType.NORMAL);
+            }
+        });
+        return v;
+    }
+
 
 
 }
