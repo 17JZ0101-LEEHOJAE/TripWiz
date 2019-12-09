@@ -26,10 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -173,10 +169,6 @@ public class SignupActivity extends AppCompatActivity {
                     });
                 }
 //                createAccount(email, password);
-                createAccount(email, password);
-                //Intent intent = new Intent(SignupActivity.this, TimeLineActivity.class);
-                Intent intent = new Intent(SignupActivity.this, ProfilePageActivity.class); //新規登録画面からプロフィール画面へ遷移
-                startActivity(intent);
             }
         });
     }

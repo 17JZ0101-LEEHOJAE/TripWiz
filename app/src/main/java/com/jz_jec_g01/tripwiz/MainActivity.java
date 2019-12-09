@@ -49,16 +49,18 @@ import java.net.URLEncoder;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String emailTAG = "EmailPassword";
     private static final String googleTAG = "GoogleActivity";
     private static final String facebookTAG = "FacebookLogin";
-    //final String url = "http://10.210.20.161";
-    final String url = "http://www.jz.jec.ac.jp/17jzg01";
+    final String url = "http://10.210.20.161";
+//    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private static final int RC_SIGN_IN = 9001;
@@ -137,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                //Intent intent = new Intent(MainActivity.this, TimeLineActivity.class);
                 startActivity(intent);
             }
         });
@@ -161,6 +162,12 @@ public class MainActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
                 EditText passErr = findViewById(R.id.editTextPassword);
 
+
+                final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+                String json = "{\"mailAddress\":\"" + mailAddress + "\", \"password\":\"" + password + "\"}";
+
+                RequestBody body = RequestBody.create(JSON, json);
+
                 if(!mailAddress.isEmpty() && !password.isEmpty()) {
 //                    emailSignIn(mailAddress, password);
 
@@ -172,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+                                    Log.d("データベース接続", "接続失敗");
                                     e.printStackTrace();
                                 }
                             });
@@ -183,12 +190,12 @@ public class MainActivity extends AppCompatActivity {
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getApplicationContext(), "接続成功", Toast.LENGTH_LONG).show();
+                                    Log.d("データベース接続", "接続成功");
 
                                     String url = "http://10.210.20.161/Login.php";
                                     Request request = new Request.Builder()
                                             .url(url)
-                                            .get()
+                                            .post(body)
                                             .build();
 
                                     OkHttpClient client = new OkHttpClient.Builder().build();
@@ -198,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                                             mHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(getApplicationContext(), "接続失敗", Toast.LENGTH_LONG).show();
+                                                    Log.d("PHP通信", "通信失敗");
                                                     e.printStackTrace();
                                                 }
                                             });
@@ -212,10 +219,12 @@ public class MainActivity extends AppCompatActivity {
                                                     try {
                                                         String jsonData = response.body().string();
                                                         JSONArray jArray = new JSONArray(jsonData);
-                                                        String tempStr;
+                                                        String strMail;
+                                                        String strPass;
                                                         for(int i = 0; i < jArray.length(); i++) {
-                                                            tempStr = jArray.getJSONObject(i).getString("mailAddress");
-                                                            if(mailAddress.equals(tempStr)) {
+                                                            strMail = jArray.getJSONObject(i).getString("mailAddress");
+                                                            strPass = jArray.getJSONObject(i).getString("password");
+                                                            if(mailAddress.equals(strMail) && password.equals(strPass)) {
                                                                 Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
                                                                 Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
                                                                 startActivity(intent);
