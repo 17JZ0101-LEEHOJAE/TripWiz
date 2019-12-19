@@ -9,9 +9,9 @@ public class TalkViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
     public TalkViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
-        TalkViewModel.init(messages);
+//        mText = new MutableLiveData<>();
+//        mText.setValue("This is notifications fragment");
+//        TalkViewModel.init(messages);
     }
 
 

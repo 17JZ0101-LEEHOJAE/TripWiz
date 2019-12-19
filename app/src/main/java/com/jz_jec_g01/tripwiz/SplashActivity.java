@@ -19,16 +19,16 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // WebView呼び出し
-        myWebView = (WebView) findViewById(R.id.webView);
-        myWebView.setWebViewClient(new WebViewClient());
-        myWebView.loadUrl("/***指定ファイル****/"); // ローカルのhtmlファイルを指定
+//        // WebView呼び出し
+//        myWebView = (WebView) findViewById(R.id.webView);
+//        myWebView.setWebViewClient(new WebViewClient());
+//        myWebView.loadUrl("/***指定ファイル****/"); // ローカルのhtmlファイルを指定
 
 // WebView内のJavaScriptの実行を許可
-        myWebView.getSettings().setJavaScriptEnabled(true);
-
-        setContentView(R.layout.splash);
-        mHandler.postDelayed(mSplashTask, 6000);
+//        myWebView.getSettings().setJavaScriptEnabled(true);
+//
+//        setContentView(R.layout.splash);
+//        mHandler.postDelayed(mSplashTask, 6000);
 
 
     }

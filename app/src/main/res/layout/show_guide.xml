@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingTop="5dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="5dp"
+    android:background="#fff"
+    android:baselineAligned="false"
+    android:layout_height="200dp">
+
+    <RelativeLayout
+        android:layout_width="111dp"
+        android:layout_height="182dp">
+
+        <ImageView
+            android:id="@+id/image_background"
+            android:layout_width="124dp"
+            android:layout_height="103dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="82dp"
+            android:background="#FF9800">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/user_image_view"
+            android:layout_width="76dp"
+            android:layout_height="102dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="82dp" />
+
+        <TextView
+            android:id="@+id/user_name_view"
+            android:layout_width="108dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="105dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginBottom="51dp"
+            android:gravity="center"
+            android:textColor="#00f"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/btnRequest"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="144dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="#FF9800"
+            android:gravity="center"
+            android:text="request"
+            android:textSize="18dp" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

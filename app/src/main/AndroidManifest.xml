@@ -19,9 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        android:theme="@style/AppTheme">
-        <activity android:name=".HistoryActivity"></activity>
+
+        <activity android:name=".HistoryActivity"/>
         <activity android:name=".SearchGuideActivity" />
+
         <activity
             android:name=".ProfilePageActivity"
             android:label="ProfilePageActivity" />
@@ -31,6 +32,7 @@
         <activity
             android:name=".TamplateActivity"
             android:label="@string/title_activity_tamplate" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".SignupActivity" />
         <activity android:name=".RequestActivity" />
 

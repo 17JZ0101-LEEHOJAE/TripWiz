@@ -1,5 +1,5 @@
 package com.jz_jec_g01.tripwiz;
-import com.jz_jec_g01.tripwiz.adapter.*;
+//import com.jz_jec_g01.tripwiz.adapter.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +33,7 @@ public class TimeLineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewTimeLine);
+//        RecyclerView recyclerView = findViewById(R.id.recyclerViewTimeLine);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -54,7 +54,7 @@ public class TimeLineActivity extends AppCompatActivity {
         }
 
         // specify an adapter (see also next example)
-        RecyclerView.Adapter rAdapter = new MyAdapter(itemImages, itemNames);
+//        RecyclerView.Adapter rAdapter = new MyAdapter(itemImages, itemNames);
 //        recyclerView.setAdapter(rAdapter);
     }
 }

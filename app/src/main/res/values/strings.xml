@@ -1,5 +1,4 @@
 <resources>
-    <!--新規登録-->
     <string name="app_name">TripWiz</string>
     <string name="facebook_app_id">473694246571043</string>
     <string name="fb_login_protocol_scheme">fb473694246571043</string>
@@ -22,10 +21,10 @@
     <string name="textViewName">Name</string>
     <string name="textViewGender">Gender</string>
     <string name="textViewNationality">Nationality</string>
-    <string name="textViewBirthday">Age</string>
+    <string name="textViewBirthday">Birthday</string>
     <string name="textViewYear">Year</string>
-
-    <!--プロフィール画面-->
+    <string name="textViewMonth">Month</string>
+    <string name="textViewDay">Day</string>
     <string name="textViewUserNameProfile">NIHON DENSHI</string>
     <string name="buttonEditProfile">情報編集</string>
     <string name="textViewLanguage">言語：</string>
@@ -48,28 +47,4 @@
     <string name="spinnerMonth"></string>
     <string name="spinnerDay"></string>
     <string name="spinnerNationality"></string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!--  タイムライン画面  -->
-    <string name="buttonSearchWord">検索</string>
-    <!-- 　国リスト  -->
-    <string-array name="nationality_array">
-        <item>Japan</item>
-        <item>China</item>
-        <item>Korea</item>
-        <item>France</item>
-        <item>America</item>
-        <item>Thailand</item>
-        <item>Taiwan</item>
-        <item>Singapore</item>
-    </string-array>
-
-    <!--  ガイド検索  -->
-    <string name="textViewSearchGuide">ガイド検索</string>
-    <string name="buttonSearchGuide">検索</string>
-    <string name="textViewSearchGuideResult">ガイド一覧</string>
-
 </resources>

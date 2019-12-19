@@ -1,40 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_myPage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="319dp"
+        android:layout_height="477dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="128dp"
+            android:layout_height="115dp"
             android:background="@color/colorMain">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewUser"
-                android:layout_width="84dp"
-                android:layout_height="84dp"
+                android:layout_width="78dp"
+                android:layout_height="68dp"
                 android:layout_margin="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="28dp"
                 android:src="@drawable/profile"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,6 +39,7 @@
                 android:text="@string/textViewUserNameProfile"
                 android:textColor="#000"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.032"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,36 +50,26 @@
                 style="@style/Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:numStars="5"
-                android:rating="0"
-                android:stepSize="0.5"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toEndOf="@+id/imageViewUser"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewRate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
-                android:text="0.0"
+                android:layout_width="55dp"
+                android:layout_height="27dp"
+                android:layout_marginEnd="120dp"
+                android:text="1.0"
                 android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.3"
-                app:layout_constraintStart_toEndOf="@+id/ratingBar"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/textViewUserName"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+                app:layout_constraintVertical_bias="0.157" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Button
-            android:id="@+id/buttonEditProfile"
-            android:layout_width="172dp"
-            android:layout_height="30dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/border1"
-            android:text="@string/buttonEditProfile" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,10 +93,14 @@
                     android:textSize="15dp" />
 
                 <TextView
-                    android:id="@+id/textViewLanguage"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/selectLang"
+                    android:layout_width="186dp"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:paddingVertical="10dp"
+                    android:paddingStart="20dp"
+                    android:text="選択済み"
+                    android:textColor="#000"
+                    android:textSize="15dp" />
 
             </LinearLayout>
 
@@ -131,28 +120,32 @@
                     android:textSize="15dp" />
 
                 <TextView
-                    android:id="@+id/textViewArea"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/textViewDayOfTheWeek"
+                    android:id="@+id/selectArea"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
+                    android:text="選択済み"
+                    android:textColor="#000"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+                <TextView
+                    android:id="@+id/textViewDayOfTheWeek"
+                    android:layout_width="119dp"
+                    android:layout_height="22dp"
                     android:text="@string/textViewDayOfTheWeek"
                     android:textColor="#000"
                     android:textSize="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintHorizontal_bias="0.134"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TableLayout
                     android:id="@+id/tableLayout"
@@ -258,96 +251,98 @@
                         android:layout_weight="1"
                         android:background="#000000">
 
-                        <TextView
-                            android:id="@+id/textViewWeek0"
-                            android:layout_width="match_parent"
+                        <Button
+                            android:id="@+id/mon_day"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_column="0"
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:text="Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                            android:onClick="mon_clickDay"
+                            android:text="◯"
+                            android:textSize="24dp" />
 
-                        <TextView
-                            android:id="@+id/textViewWeek1"
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/tues_day"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:onClick="tues_clickDay"
+                            android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:id="@+id/textViewWeek2"
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/wed_day"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_column="2"
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:id="@+id/textViewWeek3"
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/thurs_day"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_column="3"
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:id="@+id/textViewWeek4"
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/fri_day"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_column="4"
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:id="@+id/textViewWeek5"
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/saturs_day"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_column="5"
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:id="@+id/textViewWeek6"
-                            android:layout_width="wrap_content"
+                        <Button
+                            android:id="@+id/sun_day"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_column="6"
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
                 </TableLayout>
 
                 <EditText
                     android:id="@+id/editTextPr"
-                    android:layout_width="0dp"
-                    android:layout_height="157dp"
+                    android:layout_width="302dp"
+                    android:layout_height="65dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/border"
                     android:inputType="textMultiLine"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.533"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -355,8 +350,8 @@
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/textViewPr"
                     android:textColor="#000"
                     android:textSize="15dp"
@@ -365,6 +360,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonEditProfile"
+            android:layout_width="172dp"
+            android:layout_height="30dp"
+            android:background="@drawable/border1"
+            android:text="編集"
+            android:onClick="editMypage"/>
 
     </LinearLayout>
 

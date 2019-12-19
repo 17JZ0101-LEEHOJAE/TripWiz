@@ -162,9 +162,8 @@ public class MainActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
                 EditText passErr = findViewById(R.id.editTextPassword);
 
-
                 final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-                String json = "{\"mailAddress\":\"" + mailAddress + "\", \"password\":\"" + password + "\"}";
+                String json = "{\"mailAddress\":\"" + mailAddress + "\"}";
 
                 RequestBody body = RequestBody.create(JSON, json);
 
@@ -218,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                                                 public void run() {
                                                     try {
                                                         String jsonData = response.body().string();
+                                                        Log.d("Json", jsonData);
                                                         JSONArray jArray = new JSONArray(jsonData);
                                                         String strMail;
                                                         String strPass;
