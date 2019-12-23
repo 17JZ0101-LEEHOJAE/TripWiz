@@ -142,9 +142,9 @@ public class SignupActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            String url = "http://10.210.20.161/Signup.php";
+                            String urlS = url + "/Signup.php";
                             Request request = new Request.Builder()
-                                    .url(url)
+                                    .url(urlS)
                                     .post(body)
                                     .build();
 

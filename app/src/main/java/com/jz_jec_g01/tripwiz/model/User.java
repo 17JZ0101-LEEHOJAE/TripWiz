@@ -2,105 +2,46 @@ package com.jz_jec_g01.tripwiz.model;
 
 import android.graphics.Bitmap;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import android.util.Log;
-
-//import com.google.gson.Gson;
-//import com.google.gson.reflect.TypeToken;
-
-import com.google.firebase.auth.UserInfo;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements Serializable {
-    private static final String TAG = "DEBUG";
+public class User {
+    private int userId;
     private String name;
-    private int Nationality;
-    private int Age;
-    private int Gender;
-    private int Job;
-    private String Pr;
-    private String Language;
-    private String Area;
-    private String MailAddress;
-    private String PassWord;
-    private String GuideHistory;
-    private boolean guideflag;
-    private Bitmap UserImage;
-    private List<GuideTime> guideTimes;
-    private List<String> userId;
+    private String age;
+    private int gender;
+    private String job;
+    private String nationality;
+    private String introduction;
+    private int guideStatus;
+    private int price;
+    private List<String> areaList = new ArrayList<>();
+    private List<String> weekList = new ArrayList<>();
+    private Bitmap profile;
 
-    public static String getTAG() {
-        return TAG;
-    }
-
-    public List<String> getUserID() {
-        return userId;
-    }
-
-    public void setUserID(List<String> userID) {
-        this.userId = userId;
-    }
-
-    public boolean isGuideflag() {
-        return guideflag;
-    }
-
-    public void setGuideTimes(List<GuideTime> guideTimes) {
-        this.guideTimes = guideTimes;
-    }
-
-    public List<GuideTime> getGuideTimes() { return guideTimes; }
-    public int getAge() { return Age; }
-    public int getGender() { return Gender; }
-    public int getJob() { return Job; }
-    public int getNationality() { return Nationality; }
-    public boolean isGuidflag() { return guideflag; }
-    public String getArea() {return Area; }
-    public String getGuidHistory() {return GuideHistory; }
-    public String getLanguage() { return Language; }
-    public String getMailAddress() {return MailAddress; }
+    public int getUserId() { return userId; }
     public String getName() { return name; }
-    public String getPassWord() {return PassWord; }
-    public Bitmap getUserImage() {return UserImage; }
-    public String getPr() { return Pr; }
+    public String getAge() { return age; }
+    public int getGender() { return gender; }
+    public String getJob() { return job; }
+    public String getNationality() { return nationality; }
+    public String getIntroduction() { return introduction; }
+    public int getGuideStatus() { return guideStatus; }
+    public int getPrice() { return price; }
 
+    public List<String> getAreaList() { return areaList; }
+    public List<String> getWeekList() { return weekList; }
 
-    public void setPr(String pr) { Pr = pr; }
-    public void setUserImage(Bitmap userImage) { UserImage = userImage; }
-    public void setAge(int age) {Age = age; }
-    public void setArea(String area) {Area = area; }
-    public void setGender(int gender) { Gender = gender; }
-    public void setGuideflag(boolean guideflag) { this.guideflag = guideflag; }
-    public void setGuideHistory(String guideHistory) {GuideHistory = guideHistory; }
-    public void setJob(int job) { Job = job; }
-    public void setLanguage(String language) { Language = language; }
-    public void setMailAddress(String mailAddress) { MailAddress = mailAddress; }
+    public void setUserId(int userId) { this.userId = userId; }
     public void setName(String name) { this.name = name; }
-    public void setNationality(int nationality) { Nationality = nationality; }
-    public void setPassWord(String passWord) { PassWord = passWord; }
+    public void setAge(String age) { this.age = age; }
+    public void setGender(int gender) { this.gender = gender; }
+    public void setJob(String job) { this.job = job; }
+    public void setNationality(String nationality) { this.nationality = nationality; }
+    public void setIntroduction(String introduction) { this.introduction = introduction; }
+    public void setGuideStatus(int guideStatus) { this.guideStatus = guideStatus; }
+    public void setPrice(int price) { this.price = price; }
 
-    public User() {
-        guideTimes = new ArrayList<>();
-    }
-
-    public String getGuideTime(int weekday) {
-        String ret = "";
-        for (int i = 0; i <= guideTimes.size(); i++) { //ガイドタイムの数分を数える
-            if(guideTimes.get(i).getWeekday() == weekday) {
-                String startTime = guideTimes.get(i).getStartTime().toString();
-                String endTime = guideTimes.get(i).getEndTime().toString();
-                ret += startTime + "～" + endTime;
-            }
-        }
-        return ret;
-    }
+    public void setAreaList(List<String> areaList) { this.areaList = areaList; }
+    public void setWeekList(List<String> weekList) { this.weekList = weekList; }
 }

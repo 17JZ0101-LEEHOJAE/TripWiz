@@ -12,9 +12,8 @@
     <!-- A RecyclerView with some commonly used attributes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="387dp"
-        android:layout_height="362dp"
-        android:background="#fac"
+        android:layout_width="385dp"
+        android:layout_height="504dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

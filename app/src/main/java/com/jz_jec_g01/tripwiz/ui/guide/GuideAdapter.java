@@ -5,6 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 //import android.support.v7.widget.RecyclerView;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +19,28 @@ import android.widget.TextView;
 
 import com.jz_jec_g01.tripwiz.R;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> {
 
-    private List<Integer> iImages;
+    private List<String> iImages;
     private List<String> iNames;
+    final String url = "http://10.210.20.161";
+//    final String url = "http://www.jz.jec.ac.jp/17jzg01";
+    final Request request = new Request.Builder().url(url).build();
+    final OkHttpClient client = new OkHttpClient.Builder().build();
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -27,8 +48,8 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         // each data item is just a string in this case
-        ImageView imageView;
-        TextView textView;
+        private ImageView imageView;
+        private TextView textView;
 
         ViewHolder(View v) {
             super(v);
@@ -38,7 +59,7 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    GuideAdapter(List<Integer> itemImages, List<String> itemNames) {
+    GuideAdapter(List<String> itemImages, List<String> itemNames) {
         this.iImages = itemImages;
         this.iNames = itemNames;
     }
@@ -61,8 +82,38 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.imageView.setImageResource(iImages.get(position));
-        holder.textView.setText(iNames.get(position));
+        client.newCall(request).enqueue(new Callback() {
+            final Handler mHandler = new Handler(Looper.getMainLooper());
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("接続","失敗");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String urlS = url + "/image/" + iImages.get(position);
+                            Log.d("なに？", iImages.get(position));
+//                            Bitmap bitmap = BitmapFactory.decodeStream(istream);
+//                            holder.imageView.setImageBitmap(bitmap);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)

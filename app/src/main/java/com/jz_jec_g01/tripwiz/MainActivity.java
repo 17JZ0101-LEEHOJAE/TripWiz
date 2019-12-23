@@ -191,13 +191,12 @@ public class MainActivity extends AppCompatActivity {
                                 public void run() {
                                     Log.d("データベース接続", "接続成功");
 
-                                    String url = "http://10.210.20.161/Login.php";
+                                    String urlS = url + "/Login.php";
                                     Request request = new Request.Builder()
-                                            .url(url)
+                                            .url(urlS)
                                             .post(body)
                                             .build();
 
-                                    OkHttpClient client = new OkHttpClient.Builder().build();
                                     client.newCall(request).enqueue(new Callback() {
                                         @Override
                                         public void onFailure(Call call, IOException e) {
