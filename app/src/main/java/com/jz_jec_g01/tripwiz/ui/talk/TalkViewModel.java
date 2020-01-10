@@ -1,4 +1,4 @@
-package com.jz_jec_g01.tripwiz.ui.talk;
+package com.jz_jec_g01.tripwiz.ui.talk.Chats;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

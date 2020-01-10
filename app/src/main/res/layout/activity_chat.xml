@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity">
+
+ 　/**色選択
+    *画面全体のレイアウトバランス
+    *icon のデザイン調整(選択されているアイテムも調整)
+    *お願いします
+    */
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewUser"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="80dp"
+        android:layout_height="69dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="9dp"
+        android:layout_toEndOf="@+id/turnButton"
+        android:src="@drawable/profile" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="387dp"
+        android:layout_height="511dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="87dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="92dp"
+        android:background="#FF9800"
+        android:transcriptMode="alwaysScroll" />
+
+    <EditText
+        android:id="@+id/messageInput"
+        android:layout_width="244dp"
+        android:layout_height="44dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="28dp"
+        android:layout_weight="1"
+        android:background="#FF9800"
+        android:inputType="textShortMessage"
+        android:lines="1"
+        android:singleLine="true"
+        android:text="こんにちは"
+        android:textAlignment="center"
+        android:textColor="#fff" />
+
+    <ImageButton
+        android:id="@+id/sendButton"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="9dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="25dp"
+        android:src="@android:drawable/ic_menu_send" />
+
+    <ImageButton
+        android:id="@+id/buttonChatImage"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="348dp"
+        android:layout_marginBottom="34dp"
+        tools:src="@drawable/border" />
+
+    <Button
+        android:id="@+id/turnButton"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="27dp"
+        android:text="⇦"
+        android:textAlignment="viewStart"
+        android:textSize="24dp" />
+
+   <TextView
+        android:id="@+id/textName"
+        android:layout_width="93dp"
+        android:layout_height="37dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="149dp"
+        android:layout_marginBottom="68dp"
+        android:layout_toEndOf="@+id/imageViewUser"
+        android:textSize="24dp"
+        android:text="name" />
+
+
+</RelativeLayout>

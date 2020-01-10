@@ -2,14 +2,19 @@ package com.jz_jec_g01.tripwiz.ui.myPage;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.app.AlertDialog;
@@ -19,11 +24,32 @@ import androidx.fragment.app.Fragment;
 
 import com.jz_jec_g01.tripwiz.R;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import com.jz_jec_g01.tripwiz.model.User;
 
 public class MyPageFragment extends Fragment {
+    final String url = "http://10.210.20.161";
+    //    final String url = "http://www.jz.jec.ac.jp/17jzg01";
+    final Request request = new Request.Builder().url(url).build();
+    final OkHttpClient client = new OkHttpClient.Builder().build();
+    private User user = new User();
     private View v;
+    private TextView myName;
+    private ImageView myProfile;
     private TextView selectedLang;
     private TextView selectedArea;
     private TextView textViewRate;
@@ -53,6 +79,8 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_my_page, container, false);
+        myName = v.findViewById(R.id.textViewUserName);
+        myProfile = v.findViewById(R.id.imageViewUser);
         //評価レート
         textViewRate = v.findViewById(R.id.textViewRate);
         ratingBar = v.findViewById(R.id.ratingBar);
@@ -72,9 +100,105 @@ public class MyPageFragment extends Fragment {
 
         //プロフィール編集登録
         btnEditProfile.setOnClickListener(new btnMyPegeClickListener());
+
+        //プロフィール情報取得
+        final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        String json = "{\"name\":\"" + user.getName() + "\"}";
+
+        RequestBody body = RequestBody.create(JSON, json);
+        client.newCall(request).enqueue(new Callback() {
+            final Handler mHandler = new Handler(Looper.getMainLooper());
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("データベース接続", "接続失敗");
+                        e.printStackTrace();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("データベース接続", "接続成功");
+
+                        String urlS = url + "/Information_User.php";
+                        Request request = new Request.Builder()
+                                .url(urlS)
+                                .post(body)
+                                .build();
+
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                            }
+
+                            @Override
+                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            String jsonData = response.body().string();
+                                            Log.d("Json", jsonData);
+                                            JSONArray jArray = new JSONArray(jsonData);
+                                            for(int i = 0; i < jArray.length(); i++) {
+                                                myName.setText(jArray.getJSONObject(i).getString("name"));
+                                                user.setProfile(jArray.getJSONObject(i).getString("profile"));
+                                                if(!user.getProfile().equals("")) {
+                                                    String imgUrl = url + "/image/" + user.getProfile();
+                                                    Log.d("URL", imgUrl);
+
+                                                    Request request = new Request.Builder()
+                                                            .url(imgUrl)
+                                                            .get()
+                                                            .build();
+
+                                                    client.newCall(request).enqueue(new Callback() {
+                                                        @Override
+                                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                            mHandler.post(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                                                                    myProfile.setImageBitmap(bitmap);
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        } catch(IOException e) {
+                                            e.printStackTrace();
+                                        } catch(JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
         setRatingBar();
+
         return v;
     }
+
+
     public void setRatingBar() {
         double stars = 2.2;
         textViewRate.setText(String.valueOf(stars));
@@ -182,6 +306,7 @@ public class MyPageFragment extends Fragment {
                 fri_day_btn.setOnClickListener(new BtnAddAlermClickListener());
                 saturs_day_btn.setOnClickListener(new BtnAddAlermClickListener());
                 sun_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+
             } else {
                 btnEditProfile.setText("編集");
                 /**色指定**/

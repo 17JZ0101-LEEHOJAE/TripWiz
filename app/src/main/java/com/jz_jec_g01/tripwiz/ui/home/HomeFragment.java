@@ -38,7 +38,8 @@ public class HomeFragment extends Fragment {
     // それぞれの画像ファイルをdarawableに入れます
     // ArrayListにコピーするためintからInteger型にしました
     private static final Integer[] photos = {
-            R.drawable.sea, R.drawable.forest, R.drawable.mountain
+            R.drawable.sea, R.drawable.forest, R.drawable.mountain,
+
     };
     public static HomeFragment newInstance() {
         return new HomeFragment();

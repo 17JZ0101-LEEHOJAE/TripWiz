@@ -17,7 +17,7 @@ public class User {
     private int price;
     private List<String> areaList = new ArrayList<>();
     private List<String> weekList = new ArrayList<>();
-    private Bitmap profile;
+    private String profile;
 
     public int getUserId() { return userId; }
     public String getName() { return name; }
@@ -28,6 +28,7 @@ public class User {
     public String getIntroduction() { return introduction; }
     public int getGuideStatus() { return guideStatus; }
     public int getPrice() { return price; }
+    public String getProfile() {return profile; }
 
     public List<String> getAreaList() { return areaList; }
     public List<String> getWeekList() { return weekList; }
@@ -41,6 +42,7 @@ public class User {
     public void setIntroduction(String introduction) { this.introduction = introduction; }
     public void setGuideStatus(int guideStatus) { this.guideStatus = guideStatus; }
     public void setPrice(int price) { this.price = price; }
+    public void setProfile(String profile) {this.profile = profile; }
 
     public void setAreaList(List<String> areaList) { this.areaList = areaList; }
     public void setWeekList(List<String> weekList) { this.weekList = weekList; }

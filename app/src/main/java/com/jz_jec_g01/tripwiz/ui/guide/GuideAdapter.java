@@ -100,20 +100,36 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            String urlS = url + "/image/" + iImages.get(position);
-                            Log.d("なに？", iImages.get(position));
-//                            Bitmap bitmap = BitmapFactory.decodeStream(istream);
-//                            holder.imageView.setImageBitmap(bitmap);
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        String imgUrl = url + "/image/" + iImages.get(position);
+                        Log.d("URL", imgUrl);
+
+                        Request request = new Request.Builder()
+                                .url(imgUrl)
+                                .get()
+                                .build();
+
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                            }
+
+                            @Override
+                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                                        holder.imageView.setImageBitmap(bitmap);
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }
         });
+        holder.textView.setText(iNames.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

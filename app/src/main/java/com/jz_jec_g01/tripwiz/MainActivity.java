@@ -55,6 +55,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.jz_jec_g01.tripwiz.model.User;
+
 public class MainActivity extends AppCompatActivity {
     private static final String emailTAG = "EmailPassword";
     private static final String googleTAG = "GoogleActivity";
@@ -73,9 +75,10 @@ public class MainActivity extends AppCompatActivity {
     private LoginButton faceBookLoginBtn;
     private SignInButton googleLoginBtn;
     private FirebaseAuth mAuth;
-    private FirebaseUser user;
+    private FirebaseUser fUser;
     private CallbackManager callbackManager;
     private GoogleSignInClient googleSignInClient;
+    private User user;
 
     // インスタンスの作成
     public void init() {
@@ -89,8 +92,9 @@ public class MainActivity extends AppCompatActivity {
         faceBookLoginBtn.setReadPermissions("email", "public_profile");
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        fUser = mAuth.getCurrentUser();
         callbackManager = CallbackManager.Factory.create();
+        user = new User();
     }
 
     // main メソッド
@@ -225,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
                                                             strPass = jArray.getJSONObject(i).getString("password");
                                                             if(mailAddress.equals(strMail) && password.equals(strPass)) {
                                                                 Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
+                                                                user.setUserId(Integer.parseInt(jArray.getJSONObject(i).getString("user_id")));
+                                                                user.setName(jArray.getJSONObject(i).getString("name"));
                                                                 Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
                                                                 startActivity(intent);
                                                                 break;
@@ -314,8 +320,8 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(emailTAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            IntentTamplate(user);
+                            fUser = mAuth.getCurrentUser();
+                            IntentTamplate(fUser);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(emailTAG, "signInWithEmail:failure", task.getException());
@@ -385,8 +391,8 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(googleTAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            IntentTamplate(user);
+                            fUser = mAuth.getCurrentUser();
+                            IntentTamplate(fUser);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(googleTAG, "signInWithCredential:failure", task.getException());
@@ -408,8 +414,8 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(facebookTAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            IntentTamplate(user);
+                            fUser = mAuth.getCurrentUser();
+                            IntentTamplate(fUser);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(facebookTAG, "signInWithCredential:failure", task.getException());
