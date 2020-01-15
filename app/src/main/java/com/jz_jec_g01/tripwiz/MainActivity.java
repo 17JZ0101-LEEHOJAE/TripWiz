@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 final MediaType JSON = MediaType.get("application/json; charset=utf-8");
                 String json = "{\"mailAddress\":\"" + mailAddress + "\"}";
 
-                RequestBody body = RequestBody.create(JSON, json);
+                RequestBody body = RequestBody.create(json, JSON);
 
                 if(!mailAddress.isEmpty() && !password.isEmpty()) {
 //                    emailSignIn(mailAddress, password);
@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                                                                 user.setUserId(Integer.parseInt(jArray.getJSONObject(i).getString("user_id")));
                                                                 user.setName(jArray.getJSONObject(i).getString("name"));
                                                                 Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
+                                                                intent.putExtra("user", user);
                                                                 startActivity(intent);
                                                                 break;
                                                             } else {

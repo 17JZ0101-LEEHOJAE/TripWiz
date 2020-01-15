@@ -1,7 +1,9 @@
 package com.jz_jec_g01.tripwiz.ui.myPage;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,13 +24,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.jz_jec_g01.tripwiz.MainActivity;
 import com.jz_jec_g01.tripwiz.R;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import okhttp3.Call;
@@ -46,7 +54,7 @@ public class MyPageFragment extends Fragment {
     //    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
-    private User user = new User();
+    private User user;
     private View v;
     private TextView myName;
     private ImageView myProfile;
@@ -70,10 +78,10 @@ public class MyPageFragment extends Fragment {
     private Activity mActivity = null;
     int dayBtn = 0;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -97,101 +105,108 @@ public class MyPageFragment extends Fragment {
         sun_day_btn = v.findViewById(R.id.sun_day);
         //プロフィールボタン取得
         btnEditProfile = v.findViewById(R.id.buttonEditProfile);
-
         //プロフィール編集登録
         btnEditProfile.setOnClickListener(new btnMyPegeClickListener());
 
+        Bundle bundle = getArguments();
+        Log.d("Bundle", String.valueOf(bundle));
+        if(bundle != null) {
+            user = (User) bundle.getSerializable("userInfo");
+            Log.d("userId", Integer.toString(user.getUserId()));
+            Log.d("userName",user.getName());
+        }
+
         //プロフィール情報取得
-        final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        String json = "{\"name\":\"" + user.getName() + "\"}";
-
-        RequestBody body = RequestBody.create(JSON, json);
-        client.newCall(request).enqueue(new Callback() {
-            final Handler mHandler = new Handler(Looper.getMainLooper());
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("データベース接続", "接続失敗");
-                        e.printStackTrace();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("データベース接続", "接続成功");
-
-                        String urlS = url + "/Information_User.php";
-                        Request request = new Request.Builder()
-                                .url(urlS)
-                                .post(body)
-                                .build();
-
-                        client.newCall(request).enqueue(new Callback() {
-                            @Override
-                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
-                            }
-
-                            @Override
-                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                mHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            String jsonData = response.body().string();
-                                            Log.d("Json", jsonData);
-                                            JSONArray jArray = new JSONArray(jsonData);
-                                            for(int i = 0; i < jArray.length(); i++) {
-                                                myName.setText(jArray.getJSONObject(i).getString("name"));
-                                                user.setProfile(jArray.getJSONObject(i).getString("profile"));
-                                                if(!user.getProfile().equals("")) {
-                                                    String imgUrl = url + "/image/" + user.getProfile();
-                                                    Log.d("URL", imgUrl);
-
-                                                    Request request = new Request.Builder()
-                                                            .url(imgUrl)
-                                                            .get()
-                                                            .build();
-
-                                                    client.newCall(request).enqueue(new Callback() {
-                                                        @Override
-                                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                                            mHandler.post(new Runnable() {
-                                                                @Override
-                                                                public void run() {
-                                                                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                                                                    myProfile.setImageBitmap(bitmap);
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        } catch(IOException e) {
-                                            e.printStackTrace();
-                                        } catch(JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
+//        final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+//        String json = "{\"name\":\"" + user.getName() + "\"}";
+//
+//        RequestBody body = RequestBody.create(json, JSON);
+//        client.newCall(request).enqueue(new Callback() {
+//            final Handler mHandler = new Handler(Looper.getMainLooper());
+//
+//            @Override
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.d("データベース接続", "接続失敗");
+//                        e.printStackTrace();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.d("データベース接続", "接続成功");
+//
+//                        String urlS = url + "/Information_User.php";
+//                        Request request = new Request.Builder()
+//                                .url(urlS)
+//                                .post(body)
+//                                .build();
+//
+//                        client.newCall(request).enqueue(new Callback() {
+//                            @Override
+//                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                                mHandler.post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        try {
+//                                            String jsonData = response.body().string();
+//                                            Log.d("Json", jsonData);
+//                                            JSONArray jArray = new JSONArray(jsonData);
+//                                            for(int i = 0; i < jArray.length(); i++) {
+//                                                myName.setText(jArray.getJSONObject(i).getString("name"));
+//                                                user.setProfile(jArray.getJSONObject(i).getString("profile"));
+//                                                if(!user.getProfile().equals("")) {
+//                                                    String imgUrl = url + "/image/" + user.getProfile();
+//                                                    Log.d("URL", imgUrl);
+//
+//                                                    Request request = new Request.Builder()
+//                                                            .url(imgUrl)
+//                                                            .get()
+//                                                            .build();
+//
+//                                                    client.newCall(request).enqueue(new Callback() {
+//                                                        @Override
+//                                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//
+//                                                        }
+//
+//                                                        @Override
+//                                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                                                            mHandler.post(new Runnable() {
+//                                                                @Override
+//                                                                public void run() {
+//                                                                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+//                                                                    myProfile.setImageBitmap(bitmap);
+//                                                                }
+//                                                            });
+//                                                        }
+//                                                    });
+//                                                }
+//                                            }
+//                                        } catch(IOException e) {
+//                                            e.printStackTrace();
+//                                        } catch(JSONException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
 
         setRatingBar();
 

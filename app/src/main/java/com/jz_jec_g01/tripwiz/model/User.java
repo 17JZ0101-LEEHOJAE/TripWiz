@@ -2,10 +2,11 @@ package com.jz_jec_g01.tripwiz.model;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private int userId;
     private String name;
     private String age;
@@ -18,6 +19,25 @@ public class User {
     private List<String> areaList = new ArrayList<>();
     private List<String> weekList = new ArrayList<>();
     private String profile;
+
+    public User() {
+
+    }
+
+    public User(int userId, String name, String age, int gender, String job, String nationality, String introduction, int guideStatus, int price, List<String> areaList, List<String> weekList, String profile) {
+        this.userId = userId;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.job = job;
+        this.nationality = nationality;
+        this.introduction = introduction;
+        this.guideStatus = guideStatus;
+        this.price = price;
+        this.areaList = areaList;
+        this.weekList = weekList;
+        this.profile = profile;
+    }
 
     public int getUserId() { return userId; }
     public String getName() { return name; }
