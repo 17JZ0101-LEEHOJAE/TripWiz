@@ -17,6 +17,7 @@ import com.jz_jec_g01.tripwiz.model.User;
 import com.jz_jec_g01.tripwiz.ui.guide.GuideFragment;
 import com.jz_jec_g01.tripwiz.ui.home.HomeFragment;
 import com.jz_jec_g01.tripwiz.ui.myPage.MyPageFragment;
+import com.jz_jec_g01.tripwiz.ui.talk.TalkFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,46 +32,51 @@ public class TamplateActivity extends AppCompatActivity {
     private static final String TAG = "DEB";
     private User user;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        /**
-         *クリック時画面遷移クラス
-         * XML bottom_nav_menu　activity_tamplete
-         * */
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Log.d(TAG, "ナビゲーション動作確認  " + item.getItemId());
-            switch (item.getItemId()) {
+    private BottomNavigationView navView;
 
-                case R.id.navigation_home:
-                    HomeFragment homeFragment =  HomeFragment.newInstance();
-
-                    Log.d(TAG, "Homeボタンクリック");
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.activity_main, homeFragment)
-                            .commit();
-                    return true;
-                case R.id.navigation_guide:
-                    GuideFragment guideFragment = GuideFragment.newInstance();
-
-                    Log.d(TAG, "Guideボタンクリック");
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.activity_main, guideFragment)
-                            .commit();
-                    return true;
-                case R.id.navigation_talk:
-                    Log.d(TAG, "Talkボタンクリック");
-                    return true;
-
-                case R.id.navigation_myPage:
-                    Log.d(TAG, "Mypegeボタンクリック");
-                    return true;
-            }
-            return false;
-        }
-    };
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//            Log.d(TAG, "ナビゲーション動作確認  " + item.getItemId());
+//            switch (item.getItemId()) {
+//                case R.id.navigation_home:
+//                    HomeFragment homeFragment =  HomeFragment.newInstance();
+//
+//                    Log.d(TAG, "Homeボタンクリック");
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.navigation_home, homeFragment)
+//                            .commit();
+//                    return true;
+//                case R.id.navigation_guide:
+//                    GuideFragment guideFragment = GuideFragment.newInstance();
+//
+//                    Log.d(TAG, "Guideボタンクリック");
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.navigation_guide, guideFragment)
+//                            .commit();
+//                    return true;
+//                case R.id.navigation_talk:
+//                    Log.d(TAG, "Talkボタンクリック");
+//                    return true;
+//
+//                case R.id.navigation_myPage:
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("User", user);
+//                    Log.d("Bundle情報", String.valueOf(bundle));
+//
+//                    MyPageFragment myPageFragment = new MyPageFragment();
+//                    myPageFragment.setArguments(bundle);
+//
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.navigation_myPage, myPageFragment)
+//                            .commit();
+//                    Log.d(TAG, "Mypegeボタンクリック");
+//                    return true;
+//            }
+//            return false;
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,24 +87,69 @@ public class TamplateActivity extends AppCompatActivity {
         user = (User) intent.getSerializableExtra("user");
         Log.d("ユーザ", user.getName());
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("userInfo", user);
-        Log.d("Bundle情報", String.valueOf(bundle));
-
-        MyPageFragment myPageFragment = new MyPageFragment();
-        myPageFragment.setArguments(bundle);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.activity_main, myPageFragment)
-                .commit();
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_guide, R.id.navigation_talk,R.id.navigation_myPage)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("User", user);
+        Log.d("Bundle情報", String.valueOf(bundle));
+
+
+        /**
+         *クリック時画面遷移クラス
+         * XML bottom_nav_menu　activity_tamplete
+         * */
+        navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Log.d(TAG, "ナビゲーション動作確認  " + item.getItemId());
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    HomeFragment homeFragment =  HomeFragment.newInstance();
+
+                    Log.d(TAG, "Homeボタンクリック");
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.nav_host_fragment, homeFragment)
+                            .commit();
+                    return true;
+                case R.id.navigation_guide:
+                    GuideFragment guideFragment = GuideFragment.newInstance();
+
+                    Log.d(TAG, "Guideボタンクリック");
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.nav_host_fragment, guideFragment)
+                            .commit();
+                    return true;
+                case R.id.navigation_talk:
+                    TalkFragment talkFragment = new TalkFragment();
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.nav_host_fragment, talkFragment)
+                            .commit();
+
+                    Log.d(TAG, "Talkボタンクリック");
+                    return true;
+
+                case R.id.navigation_myPage:
+                    MyPageFragment myPageFragment = new MyPageFragment();
+                    myPageFragment.setArguments(bundle);
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.nav_host_fragment, myPageFragment)
+                            .commit();
+                    Log.d(TAG, "Mypegeボタンクリック");
+                    return true;
+            }
+            return false;
+            }
+        });
     }
 }

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,13 +117,19 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
 
                             @Override
                             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                mHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                                        holder.imageView.setImageBitmap(bitmap);
-                                    }
-                                });
+                                if(response.isSuccessful()) {
+                                    final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                holder.imageView.setImageBitmap(bitmap);
+                                            } catch(NetworkOnMainThreadException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
                             }
                         });
                     }

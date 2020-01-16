@@ -108,13 +108,13 @@ public class MyPageFragment extends Fragment {
         //プロフィール編集登録
         btnEditProfile.setOnClickListener(new btnMyPegeClickListener());
 
-        Bundle bundle = getArguments();
-        Log.d("Bundle", String.valueOf(bundle));
-        if(bundle != null) {
-            user = (User) bundle.getSerializable("userInfo");
-            Log.d("userId", Integer.toString(user.getUserId()));
-            Log.d("userName",user.getName());
-        }
+//        Bundle bundle = getArguments();
+//        Log.d("Bundle", String.valueOf(bundle));
+//        if(bundle != null) {
+//            user = (User) bundle.getSerializable("userInfo");
+//            Log.d("userId", Integer.toString(user.getUserId()));
+//            Log.d("userName",user.getName());
+//        }
 
         //プロフィール情報取得
 //        final MediaType JSON = MediaType.get("application/json; charset=utf-8");
