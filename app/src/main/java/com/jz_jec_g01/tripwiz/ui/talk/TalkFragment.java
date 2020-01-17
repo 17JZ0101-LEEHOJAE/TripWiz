@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.fragment.app.Fragment;
 import com.jz_jec_g01.tripwiz.R;
+import com.jz_jec_g01.tripwiz.SearchGuideActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 //AndroidX
@@ -32,6 +36,8 @@ public class TalkFragment extends Fragment {
     private RecyclerView recyclerView = null;
     private com.jz_jec_g01.tripwiz.ui.talk.TalkAdapter rAdapter = null;
     private Activity mActivity = null;
+    private Button locationBtn;
+    private Button personBtn;
 
 
     public interface RecyclerFragmentListener {
@@ -41,7 +47,7 @@ public class TalkFragment extends Fragment {
     // ArrayListにコピーするためintからInteger型にしました
     private static final Integer[] photos = {
             R.drawable.katakuriko, R.drawable.mai, R.drawable.miki,
-            R.drawable.nagi, R.drawable.saya, R.drawable.tokyo
+            R.drawable.nagi, R.drawable.saya, R.drawable.toko,
     };
     // Resource IDを格納するarray
     private List<Integer> imgList = new ArrayList<>();
@@ -99,6 +105,7 @@ public class TalkFragment extends Fragment {
 
         // レイアウトマネージャを設定(ここで縦方向の標準リストであることを指定)
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+
 
         imagesList();
         return v;

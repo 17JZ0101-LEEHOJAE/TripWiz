@@ -1,5 +1,5 @@
 package com.jz_jec_g01.tripwiz;
-//import com.jz_jec_g01.tripwiz.adapter.*;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,7 +54,7 @@ public class TimeLineActivity extends AppCompatActivity {
         }
 
         // specify an adapter (see also next example)
-//        RecyclerView.Adapter rAdapter = new MyAdapter(itemImages, itemNames);
+//        RecyclerView.Adapter rAdapter = new GuideAdapter(itemImages, itemNames);
 //        recyclerView.setAdapter(rAdapter);
     }
 }

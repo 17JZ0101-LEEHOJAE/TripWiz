@@ -11,47 +11,46 @@
     android:layout_height="200dp">
 
     <RelativeLayout
-        android:layout_width="123dp"
-        android:layout_height="181dp">
+        android:layout_width="111dp"
+        android:layout_height="182dp">
 
         <ImageView
             android:id="@+id/user_image_view"
-            android:layout_width="122dp"
-            android:layout_height="113dp"
-            android:layout_above="@+id/user_name_view"
+            android:layout_width="93dp"
+            android:layout_height="96dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="4dp"
-            android:scaleType="centerInside" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginBottom="83dp" />
 
         <TextView
             android:id="@+id/user_name_view"
-            android:layout_width="94dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btnRequest"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="11dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="7dp"
+            android:layout_width="108dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="105dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginBottom="51dp"
             android:gravity="center"
             android:textColor="#00f"
             android:textSize="18dp" />
 
         <Button
             android:id="@+id/btnRequest"
-            android:layout_width="92dp"
-            android:layout_height="27dp"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="14dp"
-            android:layout_marginEnd="17dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="144dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
             android:background="#FF9800"
             android:gravity="center"
             android:text="request"

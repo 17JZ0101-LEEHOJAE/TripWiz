@@ -12,10 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jz_jec_g01.tripwiz.ChatActivity;
-import com.jz_jec_g01.tripwiz.MainActivity;
+import com.jz_jec_g01.tripwiz.chats.ChatActivity;
 import com.jz_jec_g01.tripwiz.R;
-import com.jz_jec_g01.tripwiz.SignupActivity;
 
 import java.util.List;
 

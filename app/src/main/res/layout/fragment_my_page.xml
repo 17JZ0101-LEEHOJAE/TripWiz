@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="319dp"
-        android:layout_height="477dp"
+        android:layout_width="351dp"
+        android:layout_height="526dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -98,9 +98,20 @@
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
-                    android:text="選択済み"
+                    android:text="未選択"
                     android:textColor="#000"
                     android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/entry_selectLang"
+                    android:layout_width="186dp"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="20dp"
+                    android:text="選択完了"
+                    android:textColor="#000"
+                    android:textSize="15dp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -119,15 +130,27 @@
                     android:textColor="#000"
                     android:textSize="15dp" />
 
+
                 <TextView
                     android:id="@+id/selectArea"
-                    android:layout_width="wrap_content"
+                    android:layout_width="93dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
-                    android:text="選択済み"
+                    android:text="未選択"
                     android:textColor="#000"
                     android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/entry_selectArea"
+                    android:layout_width="93dp"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="20dp"
+                    android:text="選択完了"
+                    android:textColor="#000"
+                    android:textSize="15dp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -245,11 +268,13 @@
                     </TableRow>
 
                     <TableRow
+                        android:id="@+id/edit_day_table"
                         android:layout_width="fill_parent"
                         android:layout_height="76dp"
                         android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:background="#000000">
+                        android:background="#000000"
+                        android:visibility="visible">
 
                         <Button
                             android:id="@+id/mon_day"
@@ -330,10 +355,100 @@
                             android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
+
+                    <TableRow
+                        android:id="@+id/entry_day_table"
+                        android:layout_width="fill_parent"
+                        android:layout_height="76dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="#000000"
+                        android:visibility="gone">
+
+                        <Button
+                            android:id="@+id/entry_mon_day"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:layout_margin="1dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:onClick="mon_clickDay"
+                            android:text="×"
+                            android:textSize="24dp" />
+
+                        <Button
+                            android:id="@+id/entry_tues_day"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:onClick="tues_clickDay"
+                            android:text="×"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <Button
+                            android:id="@+id/entry_wed_day"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:text="×"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <Button
+                            android:id="@+id/entry_thurs_day"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="3"
+                            android:layout_margin="1dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:text="×"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <Button
+                            android:id="@+id/entry_fri_day"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="4"
+                            android:layout_margin="1dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:text="×"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <Button
+                            android:id="@+id/entry_saturs_day"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="5"
+                            android:layout_margin="1dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:text="×"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <Button
+                            android:id="@+id/entry_sun_day"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="6"
+                            android:layout_margin="1dp"
+                            android:background="#FFFFFF"
+                            android:gravity="center"
+                            android:text="×"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </TableRow>
                 </TableLayout>
 
+
                 <EditText
-                    android:id="@+id/editTextPr"
+                    android:id="@+id/editTextProfile"
                     android:layout_width="302dp"
                     android:layout_height="65dp"
                     android:layout_marginStart="16dp"
@@ -341,8 +456,24 @@
                     android:background="@drawable/border"
                     android:inputType="textMultiLine"
                     android:textSize="15sp"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.533"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+
+                <TextView
+                    android:id="@+id/entryTextProfile"
+                    android:layout_width="302dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/border"
+                    android:text="登録完了"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -362,12 +493,20 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/buttonEditProfile"
-            android:layout_width="172dp"
+            android:id="@+id/buttonEntryProfile"
+            android:layout_width="149dp"
             android:layout_height="30dp"
             android:background="@drawable/border1"
+            android:text="登録"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/buttonEditProfile"
+            android:layout_width="143dp"
+            android:layout_height="35dp"
+            android:background="#fac"
             android:text="編集"
-            android:onClick="editMypage"/>
+            android:visibility="visible" />
 
     </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView = null;
     private GuideAdapter rAdapter = null;
     private Activity mActivity = null;
+//    private Button location
 
 
     // それぞれの画像ファイルをdarawableに入れます
@@ -78,6 +80,25 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         // レイアウトマネージャを設定(ここで縦方向の標準リストであることを指定)
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        //        //ナビゲーション画面遷移
+//        locationBtn = v.findViewById(R.id.LocationButton);
+//        locationBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(v.getContext(), SearchGuideActivity.class);
+//                v.getContext().startActivity(intent);
+//            }
+//        });
+//        //？？？
+//        personBtn = v.findViewById(R.id.PersonButton);
+//        personBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(v.getContext(), SearchGuideActivity.class);
+//                v.getContext().startActivity(intent);
+//            }
+//        });
+
         imagesList();
 
        return v;

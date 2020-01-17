@@ -175,14 +175,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="true"
-            android:text="男性" />
+            android:text="male" />
 
         <RadioButton
             android:id="@+id/FradioButton"
             android:layout_width="101dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="女性" />
+            android:text="female" />
     </RadioGroup>
 
     <Spinner
@@ -207,5 +207,6 @@
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/NatioSpinner"
         app:layout_constraintVertical_bias="0.182" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
