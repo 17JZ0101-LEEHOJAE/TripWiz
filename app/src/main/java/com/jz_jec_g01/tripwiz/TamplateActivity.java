@@ -99,7 +99,6 @@ public class TamplateActivity extends AppCompatActivity {
         bundle.putSerializable("User", user);
         Log.d("Bundle情報", String.valueOf(bundle));
 
-
         /**
          *クリック時画面遷移クラス
          * XML bottom_nav_menu　activity_tamplete
