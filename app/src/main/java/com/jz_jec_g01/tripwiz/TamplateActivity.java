@@ -34,50 +34,6 @@ public class TamplateActivity extends AppCompatActivity {
 
     private BottomNavigationView navView;
 
-//        @Override
-//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//            Log.d(TAG, "ナビゲーション動作確認  " + item.getItemId());
-//            switch (item.getItemId()) {
-//                case R.id.navigation_home:
-//                    HomeFragment homeFragment =  HomeFragment.newInstance();
-//
-//                    Log.d(TAG, "Homeボタンクリック");
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.navigation_home, homeFragment)
-//                            .commit();
-//                    return true;
-//                case R.id.navigation_guide:
-//                    GuideFragment guideFragment = GuideFragment.newInstance();
-//
-//                    Log.d(TAG, "Guideボタンクリック");
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.navigation_guide, guideFragment)
-//                            .commit();
-//                    return true;
-//                case R.id.navigation_talk:
-//                    Log.d(TAG, "Talkボタンクリック");
-//                    return true;
-//
-//                case R.id.navigation_myPage:
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("User", user);
-//                    Log.d("Bundle情報", String.valueOf(bundle));
-//
-//                    MyPageFragment myPageFragment = new MyPageFragment();
-//                    myPageFragment.setArguments(bundle);
-//
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.navigation_myPage, myPageFragment)
-//                            .commit();
-//                    Log.d(TAG, "Mypegeボタンクリック");
-//                    return true;
-//            }
-//            return false;
-//        }
-//    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

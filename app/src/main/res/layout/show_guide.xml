@@ -15,17 +15,33 @@
         android:layout_height="182dp">
 
         <ImageView
-            android:id="@+id/user_image_view"
-            android:layout_width="93dp"
-            android:layout_height="96dp"
+            android:id="@+id/image_background"
+            android:layout_width="124dp"
+            android:layout_height="103dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="9dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="82dp"
+            android:background="#FF9800">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/user_image_view"
+            android:layout_width="76dp"
+            android:layout_height="102dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="23dp"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="9dp"
-            android:layout_marginBottom="83dp" />
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="82dp" />
 
         <TextView
             android:id="@+id/user_name_view"
