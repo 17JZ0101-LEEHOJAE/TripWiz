@@ -25,7 +25,7 @@ public class SearchGuideActivity extends AppCompatActivity {
     private TextView selectOld;
     private TextView selectGender;
     private TextView selectCountry;
-
+    //現在地取得後　指定の区をデフォルト選択
     private String[] areas = {"足立区", "荒川区", "板橋区", "江戸川区", "大田区", "葛飾区", "北区", "江東区", "品川区", "渋谷区", "新宿区", "杉並区",
             "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"
     };
@@ -256,28 +256,28 @@ public class SearchGuideActivity extends AppCompatActivity {
     public void addCountryOnCheckBox() {
         final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
         new AlertDialog.Builder(this)
-                .setTitle("Area Select")
-                .setMultiChoiceItems(country, null, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) checkedItems.add(which);
-                        else checkedItems.remove((Integer) which);
-                    }
-                })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String AreaBox = "";
-                        for (Integer i : checkedItems) {
-                            String Area = String.join(",", country[i]);
-                            AreaBox = AreaBox + " " + Area;
-                            selectCountry.setText(AreaBox);
+            .setTitle("Area Select")
+            .setMultiChoiceItems(country, null, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    if (isChecked) checkedItems.add(which);
+                    else checkedItems.remove((Integer) which);
+                }
+            })
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String AreaBox = "";
+                    for (Integer i : checkedItems) {
+                        String Area = String.join(",", country[i]);
+                        AreaBox = AreaBox + " " + Area;
+                        selectCountry.setText(AreaBox);
 
-                        }
                     }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+                }
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
     }
 }

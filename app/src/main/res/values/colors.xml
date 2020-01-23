@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#AD26D1BD</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorProfile">#FFD4C6</color>
-    <color name="colorFollowButton">#006241</color>
-    <color name="colorRadioButtonBusy">#EE0000</color>
-    <color name="colorRadioButtonFree">#66FF33</color>
+    <color name="colorButton">#AD2DB3A3</color>
     <color name="colorButtonEditProfile">#E6E6FA</color>
     <color name="colorButtonNav">#FF9800</color>
     <color name="colorMain">#F8C259</color>

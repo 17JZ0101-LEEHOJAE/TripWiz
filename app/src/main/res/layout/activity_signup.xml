@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorProfile"
+    android:background="@drawable/login_background2"
     tools:context=".SignupActivity">
 
 
@@ -14,8 +14,8 @@
         android:layout_height="54dp"
         android:layout_marginTop="28dp"
         android:text="TripWiz"
-        android:textColor="#000"
-        android:textSize="36sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
         android:ems="10"
         app:layout_constraintBottom_toTopOf="@+id/buttonSignup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textViewName"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
         app:layout_constraintVertical_bias="0.0" />
@@ -66,7 +66,7 @@
         android:id="@+id/buttonSignup"
         android:layout_width="131dp"
         android:layout_height="61dp"
-        android:background="#FF9800"
+        android:background="@drawable/border1"
         android:text="SIGNUP"
         android:textColor="#000"
         android:textSize="22sp"
@@ -93,7 +93,7 @@
         android:id="@+id/textViewMailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="44dp"
         android:text="@string/textViewPw"
         android:textColor="#000"
@@ -105,7 +105,7 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
         android:text="@string/textViewName"
         android:textColor="#000"
@@ -117,7 +117,7 @@
         android:id="@+id/textViewGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="27dp"
         android:layout_marginTop="48dp"
         android:text="@string/textViewGender"
         android:textColor="#000"
@@ -127,13 +127,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.002" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="28dp"
         android:text="@string/textViewNationality"
         android:textColor="#000"
         android:textSize="15dp"
@@ -146,12 +146,13 @@
         android:id="@+id/textView6"
         android:layout_width="52dp"
         android:layout_height="27dp"
-        android:text="age"
+        android:layout_marginStart="-4dp"
+        android:text="Age"
         android:textColor="#000"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewGender"
         app:layout_constraintVertical_bias="0.323" />

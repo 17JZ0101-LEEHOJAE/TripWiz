@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.buttonSignup);
         inputEmail = findViewById(R.id.editTextMailAddress);
         inputPassword = findViewById(R.id.editTextPassword);
-        genderGroup = findViewById(R.id.radioGroupGender);
+//        genderGroup = findViewById(R.id.radioGroupGender);
         editTextName = findViewById(R.id.editTextName);
         Spinner Natiospinner = findViewById(R.id.NatioSpinner);
         Spinner Agespinner = findViewById(R.id.AgeSpinner);

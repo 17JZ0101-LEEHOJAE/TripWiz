@@ -7,13 +7,14 @@
     <!-- A RecyclerView with some commonly used attributes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="392dp"
-        android:layout_height="557dp"
-        android:background="#fac"
+        android:layout_width="402dp"
+        android:layout_height="591dp"
+        android:background="#fff"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.406" />
+        app:layout_constraintVertical_bias="0.05" />
 </androidx.constraintlayout.widget.ConstraintLayout>

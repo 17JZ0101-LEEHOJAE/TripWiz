@@ -1,52 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:background="#FFF"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
     android:paddingLeft="15dp"
     android:paddingTop="5dp"
     android:paddingRight="15dp"
-    android:paddingBottom="5dp"
-    android:baselineAligned="false"
-    android:layout_height="300dp"
-    android:background="#FF9800">
+    android:paddingBottom="5dp">
 
     <RelativeLayout
-        android:layout_width="394dp"
-        android:layout_height="289dp">
+        android:layout_width="wrap_content"
+        android:layout_height="353dp">
 
         <ImageView
             android:id="@+id/user_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="165dp"
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="71dp"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="0dp"
-            android:layout_marginBottom="80dp" />
+            android:layout_marginBottom="61dp" />
 
         <TextView
             android:id="@+id/user_comment_view"
-            android:layout_width="223dp"
-            android:layout_height="41dp"
+            android:layout_width="284dp"
+            android:layout_height="35dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="75dp"
-            android:layout_marginLeft="75dp"
-            android:layout_marginTop="237dp"
-            android:layout_marginEnd="96dp"
-            android:layout_marginRight="96dp"
-            android:layout_marginBottom="11dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginLeft="68dp"
+            android:layout_marginTop="312dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="6dp"
             android:background="#fff"
             android:inputType="textShortMessage"
             android:paddingStart="20dp"
@@ -57,17 +59,34 @@
             android:textColor="#00f"
             android:textSize="16dp" />
         //色指定　
-        <Button
+
+        <TextView
             android:id="@+id/likeButton"
-            android:layout_width="51dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="325dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginEnd="329dp"
+            android:layout_marginBottom="9dp"
             android:text="💜"
             android:textColor="#a000ff"
-            android:textSize="24dp" />
+            android:textSize="20dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewUser"
+            android:layout_width="61dp"
+            android:layout_height="50dp"
+            android:src="@drawable/profile"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textViewUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="72dp"
+            android:layout_marginTop="25dp"
+            android:text="nihon denshi"
+            android:textColor="#353635" />
 
 
     </RelativeLayout>

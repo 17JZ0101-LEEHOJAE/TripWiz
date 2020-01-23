@@ -6,7 +6,7 @@
     android:paddingTop="20dp"
     android:paddingRight="20dp"
     android:paddingBottom="20dp"
-    android:background="#fac"
+    android:background="#fff"
     android:baselineAligned="false"
     android:layout_height="wrap_content">
 
@@ -17,7 +17,7 @@
         <!-- 枠を入れるだけで深い意味はありません -->
         <ImageView
             android:id="@+id/image_background"
-            android:background="#f44"
+            android:background="#fff"
             android:layout_width="100dp"
             android:layout_height="100dp"
             />
@@ -41,7 +41,7 @@
         <TextView
             android:id="@+id/talk_name_view"
             android:textSize="18sp"
-            android:textColor="#00f"
+            android:textColor="@color/colorPrimaryDark"
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:paddingTop="20dp"

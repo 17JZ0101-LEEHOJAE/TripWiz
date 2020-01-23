@@ -4,42 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background2"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="137dp"
-        android:layout_height="54dp"
+        android:layout_width="197dp"
+        android:layout_height="72dp"
         android:layout_marginTop="28dp"
         android:text="TripWiz"
-        android:textColor="#000"
-        android:textSize="36sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.579"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <View
         android:id="@+id/view3"
         android:layout_width="332dp"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
-
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="332dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="28dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
     <EditText
         android:id="@+id/editTextMailAddress"
@@ -71,12 +61,12 @@
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="163dp"
-        android:layout_height="47dp"
+        android:layout_width="226dp"
+        android:layout_height="48dp"
         android:layout_marginTop="28dp"
+        android:background="@drawable/border1"
         android:text="ログイン"
         android:textColor="#000"
-        android:background="#FF9800"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +88,7 @@
         android:layout_width="154dp"
         android:layout_height="49dp"
         android:layout_marginBottom="48dp"
-        android:background="#FF9800"
+        android:background="@color/colorPrimary"
         android:text="ログアウト"
         android:textColor="#000"
         android:textSize="22sp"
@@ -123,7 +113,7 @@
         android:id="@+id/googleLoginBtn"
         android:layout_width="226dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="28dp"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/textViewSignup"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,15 +124,13 @@
         android:id="@+id/facebookLoginBtn"
         android:layout_width="226dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="40dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/googleLoginBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.981" />
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             super(v);
             imageView = v.findViewById(R.id.user_image_view);
             textView = v.findViewById(R.id.user_comment_view);
-            likeBtn = v.findViewById(R.id.likeButton);
+//            likeBtn = v.findViewById(R.id.likeButton);
         }
 
 
@@ -74,23 +74,23 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         // like Action いいねアクション未完成
         Log.d("likeCnt", "いいねアクション１: ");
-        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (likeCnt == 0) {
-                    Log.d("likeCnt", "いいねアクション２: ");
-                    /**色指定**/
-                    ((Button)v).setTextColor(Color.RED);
-                    likeCnt = 1;
-                } else if (likeCnt == 1) {
-                    Log.d("likeCnt", "いいねアクション３: ");
-                    /**色指定**/
-                    ((Button)v).setTextColor(Color.BLACK);
-                    likeCnt = 0;
-                }
-            }
-        });
+//        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if (likeCnt == 0) {
+//                    Log.d("likeCnt", "いいねアクション２: ");
+//                    /**色指定**/
+//                    ((Button)v).setTextColor(Color.RED);
+//                    likeCnt = 1;
+//                } else if (likeCnt == 1) {
+//                    Log.d("likeCnt", "いいねアクション３: ");
+//                    /**色指定**/
+//                    ((Button)v).setTextColor(Color.BLACK);
+//                    likeCnt = 0;
+//                }
+//            }
+//        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
