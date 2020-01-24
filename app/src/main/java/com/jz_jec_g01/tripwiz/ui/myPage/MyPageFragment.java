@@ -1,7 +1,6 @@
 package com.jz_jec_g01.tripwiz.ui.myPage;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,20 +10,28 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Switch;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.app.AlertDialog;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.jz_jec_g01.tripwiz.MainActivity;
 import com.jz_jec_g01.tripwiz.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,19 +55,32 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.jz_jec_g01.tripwiz.model.User;
+import com.jz_jec_g01.tripwiz.chats.ChatActivity;
+import com.jz_jec_g01.tripwiz.feedbacks.FeedbackActivity;
+import com.jz_jec_g01.tripwiz.feedbacks.FeedbackAdapter;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyPageFragment extends Fragment {
     final String url = "http://10.210.20.161";
     //    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
-    private User user;
     private View v;
+    private LinearLayout selectLnagsBox;
+    private LinearLayout selectAreaBox;
     private TextView myName;
     private ImageView myProfile;
-    private TextView selectedLang;
-    private TextView selectedArea;
+    private TextView editSelectedLang;
+    private TextView editSelectedArea;
+    private TextView editSelectedJob;
+    private TextView entSelectedJob;
+    private TextView entSelectLang;
+    private TextView entSelectArea;
     private TextView textViewRate;
+    private TextView entTextProfile;
+    private TextView dayTitle;
+    private EditText editTextProfile;
     private Button mon_day_btn;
     private Button tues_day_btn;
     private Button wed_day_btn;
@@ -69,19 +89,27 @@ public class MyPageFragment extends Fragment {
     private Button saturs_day_btn;
     private Button sun_day_btn;
     private Button btnEditProfile;
+    private Button btnEntryProfile;
+    private Button feedbackBtn;
+    private TableRow entDayTable;
+    private TableRow editDayTable;
+    private TableLayout dayTableLayout;
+    private String[] job = {"学生", "会社員", "専業主婦", "その他"};
     private String[] langs = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
     private String[] areas = {"足立区", "荒川区", "板橋区", "江戸川区", "大田区", "葛飾区", "北区", "江東区", "品川区", "渋谷区", "新宿区", "杉並区",
-            "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"
-    };
-    RatingBar ratingBar;
+            "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"};
+    private Switch SwitchUser;
+    private RatingBar ratingBar;
+    private User user;
 
     private Activity mActivity = null;
     int dayBtn = 0;
-
+    int gudieON = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -89,12 +117,25 @@ public class MyPageFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_my_page, container, false);
         myName = v.findViewById(R.id.textViewUserName);
         myProfile = v.findViewById(R.id.imageViewUser);
+        //ガイド切り替え
+        SwitchUser = v.findViewById(R.id.switchUser);
+        //言語とエリアと曜日テーブル
+        selectAreaBox = v.findViewById(R.id.selectAreasBox);
+        selectLnagsBox = v.findViewById(R.id.selectLangsBox);
+        dayTableLayout = v.findViewById(R.id.editDayTableLayout);
+        dayTitle = v.findViewById(R.id.textViewDayOfTheWeek);
         //評価レート
         textViewRate = v.findViewById(R.id.textViewRate);
         ratingBar = v.findViewById(R.id.ratingBar);
         //言語とエリア取得
-//        selectedLang = v.findViewById(R.id.selectLang);
-//        selectedArea = v.findViewById(R.id.selectArea);
+        //入力系
+        editSelectedJob = v.findViewById(R.id.edit_selectJob);
+        editSelectedLang = v.findViewById(R.id.edit_selectLang);
+        editSelectedArea = v.findViewById(R.id.edit_selectArea);
+        //出力系
+        entSelectedJob =v.findViewById(R.id.entry_selectJob);
+        entSelectLang = v.findViewById(R.id.entry_selectLang);
+        entSelectArea = v.findViewById(R.id.entry_selectArea);
         //曜日ボタン取得
         mon_day_btn = v.findViewById(R.id.mon_day);
         tues_day_btn = v.findViewById(R.id.tues_day);
@@ -103,11 +144,65 @@ public class MyPageFragment extends Fragment {
         fri_day_btn = v.findViewById(R.id.fri_day);
         saturs_day_btn = v.findViewById(R.id.saturs_day);
         sun_day_btn = v.findViewById(R.id.sun_day);
+        //日付テーブル
+        editDayTable = v.findViewById(R.id.edit_day_table);
+        entDayTable = v.findViewById(R.id.entry_day_table);
         //プロフィールボタン取得
         btnEditProfile = v.findViewById(R.id.buttonEditProfile);
-        //プロフィール編集登録
-        btnEditProfile.setOnClickListener(new btnMyPegeClickListener());
+        btnEntryProfile = v.findViewById(R.id.buttonEntryProfile);
+        //自己紹介text
+        editTextProfile = v.findViewById(R.id.editTextProfile);
+        entTextProfile = v.findViewById(R.id.entryTextProfile);
+        //フィードバック画面遷移
 
+        //ガイドユーザー切り替え
+        // switchButtonのオンオフが切り替わった時の処理を設定
+        SwitchUser.setOnCheckedChangeListener(
+            new CompoundButton.OnCheckedChangeListener(){
+                public void onCheckedChanged(CompoundButton comButton, boolean isChecked){
+                    // 表示する文字列をスイッチのオンオフで変える
+                    // オンなら
+                    if(isChecked){
+                        selectAreaBox.setVisibility(View.VISIBLE);
+                        dayTableLayout.setVisibility(View.VISIBLE);
+                        dayTitle.setVisibility(View.VISIBLE);
+                        gudieON = 1;
+                    }
+                    // オフなら
+                    else{
+                        selectAreaBox.setVisibility(View.GONE);
+                        dayTableLayout.setVisibility(View.GONE);
+                        dayTitle.setVisibility(View.GONE);
+                        gudieON = 0;
+                    }
+
+                }
+            }
+        );
+        btnEditProfile.setOnClickListener(new Visibilitys());
+        btnEntryProfile.setOnClickListener(new Visibilitys());
+        //国籍と言語とエリア選択
+        editSelectedJob.setOnClickListener(new btnselecteds());
+        editSelectedLang.setOnClickListener(new btnselecteds());
+        editSelectedArea.setOnClickListener(new btnselecteds());
+        //曜日選択
+        mon_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+        tues_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+        wed_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+        thurs_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+        fri_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+        saturs_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+        sun_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+
+//        feedbackBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(v.getContext(), FeedbackActivity.class);
+//                v.getContext().startActivity(intent);
+//            }
+//        });
+
+        //データの受け取り（TamplateActivityからの）
         Bundle bundle = getArguments();
         Log.d("Bundle", String.valueOf(bundle));
         if(bundle != null) {
@@ -165,7 +260,15 @@ public class MyPageFragment extends Fragment {
                                             JSONArray jArray = new JSONArray(jsonData);
                                             for(int i = 0; i < jArray.length(); i++) {
                                                 myName.setText(user.getName());
+                                                user.setGender(jArray.getJSONObject(i).getInt("gender"));
+                                                user.setJob(jArray.getJSONObject(i).getString("job"));
+                                                user.setNationality(jArray.getJSONObject(i).getString("nationality"));
+                                                user.setIntroduction(jArray.getJSONObject(i).getString("introduction"));
                                                 user.setProfile(jArray.getJSONObject(i).getString("profile"));
+                                                user.setGuideStatus(jArray.getJSONObject(i).getInt("guide_status"));
+                                                user.setRating(jArray.getJSONObject(i).getDouble("rating_rate"));
+                                                user.setArea(jArray.getJSONObject(i).getString("information_area"));
+                                                user.setWeek(jArray.getJSONObject(i).getString("information_week"));
                                                 if(!user.getProfile().equals("")) {
                                                     String imgUrl = url + "/image/" + user.getProfile();
                                                     Log.d("URL", imgUrl);
@@ -183,17 +286,26 @@ public class MyPageFragment extends Fragment {
 
                                                         @Override
                                                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                                            mHandler.post(new Runnable() {
-                                                                @Override
-                                                                public void run() {
-                                                                    Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                                                                    myProfile.setImageBitmap(bitmap);
-                                                                }
-                                                            });
+                                                            if(response.isSuccessful()) {
+                                                                final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                                                                mHandler.post(new Runnable() {
+                                                                    @Override
+                                                                    public void run() {
+                                                                        try {
+                                                                            myProfile.setImageBitmap(bitmap);
+                                                                        } catch(NetworkOnMainThreadException e) {
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
                                                         }
                                                     });
                                                 }
                                             }
+                                            setRatingBar();
+                                            entSelectedJob.setText(user.getJob());
+                                            entTextProfile.setText(user.getIntroduction());
                                         } catch(IOException e) {
                                             e.printStackTrace();
                                         } catch(JSONException e) {
@@ -208,72 +320,42 @@ public class MyPageFragment extends Fragment {
             }
         });
 
-        setRatingBar();
-
         return v;
     }
 
-
     public void setRatingBar() {
-        double stars = 2.2;
-        textViewRate.setText(String.valueOf(stars));
-        Log.d("" + stars, "setRatingBar: ");
-        // 星の数を７に設定
+        double rating = user.getRating();
+        textViewRate.setText(String.valueOf(rating));
+        Log.d("" + rating, "setRatingBar: ");
+        // 星の数を5に設定
         ratingBar.setNumStars(5);
         // レートの変更を可能にする
-        ratingBar.setIsIndicator(false);
+//        ratingBar.setIsIndicator(false);
         // レートが加減される時のステップ幅を0.3に設定
-        ratingBar.setStepSize((float) 0.3);
-        // レートの初期値を2.0に設定
-        ratingBar.setRating((float) stars);
+//        ratingBar.setStepSize((float) 0.3);
+        // レートの設定
+        ratingBar.setRating((float) rating);
     }
+
     private class btnselecteds implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-//            if (v.getId() == R.id.selectLang) {
-//                addLangsOnCheckBox();
-//            }else {
-//                addAreaOnCheckBox();
-//            }
-
+            if (v.getId() == R.id.edit_selectLang) {
+                addLangsOnCheckBox();
+                Log.d("言語ダイアログ表示" , "onClick: ");
+            }else if (v.getId() == R.id.edit_selectArea){
+                addAreaOnCheckBox();
+                Log.d("エリアダイアログ表示" , "onClick: ");
+            }else if (v.getId() == R.id.edit_selectJob)
+                addJobOnCheckBox();
+            Log.d("国籍ダイアログ表示" , "onClick: ");
         }
     }
-    public void addLangsOnCheckBox() {
-        final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Lang Lelect")
-                .setMultiChoiceItems(langs, null, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) checkedItems.add(which);
-                        else checkedItems.remove((Integer) which);
-                    }
-                })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String LangBox = "";
-                        for (Integer i : checkedItems) {
-                            int cnt = 0;
-                            if(cnt < 4) {
-                                cnt++;
-                                String Lang = String.join(",", langs[i]);
-
-                                LangBox = LangBox + " "+ Lang;
-                            }
-                            selectedLang.setText(LangBox);
-
-                        }
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-    }
+    //エリアスピナーダイアログ表示用
     public void addAreaOnCheckBox() {
         final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
         new AlertDialog.Builder(getActivity())
-                .setTitle("Area Select")
+                .setTitle("エリア　選択")
                 .setMultiChoiceItems(areas, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -294,8 +376,10 @@ public class MyPageFragment extends Fragment {
 
                                 AreaBox = AreaBox + " " + Area;
                                 Log.d(Area, "代入値Lang: ");
+                            } else {
+                                Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　4つ以下にしてください！", Toast.LENGTH_LONG).show();
                             }
-                            selectedLang.setText(AreaBox);
+                            editSelectedArea.setText(AreaBox);
 
                         }
                     }
@@ -303,38 +387,78 @@ public class MyPageFragment extends Fragment {
                 .setNegativeButton("Cancel", null)
                 .show();
     }
-    private class btnMyPegeClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (btnEditProfile.getText() == "編集") {
-                btnEditProfile.setText("登録");
-                /**色指定**/
-                btnEditProfile.setBackgroundColor(Color.CYAN);
-                //言語とエリア選択
-                selectedLang.setOnClickListener(new btnselecteds());
-                selectedArea.setOnClickListener(new btnselecteds());
-                //曜日選択
-                mon_day_btn.setOnClickListener(new BtnAddAlermClickListener());
-                tues_day_btn.setOnClickListener(new BtnAddAlermClickListener());
-                wed_day_btn.setOnClickListener(new BtnAddAlermClickListener());
-                thurs_day_btn.setOnClickListener(new BtnAddAlermClickListener());
-                fri_day_btn.setOnClickListener(new BtnAddAlermClickListener());
-                saturs_day_btn.setOnClickListener(new BtnAddAlermClickListener());
-                sun_day_btn.setOnClickListener(new BtnAddAlermClickListener());
+    //ダイアログ選択個数判定未完成　01/27　実装予定
+    //言語スピナーダイアログ表示用
+    public void addLangsOnCheckBox() {
+        final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Lang Select")
+                .setMultiChoiceItems(langs, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) checkedItems.add(which);
+                        else checkedItems.remove((Integer) which);
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String LangBox = "";
+                        for (Integer i : checkedItems) {
+                            int cnt = 0;
+                            if(cnt < 4) {
+                                cnt++;
+                                String Lang = String.join(",", langs[i]);
 
-            } else {
-                btnEditProfile.setText("編集");
-                /**色指定**/
-                btnEditProfile.setBackgroundColor(Color.WHITE);
-                //データベース接続処理
-            }
+                                LangBox = LangBox + " "+ Lang;
+                            } else {
+                                Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　4つ以下にしてください！", Toast.LENGTH_LONG).show();
+                            }
+                            editSelectedLang.setText(LangBox);
 
-        }
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+    //職種スピナーダイアログ表示用
+    public void addJobOnCheckBox() {
+        final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
+        new AlertDialog.Builder(getActivity())
+                .setTitle("職種選択")
+                .setMultiChoiceItems(job, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) checkedItems.add(which);
+                        else checkedItems.remove((Integer) which);
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String JobBox = "";
+                        for (Integer i : checkedItems) {
+                            int cnt = 0;
+                            if(cnt < 4) {
+                                cnt++;
+                                String job  = String.join(",", MyPageFragment.this.job[i]);
+
+                                JobBox = JobBox + " "+ job
+                                ;
+                            } else {
+                                Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　1つにしてください！", Toast.LENGTH_LONG).show();
+                            }
+                            editSelectedJob.setText(JobBox);
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
-    /**
-     * 案内可能曜日○×判定Switch
-     */
     private class BtnAddAlermClickListener implements View.OnClickListener {
 
         @Override
@@ -344,12 +468,12 @@ public class MyPageFragment extends Fragment {
              */
             switch (v.getId()) {
                 case R.id.mon_day:
-                    if (dayBtn == 0) {
+                    if (mon_day_btn.getText().equals("◯")) {
                         mon_day_btn.setText("×");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.RED);
                         dayBtn = 1;
-                    } else if (dayBtn == 1) {
+                    } else if (mon_day_btn.getText().equals("×")) {
                         mon_day_btn.setText("◯");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
@@ -357,12 +481,12 @@ public class MyPageFragment extends Fragment {
                     }
                     break;
                 case R.id.tues_day:
-                    if (dayBtn == 0) {
+                    if (tues_day_btn.getText().equals("◯")) {
                         tues_day_btn.setText("×");
                         /**色指定**/
                         tues_day_btn.setTextColor(Color.RED);
                         dayBtn = 1;
-                    } else if (dayBtn == 1) {
+                    } else if (tues_day_btn.getText().equals("×")) {
                         tues_day_btn.setText("◯");
                         /**色指定**/
                         tues_day_btn.setTextColor(Color.GREEN);
@@ -370,12 +494,12 @@ public class MyPageFragment extends Fragment {
                     }
                     break;
                 case R.id.wed_day:
-                    if (dayBtn == 0) {
+                    if (wed_day_btn.getText().equals("◯")) {
                         wed_day_btn.setText("×");
                         /**色指定**/
                         wed_day_btn.setTextColor(Color.RED);
                         dayBtn = 1;
-                    } else if (dayBtn == 1) {
+                    } else if (wed_day_btn.getText().equals("×")) {
                         wed_day_btn.setText("◯");
                         /**色指定**/
                         wed_day_btn.setTextColor(Color.GREEN);
@@ -383,12 +507,12 @@ public class MyPageFragment extends Fragment {
                     }
                     break;
                 case R.id.thurs_day:
-                    if (dayBtn == 0) {
+                    if (thurs_day_btn.getText().equals("◯")) {
                         thurs_day_btn.setText("×");
                         /**色指定**/
                         thurs_day_btn.setTextColor(Color.RED);
                         dayBtn = 1;
-                    } else if (dayBtn == 1) {
+                    } else if (thurs_day_btn.getText().equals("×")) {
                         thurs_day_btn.setText("◯");
                         /**色指定**/
                         thurs_day_btn.setTextColor(Color.GREEN);
@@ -396,12 +520,12 @@ public class MyPageFragment extends Fragment {
                     }
                     break;
                 case R.id.fri_day:
-                    if (dayBtn == 0) {
+                    if (fri_day_btn.getText().equals("◯")) {
                         fri_day_btn.setText("×");
                         /**色指定**/
                         fri_day_btn.setTextColor(Color.RED);
                         dayBtn = 1;
-                    } else if (dayBtn == 1) {
+                    } else if (fri_day_btn.getText().equals("×")) {
                         fri_day_btn.setText("◯");
                         /**色指定**/
                         fri_day_btn.setTextColor(Color.GREEN);
@@ -409,12 +533,12 @@ public class MyPageFragment extends Fragment {
                     }
                     break;
                 case R.id.saturs_day:
-                    if (dayBtn == 0) {
+                    if (saturs_day_btn.getText().equals("◯")) {
                         saturs_day_btn.setText("×");
                         /**色指定**/
                         saturs_day_btn.setTextColor(Color.RED);
                         dayBtn = 1;
-                    } else if (dayBtn == 1) {
+                    } else if (saturs_day_btn.getText().equals( "×")) {
                         saturs_day_btn.setText("◯");
                         /**色指定**/
                         saturs_day_btn.setTextColor(Color.GREEN);
@@ -422,18 +546,69 @@ public class MyPageFragment extends Fragment {
                     }
                     break;
                 case R.id.sun_day:
-                    if (dayBtn == 0) {
+                    if (sun_day_btn.getText().equals("◯")) {
                         sun_day_btn.setText("×");
                         /**色指定**/
                         sun_day_btn.setTextColor(Color.RED);
                         dayBtn = 1;
-                    } else if (dayBtn == 1) {
+                    } else if (sun_day_btn.getText().equals("×")) {
                         sun_day_btn.setText("◯");
                         /**色指定**/
                         sun_day_btn.setTextColor(Color.GREEN);
                         dayBtn = 0;
                     }
                     break;
+            }
+        }
+    }
+    //表示非表示切り替え
+    private class Visibilitys implements View.OnClickListener {
+        @Override
+        public void onClick(View v){
+            //編集モード
+            if (v == btnEditProfile) {
+                //国籍入力　言語選択　エリア選択　　日付入力　プロフィール選択　編集ボタン
+                editSelectedJob.setVisibility(View.GONE);
+                editSelectedLang.setVisibility(View.GONE);
+                editSelectedArea.setVisibility(View.GONE);
+                editDayTable.setVisibility(View.GONE);
+                editTextProfile.setVisibility(View.GONE);
+                btnEditProfile.setVisibility(View.GONE);
+                //国籍　言語　プロフィール　登録ボタン
+                //ガイドでなければ日付　エリア
+                entSelectedJob.setVisibility(View.VISIBLE);
+                entSelectLang.setVisibility(View.VISIBLE);
+                entTextProfile.setVisibility(View.VISIBLE);
+                btnEntryProfile.setVisibility(View.VISIBLE);
+                if (gudieON == 1) {
+                    entDayTable.setVisibility(View.VISIBLE);
+                    entSelectArea.setVisibility(View.VISIBLE);
+                }
+            }
+
+            //登録モード　登録ボタンクリック時
+            if (v == btnEntryProfile) {
+                //編集ボタン　国籍選択　言語選択　プロフィール選択
+                // ガイドであれば　　エリア選択　日付選択
+                editSelectedJob.setVisibility(View.VISIBLE);
+                editSelectedLang.setVisibility(View.VISIBLE);
+                editTextProfile.setVisibility(View.VISIBLE);
+                btnEditProfile.setVisibility(View.VISIBLE);
+                if (gudieON == 1) {
+                    editDayTable.setVisibility(View.VISIBLE);
+                    editSelectedArea.setVisibility(View.VISIBLE);
+
+                }
+                //国籍　言語　プロフィール　登録ボタン
+                //ガイドでなければ日付　エリア
+                entSelectedJob.setVisibility(View.GONE);
+                entSelectLang.setVisibility(View.GONE);
+                entTextProfile.setVisibility(View.GONE);
+                btnEntryProfile.setVisibility(View.GONE);
+                if (gudieON == 1) {
+                    entDayTable.setVisibility(View.GONE);
+                    entSelectArea.setVisibility(View.GONE);
+                }
             }
         }
     }

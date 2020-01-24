@@ -7,24 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".chats.ChatActivity">
 
- 　/**色選択
-    *画面全体のレイアウトバランス
-    *icon のデザイン調整(選択されているアイテムも調整)
-    *お願いします
-    */
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageViewUser"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="80dp"
-        android:layout_height="69dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="9dp"
-        android:layout_toEndOf="@+id/turnButton"
-        android:src="@drawable/profile" />
+   　/**色選択
+   *画面全体のレイアウトバランス
+   *icon のデザイン調整(選択されているアイテムも調整)
+   *お願いします
+   */
+   <de.hdodenhof.circleimageview.CircleImageView
+       android:id="@+id/imageViewUser"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       android:layout_width="80dp"
+       android:layout_height="69dp"
+       android:layout_alignParentTop="true"
+       android:layout_marginStart="7dp"
+       android:layout_marginTop="6dp"
+       android:layout_marginBottom="9dp"
+       android:layout_toEndOf="@+id/turnButton"
+       android:src="@drawable/profile" />
 
    <ListView
        android:id="@android:id/list"
@@ -41,47 +41,47 @@
        android:background="#fff"
        android:transcriptMode="alwaysScroll" />
 
-    <EditText
-        android:id="@+id/messageInput"
-        android:layout_width="244dp"
-        android:layout_height="44dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="28dp"
-        android:layout_weight="1"
-        android:background="#FFC5F0EC"
-        android:inputType="textShortMessage"
-        android:lines="1"
-        android:singleLine="true"
-        android:text="こんにちは"
-        android:textAlignment="center"
-        android:textColor="#fff" />
+   <EditText
+       android:id="@+id/messageInput"
+       android:layout_width="244dp"
+       android:layout_height="44dp"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentBottom="true"
+       android:layout_marginStart="80dp"
+       android:layout_marginTop="30dp"
+       android:layout_marginEnd="27dp"
+       android:layout_marginBottom="28dp"
+       android:layout_weight="1"
+       android:background="#FFC5F0EC"
+       android:inputType="textShortMessage"
+       android:lines="1"
+       android:singleLine="true"
+       android:text="こんにちは"
+       android:textAlignment="center"
+       android:textColor="#fff" />
 
-    <ImageButton
-        android:id="@+id/sendButton"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="25dp"
-        android:src="@android:drawable/ic_menu_send" />
+   <ImageButton
+       android:id="@+id/sendButton"
+       android:layout_width="60dp"
+       android:layout_height="wrap_content"
+       android:layout_alignParentEnd="true"
+       android:layout_alignParentBottom="true"
+       android:layout_marginStart="9dp"
+       android:layout_marginEnd="17dp"
+       android:layout_marginBottom="25dp"
+       android:src="@android:drawable/ic_menu_send" />
 
-    <ImageButton
-        android:id="@+id/buttonChatImage"
-        android:layout_width="wrap_content"
-        android:layout_height="43dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginEnd="348dp"
-        android:layout_marginBottom="34dp"
-        tools:src="@drawable/border" />
+   <ImageButton
+       android:id="@+id/buttonChatImage"
+       android:layout_width="wrap_content"
+       android:layout_height="43dp"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentEnd="true"
+       android:layout_alignParentBottom="true"
+       android:layout_marginStart="13dp"
+       android:layout_marginEnd="348dp"
+       android:layout_marginBottom="34dp"
+       tools:src="@drawable/border" />
 
    <TextView
        android:id="@+id/turnButton"

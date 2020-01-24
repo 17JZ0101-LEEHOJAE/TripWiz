@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                                                             strPass = jArray.getJSONObject(i).getString("password");
                                                             if(mailAddress.equals(strMail) && password.equals(strPass)) {
                                                                 Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
-                                                                user.setUserId(Integer.parseInt(jArray.getJSONObject(i).getString("user_id")));
+                                                                user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
                                                                 user.setName(jArray.getJSONObject(i).getString("name"));
                                                                 Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
                                                                 intent.putExtra("user", user);

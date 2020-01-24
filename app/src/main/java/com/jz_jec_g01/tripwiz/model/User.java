@@ -15,16 +15,17 @@ public class User implements Serializable {
     private String nationality;
     private String introduction;
     private int guideStatus;
-    private int price;
-    private List<String> areaList = new ArrayList<>();
-    private List<String> weekList = new ArrayList<>();
+    private String area;
+    private String week;
     private String profile;
+    private double rating;
+
 
     public User() {
 
     }
 
-    public User(int userId, String name, String age, int gender, String job, String nationality, String introduction, int guideStatus, int price, List<String> areaList, List<String> weekList, String profile) {
+    public User(int userId, String name, String age, int gender, String job, String nationality, String introduction, int guideStatus, String area, String week, String profile, double rating) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -33,10 +34,10 @@ public class User implements Serializable {
         this.nationality = nationality;
         this.introduction = introduction;
         this.guideStatus = guideStatus;
-        this.price = price;
-        this.areaList = areaList;
-        this.weekList = weekList;
+        this.area = area ;
+        this.week = week;
         this.profile = profile;
+        this.rating = rating;
     }
 
     public int getUserId() { return userId; }
@@ -47,11 +48,10 @@ public class User implements Serializable {
     public String getNationality() { return nationality; }
     public String getIntroduction() { return introduction; }
     public int getGuideStatus() { return guideStatus; }
-    public int getPrice() { return price; }
     public String getProfile() {return profile; }
-
-    public List<String> getAreaList() { return areaList; }
-    public List<String> getWeekList() { return weekList; }
+    public double getRating() {return rating; }
+    public String getArea() { return area; }
+    public String getWeek() { return week; }
 
     public void setUserId(int userId) { this.userId = userId; }
     public void setName(String name) { this.name = name; }
@@ -61,9 +61,8 @@ public class User implements Serializable {
     public void setNationality(String nationality) { this.nationality = nationality; }
     public void setIntroduction(String introduction) { this.introduction = introduction; }
     public void setGuideStatus(int guideStatus) { this.guideStatus = guideStatus; }
-    public void setPrice(int price) { this.price = price; }
     public void setProfile(String profile) {this.profile = profile; }
-
-    public void setAreaList(List<String> areaList) { this.areaList = areaList; }
-    public void setWeekList(List<String> weekList) { this.weekList = weekList; }
+    public void setRating(double rating) {this.rating = rating; }
+    public void setArea(String area) { this.area = area; }
+    public void setWeek(String week) { this.week = week; }
 }
