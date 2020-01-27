@@ -71,6 +71,7 @@ public class MyPageFragment extends Fragment {
     private LinearLayout selectAreaBox;
     private TextView myName;
     private ImageView myProfile;
+    private ImageView myNationalFlag;
     private TextView editSelectedLang;
     private TextView editSelectedArea;
     private TextView editSelectedJob;
@@ -94,7 +95,7 @@ public class MyPageFragment extends Fragment {
     private TableRow entDayTable;
     private TableRow editDayTable;
     private TableLayout dayTableLayout;
-    private String[] job = {"学生", "会社員", "専業主婦", "その他"};
+    private String[] jobs = {"学生", "会社員", "専業主婦", "その他"};
     private String[] langs = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
     private String[] areas = {"足立区", "荒川区", "板橋区", "江戸川区", "大田区", "葛飾区", "北区", "江東区", "品川区", "渋谷区", "新宿区", "杉並区",
             "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"};
@@ -117,6 +118,7 @@ public class MyPageFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_my_page, container, false);
         myName = v.findViewById(R.id.textViewUserName);
         myProfile = v.findViewById(R.id.imageViewUser);
+        myNationalFlag = v.findViewById(R.id.imageViewNationalFlag);
         //ガイド切り替え
         SwitchUser = v.findViewById(R.id.switchUser);
         //言語とエリアと曜日テーブル
@@ -270,7 +272,7 @@ public class MyPageFragment extends Fragment {
                                                 user.setArea(jArray.getJSONObject(i).getString("information_area"));
                                                 user.setWeek(jArray.getJSONObject(i).getString("information_week"));
                                                 if(!user.getProfile().equals("")) {
-                                                    String imgUrl = url + "/image/" + user.getProfile();
+                                                    String imgUrl = url + "/image/userImage/" + user.getProfile();
                                                     Log.d("URL", imgUrl);
 
                                                     Request request = new Request.Builder()
@@ -299,6 +301,77 @@ public class MyPageFragment extends Fragment {
                                                                     }
                                                                 });
                                                             }
+                                                        }
+                                                    });
+                                                }
+                                                if(!user.getNationality().equals("")) {
+                                                    String json = "{\"nationality\":\"" + user.getNationality() + "\"}";
+                                                    String urlS = url + "/NationalityFlagSearch.php";
+                                                    RequestBody body = RequestBody.create(json, JSON);
+
+                                                    Request request = new Request.Builder()
+                                                            .url(urlS)
+                                                            .post(body)
+                                                            .build();
+
+                                                    client.newCall(request).enqueue(new Callback() {
+                                                        @Override
+                                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                            mHandler.post(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    try {
+                                                                        String jsonData = response.body().string();
+                                                                        Log.d("Json", jsonData);
+                                                                        JSONArray jArray = new JSONArray(jsonData);
+                                                                        String nationalFlag;
+                                                                        for(int i = 0; i < jArray.length(); i++) {
+                                                                            nationalFlag = jArray.getJSONObject(i).getString("country_flag");
+                                                                            if(!nationalFlag.equals("")) {
+                                                                                String imgFlagUrl = url + "/image/nationality/" + nationalFlag;
+
+                                                                                Request request = new Request.Builder()
+                                                                                        .url(imgFlagUrl)
+                                                                                        .get()
+                                                                                        .build();
+
+                                                                                client.newCall(request).enqueue(new Callback() {
+                                                                                    @Override
+                                                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                                                                    }
+
+                                                                                    @Override
+                                                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                                                        if(response.isSuccessful()) {
+                                                                                            final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                                                                                            mHandler.post(new Runnable() {
+                                                                                                @Override
+                                                                                                public void run() {
+                                                                                                    try {
+                                                                                                        myNationalFlag.setImageBitmap(bitmap);
+                                                                                                    } catch(NetworkOnMainThreadException e) {
+                                                                                                        e.printStackTrace();
+                                                                                                    }
+                                                                                                }
+                                                                                            });
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    } catch (IOException e) {
+                                                                        e.printStackTrace();
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }
@@ -348,7 +421,7 @@ public class MyPageFragment extends Fragment {
                 Log.d("エリアダイアログ表示" , "onClick: ");
             }else if (v.getId() == R.id.edit_selectJob)
                 addJobOnCheckBox();
-            Log.d("国籍ダイアログ表示" , "onClick: ");
+            Log.d("職業ダイアログ表示" , "onClick: ");
         }
     }
     //エリアスピナーダイアログ表示用
@@ -367,19 +440,19 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String AreaBox = "";
+                        String areaBox = "";
                         for (Integer i : checkedItems) {
                             int cnt = 0;
                             if(cnt < 4) {
                                 cnt++;
                                 String Area = String.join(",", areas[i]);
 
-                                AreaBox = AreaBox + " " + Area;
+                                areaBox = areaBox + " " + Area;
                                 Log.d(Area, "代入値Lang: ");
                             } else {
                                 Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　4つ以下にしてください！", Toast.LENGTH_LONG).show();
                             }
-                            editSelectedArea.setText(AreaBox);
+                            editSelectedArea.setText(areaBox);
 
                         }
                     }
@@ -404,18 +477,18 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String LangBox = "";
+                        String langBox = "";
                         for (Integer i : checkedItems) {
                             int cnt = 0;
                             if(cnt < 4) {
                                 cnt++;
                                 String Lang = String.join(",", langs[i]);
 
-                                LangBox = LangBox + " "+ Lang;
+                                langBox = langBox + ", " + Lang;
                             } else {
                                 Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　4つ以下にしてください！", Toast.LENGTH_LONG).show();
                             }
-                            editSelectedLang.setText(LangBox);
+                            editSelectedLang.setText(langBox);
 
                         }
                     }
@@ -427,36 +500,32 @@ public class MyPageFragment extends Fragment {
     public void addJobOnCheckBox() {
         final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
         new AlertDialog.Builder(getActivity())
-                .setTitle("職種選択")
-                .setMultiChoiceItems(job, null, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) checkedItems.add(which);
-                        else checkedItems.remove((Integer) which);
-                    }
-                })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String JobBox = "";
-                        for (Integer i : checkedItems) {
-                            int cnt = 0;
-                            if(cnt < 4) {
-                                cnt++;
-                                String job  = String.join(",", MyPageFragment.this.job[i]);
-
-                                JobBox = JobBox + " "+ job
-                                ;
-                            } else {
-                                Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　1つにしてください！", Toast.LENGTH_LONG).show();
-                            }
-                            editSelectedJob.setText(JobBox);
+            .setTitle("職種選択")
+            .setSingleChoiceItems(jobs, -1, new DialogInterface.OnClickListener() {
+                // アイテム選択時の挙動
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    checkedItems.clear();
+                    checkedItems.add(which);
+                }
+            })
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                // Yesが押された時の挙動
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(!checkedItems.isEmpty()) {
+                        String jobBox = "";
+                        for(Integer i : checkedItems) {
+                            jobBox = jobs[i];
                         }
+                        editSelectedJob.setText(jobBox);
+                    } else {
+                        editSelectedJob.setText("未選択");
                     }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+                }
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
     }
 
     private class BtnAddAlermClickListener implements View.OnClickListener {

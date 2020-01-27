@@ -36,8 +36,8 @@
 
             <TextView
                 android:id="@+id/textViewUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_width="108dp"
+                android:layout_height="24dp"
                 android:text="@string/textViewUserNameProfile"
                 android:textColor="#000"
                 android:textSize="15sp"
@@ -90,18 +90,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.6" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="45dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="28dp"
-                android:text="国籍"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.026"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserName" />
-
             <Button
                 android:id="@+id/buttonFeedback"
                 android:layout_width="91dp"
@@ -111,6 +99,18 @@
                 android:text="フィードバック"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageViewNationalFlag"
+                android:layout_width="74dp"
+                android:layout_height="28dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/switchUser"
+                app:layout_constraintHorizontal_bias="0.235"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/guideicon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
