@@ -101,7 +101,7 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        String imgUrl = url + "/image/" + iImages.get(position);
+                        String imgUrl = url + "/image/userImage/" + iImages.get(position);
                         Log.d("URL", imgUrl);
 
                         Request request = new Request.Builder()
