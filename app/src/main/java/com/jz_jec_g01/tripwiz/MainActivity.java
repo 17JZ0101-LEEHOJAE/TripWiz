@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.NetworkOnMainThreadException;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -172,86 +174,89 @@ public class MainActivity extends AppCompatActivity {
                 RequestBody body = RequestBody.create(json, JSON);
 
                 if(!mailAddress.isEmpty() && !password.isEmpty()) {
-//                    emailSignIn(mailAddress, password);
+                    try {
+                        //                    emailSignIn(mailAddress, password);
+                        client.newCall(request).enqueue(new Callback() {
+                            final Handler mHandler = new Handler(Looper.getMainLooper());
 
-                    client.newCall(request).enqueue(new Callback() {
-                        final Handler mHandler = new Handler(Looper.getMainLooper());
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d("データベース接続", "接続失敗");
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }
 
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.d("データベース接続", "接続失敗");
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d("データベース接続", "接続成功");
 
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.d("データベース接続", "接続成功");
+                                        String urlS = url + "/Login.php";
+                                        Request request = new Request.Builder()
+                                                .url(urlS)
+                                                .post(body)
+                                                .build();
 
-                                    String urlS = url + "/Login.php";
-                                    Request request = new Request.Builder()
-                                            .url(urlS)
-                                            .post(body)
-                                            .build();
-
-                                    client.newCall(request).enqueue(new Callback() {
-                                        @Override
-                                        public void onFailure(Call call, IOException e) {
-                                            mHandler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Log.d("PHP通信", "通信失敗");
-                                                    e.printStackTrace();
-                                                }
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onResponse(Call call, Response response) throws IOException {
-                                            mHandler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    try {
-                                                        String jsonData = response.body().string();
-                                                        Log.d("Json", jsonData);
-                                                        JSONArray jArray = new JSONArray(jsonData);
-                                                        String strMail;
-                                                        String strPass;
-                                                        for(int i = 0; i < jArray.length(); i++) {
-                                                            strMail = jArray.getJSONObject(i).getString("mailAddress");
-                                                            strPass = jArray.getJSONObject(i).getString("password");
-                                                            if(mailAddress.equals(strMail) && password.equals(strPass)) {
-                                                                Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
-                                                                user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
-                                                                user.setName(jArray.getJSONObject(i).getString("name"));
-                                                                Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
-                                                                intent.putExtra("user", user);
-                                                                startActivity(intent);
-                                                                break;
-                                                            } else {
-                                                                Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
-                                                            }
-                                                        }
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    } catch (IOException e) {
+                                        client.newCall(request).enqueue(new Callback() {
+                                            @Override
+                                            public void onFailure(Call call, IOException e) {
+                                                mHandler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Log.d("PHP通信", "通信失敗");
                                                         e.printStackTrace();
                                                     }
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
+                                                });
+                                            }
+
+                                            @Override
+                                            public void onResponse(Call call, Response response) throws IOException {
+                                                mHandler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            String jsonData = response.body().string();
+                                                            Log.d("Json", jsonData);
+                                                            JSONArray jArray = new JSONArray(jsonData);
+                                                            String strMail;
+                                                            String strPass;
+                                                            for(int i = 0; i < jArray.length(); i++) {
+                                                                strMail = jArray.getJSONObject(i).getString("mailAddress");
+                                                                strPass = jArray.getJSONObject(i).getString("password");
+                                                                if(mailAddress.equals(strMail) && password.equals(strPass)) {
+                                                                    Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
+                                                                    user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
+                                                                    user.setName(jArray.getJSONObject(i).getString("name"));
+                                                                    Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
+                                                                    intent.putExtra("user", user);
+                                                                    startActivity(intent);
+                                                                    break;
+                                                                } else {
+                                                                    Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    } catch (NetworkOnMainThreadException e) {
+                        e.printStackTrace();
+                    }
                 } else if(!mailAddress.isEmpty() && password.isEmpty()) {
                     passErr.setError("パスワードを入力してください");
                 } else {
@@ -309,29 +314,32 @@ public class MainActivity extends AppCompatActivity {
 
     // Emailログインのメソッド
     private void emailSignIn(String email, String password) {
-        Log.d(emailTAG, "signIn:" + email);
-        if (!validateForm()) {
-            return;
-        }
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(emailTAG, "signInWithEmail:success");
-                            fUser = mAuth.getCurrentUser();
-                            IntentTamplate(fUser);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(emailTAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
+        try {
+            Log.d(emailTAG, "signIn:" + email);
+            if (!validateForm()) {
+                return;
+            }
+            mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(emailTAG, "signInWithEmail:success");
+                        fUser = mAuth.getCurrentUser();
+                        IntentTamplate(fUser);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(emailTAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(MainActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
                     }
-                });
+                }
+            });
+        } catch(NetworkOnMainThreadException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean validateForm() {

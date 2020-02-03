@@ -87,7 +87,7 @@ public class FeedbackActivity extends AppCompatActivity implements LocationListe
         //座標取得
         textView = (TextView) findViewById(R.id.textView);
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationText = findViewById(R.id.textViewlocation);
+//        locationText = findViewById(R.id.textViewlocation);
 
     }
     public void imagesList (){

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.NetworkOnMainThreadException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -111,7 +112,6 @@ public class SignupActivity extends AppCompatActivity {
                 String name = editTextName.getText().toString().trim();
                 int checkedId = genderGroup.getCheckedRadioButtonId();
                 int gender = 0;
-
                 if(-1 != checkedId) {
                     View radioButton = genderGroup.findViewById(checkedId);
                     int radioId = genderGroup.indexOfChild(radioButton);
@@ -128,47 +128,51 @@ public class SignupActivity extends AppCompatActivity {
                 String json = "{\"mailAddress\":\"" + email + "\", \"password\":\"" + password + "\", " +
                         "\"gender\":\"" + gender + "\", \"age\":\"" + age + "\", \"nationality\":\"" + nationality + "\", " +
                         "\"name\":\"" + name + "\"}";
+                RequestBody body = RequestBody.create(json, JSON);
 
-                RequestBody body = RequestBody.create(JSON, json);
-                if(validateForm() == true) {
-                    client.newCall(request).enqueue(new Callback() {
-                        final Handler mHandler = new Handler(Looper.getMainLooper());
+                try {
+                    if(validateForm() == true) {
+                        client.newCall(request).enqueue(new Callback() {
+                            final Handler mHandler = new Handler(Looper.getMainLooper());
 
 
-                        @Override
-                        public void onFailure(Call call, IOException e) {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            String urlS = url + "/Signup.php";
-                            Request request = new Request.Builder()
-                                    .url(urlS)
-                                    .post(body)
-                                    .build();
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String urlS = url + "/Signup.php";
+                                Request request = new Request.Builder()
+                                        .url(urlS)
+                                        .post(body)
+                                        .build();
 
-                            OkHttpClient client = new OkHttpClient.Builder().build();
-                            client.newCall(request).enqueue(new Callback() {
-                                @Override
-                                public void onFailure(Call call, IOException e) {
+                                OkHttpClient client = new OkHttpClient.Builder().build();
+                                client.newCall(request).enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
 
-                                }
+                                    }
 
-                                @Override
-                                public void onResponse(Call call, Response response) throws IOException {
-                                    mHandler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        mHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
+                                                createAccount(email, password);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                } catch(NetworkOnMainThreadException e) {
+                    e.printStackTrace();
                 }
-//                createAccount(email, password);
             }
         });
     }

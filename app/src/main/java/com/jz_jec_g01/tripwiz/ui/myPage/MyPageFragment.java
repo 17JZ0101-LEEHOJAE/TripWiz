@@ -99,6 +99,7 @@ public class MyPageFragment extends Fragment {
     private String[] langs = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
     private String[] areas = {"足立区", "荒川区", "板橋区", "江戸川区", "大田区", "葛飾区", "北区", "江東区", "品川区", "渋谷区", "新宿区", "杉並区",
             "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"};
+    private String[] days = {"月","火","水","木","金","土","日"};
     private Switch SwitchUser;
     private RatingBar ratingBar;
     private User user;
@@ -149,12 +150,12 @@ public class MyPageFragment extends Fragment {
         //日付テーブル
         editDayTable = v.findViewById(R.id.edit_day_table);
         entDayTable = v.findViewById(R.id.entry_day_table);
-        //プロフィールボタン取得
-        btnEditProfile = v.findViewById(R.id.buttonEditProfile);
-        btnEntryProfile = v.findViewById(R.id.buttonEntryProfile);
+        //プロフィールボタン取得buttonVisibleProfile
+        btnEditProfile = v.findViewById(R.id.buttonVisibleProfile);
+        btnEntryProfile = v.findViewById(R.id.buttonGoneProfile);
         //自己紹介text
         editTextProfile = v.findViewById(R.id.editTextProfile);
-        entTextProfile = v.findViewById(R.id.entryTextProfile);
+        entTextProfile = v.findViewById(R.id.PrTextProfile);
         //フィードバック画面遷移
 
         //ガイドユーザー切り替え
@@ -440,21 +441,16 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String areaBox = "";
-                        for (Integer i : checkedItems) {
-                            int cnt = 0;
-                            if(cnt < 4) {
-                                cnt++;
-                                String Area = String.join(",", areas[i]);
-
-                                areaBox = areaBox + " " + Area;
-                                Log.d(Area, "代入値Lang: ");
-                            } else {
-                                Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　4つ以下にしてください！", Toast.LENGTH_LONG).show();
+                        String AreaBox = "";
+                        if(checkedItems.size() <= 3) {
+                            for (Integer i : checkedItems) {
+                                String area = String.join(",", MyPageFragment.this.areas[i]);
+                                AreaBox = AreaBox + " " + area;
                             }
-                            editSelectedArea.setText(areaBox);
-
+                        } else{
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
                         }
+                        editSelectedArea.setText(AreaBox);
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -477,20 +473,16 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String langBox = "";
-                        for (Integer i : checkedItems) {
-                            int cnt = 0;
-                            if(cnt < 4) {
-                                cnt++;
-                                String Lang = String.join(",", langs[i]);
-
-                                langBox = langBox + ", " + Lang;
-                            } else {
-                                Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　4つ以下にしてください！", Toast.LENGTH_LONG).show();
+                        String LangBox = "";
+                        if(checkedItems.size() <= 3) {
+                            for (Integer i : checkedItems) {
+                                String lang = String.join(MyPageFragment.this.langs[i], ",");
+                                LangBox = LangBox + " " + lang;
                             }
-                            editSelectedLang.setText(langBox);
-
+                        } else{
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つまでにしてください！", Toast.LENGTH_LONG).show();
                         }
+                        editSelectedLang.setText(LangBox);
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -500,32 +492,33 @@ public class MyPageFragment extends Fragment {
     public void addJobOnCheckBox() {
         final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
         new AlertDialog.Builder(getActivity())
-            .setTitle("職種選択")
-            .setSingleChoiceItems(jobs, -1, new DialogInterface.OnClickListener() {
-                // アイテム選択時の挙動
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    checkedItems.clear();
-                    checkedItems.add(which);
-                }
-            })
-            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                // Yesが押された時の挙動
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if(!checkedItems.isEmpty()) {
-                        String jobBox = "";
-                        for(Integer i : checkedItems) {
-                            jobBox = jobs[i];
-                        }
-                        editSelectedJob.setText(jobBox);
-                    } else {
-                        editSelectedJob.setText("未選択");
+                .setTitle("職種選択")
+                .setMultiChoiceItems(jobs, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) checkedItems.add(which);
+                        else checkedItems.remove((Integer) which);
                     }
-                }
-            })
-            .setNegativeButton("Cancel", null)
-            .show();
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String JobBox = "";
+
+                        if(checkedItems.size() <= 1) {
+                            for (Integer i : checkedItems) {
+                                String job = String.join(",", MyPageFragment.this.jobs[i]);
+                                JobBox = JobBox + " " + job;
+                            }
+                        } else{
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　1つにしてください！", Toast.LENGTH_LONG).show();
+                        }
+                        editSelectedJob.setText(JobBox);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private class BtnAddAlermClickListener implements View.OnClickListener {
@@ -541,12 +534,12 @@ public class MyPageFragment extends Fragment {
                         mon_day_btn.setText("×");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.RED);
-                        dayBtn = 1;
+                        days[0] = "";
                     } else if (mon_day_btn.getText().equals("×")) {
                         mon_day_btn.setText("◯");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
-                        dayBtn = 0;
+                        days[0] = "月";
                     }
                     break;
                 case R.id.tues_day:
@@ -554,12 +547,12 @@ public class MyPageFragment extends Fragment {
                         tues_day_btn.setText("×");
                         /**色指定**/
                         tues_day_btn.setTextColor(Color.RED);
-                        dayBtn = 1;
+                        days[1] = "";
                     } else if (tues_day_btn.getText().equals("×")) {
                         tues_day_btn.setText("◯");
                         /**色指定**/
                         tues_day_btn.setTextColor(Color.GREEN);
-                        dayBtn = 0;
+                        days[1] = "火";
                     }
                     break;
                 case R.id.wed_day:
@@ -567,12 +560,12 @@ public class MyPageFragment extends Fragment {
                         wed_day_btn.setText("×");
                         /**色指定**/
                         wed_day_btn.setTextColor(Color.RED);
-                        dayBtn = 1;
+                        days[2] = "";
                     } else if (wed_day_btn.getText().equals("×")) {
                         wed_day_btn.setText("◯");
                         /**色指定**/
                         wed_day_btn.setTextColor(Color.GREEN);
-                        dayBtn = 0;
+                        days[2] = "水";
                     }
                     break;
                 case R.id.thurs_day:
@@ -580,12 +573,12 @@ public class MyPageFragment extends Fragment {
                         thurs_day_btn.setText("×");
                         /**色指定**/
                         thurs_day_btn.setTextColor(Color.RED);
-                        dayBtn = 1;
+                        days[3] = "";
                     } else if (thurs_day_btn.getText().equals("×")) {
                         thurs_day_btn.setText("◯");
                         /**色指定**/
                         thurs_day_btn.setTextColor(Color.GREEN);
-                        dayBtn = 0;
+                        days[3] = "木";
                     }
                     break;
                 case R.id.fri_day:
@@ -593,12 +586,12 @@ public class MyPageFragment extends Fragment {
                         fri_day_btn.setText("×");
                         /**色指定**/
                         fri_day_btn.setTextColor(Color.RED);
-                        dayBtn = 1;
+                        days[4] = "";
                     } else if (fri_day_btn.getText().equals("×")) {
                         fri_day_btn.setText("◯");
                         /**色指定**/
                         fri_day_btn.setTextColor(Color.GREEN);
-                        dayBtn = 0;
+                        days[4] = "金";
                     }
                     break;
                 case R.id.saturs_day:
@@ -606,12 +599,12 @@ public class MyPageFragment extends Fragment {
                         saturs_day_btn.setText("×");
                         /**色指定**/
                         saturs_day_btn.setTextColor(Color.RED);
-                        dayBtn = 1;
+                        days[5] = "";
                     } else if (saturs_day_btn.getText().equals( "×")) {
                         saturs_day_btn.setText("◯");
                         /**色指定**/
                         saturs_day_btn.setTextColor(Color.GREEN);
-                        dayBtn = 0;
+                        days[5] = "土";
                     }
                     break;
                 case R.id.sun_day:
@@ -619,12 +612,12 @@ public class MyPageFragment extends Fragment {
                         sun_day_btn.setText("×");
                         /**色指定**/
                         sun_day_btn.setTextColor(Color.RED);
-                        dayBtn = 1;
+                        days[6] = "";
                     } else if (sun_day_btn.getText().equals("×")) {
                         sun_day_btn.setText("◯");
                         /**色指定**/
                         sun_day_btn.setTextColor(Color.GREEN);
-                        dayBtn = 0;
+                        days[6] = "日";
                     }
                     break;
             }
@@ -636,13 +629,21 @@ public class MyPageFragment extends Fragment {
         public void onClick(View v){
             //編集モード
             if (v == btnEditProfile) {
-                //国籍入力　言語選択　エリア選択　　日付入力　プロフィール選択　編集ボタン
+                //国籍入力　言語選択　エリア選択　　日付入力　プロフィール選択　
+                // 編集ボタン　ガイドスイッチ フィードバック
+                SwitchUser.setVisibility(View.VISIBLE);
                 editSelectedJob.setVisibility(View.GONE);
                 editSelectedLang.setVisibility(View.GONE);
                 editSelectedArea.setVisibility(View.GONE);
                 editDayTable.setVisibility(View.GONE);
                 editTextProfile.setVisibility(View.GONE);
                 btnEditProfile.setVisibility(View.GONE);
+                // 01/28 変更点
+                if (gudieON == 1) {
+                    editDayTable.setVisibility(View.GONE);
+                    editSelectedArea.setVisibility(View.GONE);
+
+                }
                 //国籍　言語　プロフィール　登録ボタン
                 //ガイドでなければ日付　エリア
                 entSelectedJob.setVisibility(View.VISIBLE);
@@ -653,11 +654,24 @@ public class MyPageFragment extends Fragment {
                     entDayTable.setVisibility(View.VISIBLE);
                     entSelectArea.setVisibility(View.VISIBLE);
                 }
+                for (int i = 0; i <= 6; i++) {
+                    Log.d("曜日判定", "曜日別: " + days[i]);
+
+                    /*判定イメージ
+                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 月null
+                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 火
+                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 水null
+                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 木null
+                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 金
+                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 土null
+                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 日null
+                     */
+                }
             }
 
             //登録モード　登録ボタンクリック時
             if (v == btnEntryProfile) {
-                //編集ボタン　国籍選択　言語選択　プロフィール選択
+                //編集ボタン　国籍選択　言語選択　プロフィール選択 ガイドスイッチ
                 // ガイドであれば　　エリア選択　日付選択
                 editSelectedJob.setVisibility(View.VISIBLE);
                 editSelectedLang.setVisibility(View.VISIBLE);
@@ -670,6 +684,7 @@ public class MyPageFragment extends Fragment {
                 }
                 //国籍　言語　プロフィール　登録ボタン
                 //ガイドでなければ日付　エリア
+                SwitchUser.setVisibility(View.GONE);
                 entSelectedJob.setVisibility(View.GONE);
                 entSelectLang.setVisibility(View.GONE);
                 entTextProfile.setVisibility(View.GONE);
