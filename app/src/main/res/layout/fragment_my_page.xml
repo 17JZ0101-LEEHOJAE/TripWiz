@@ -18,7 +18,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="143dp"
+            android:layout_height="171dp"
             android:background="@color/colorMain">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -37,7 +37,7 @@
             <TextView
                 android:id="@+id/textViewUserName"
                 android:layout_width="108dp"
-                android:layout_height="24dp"
+                android:layout_height="22dp"
                 android:text="@string/textViewUserNameProfile"
                 android:textColor="#000"
                 android:textSize="15sp"
@@ -69,10 +69,10 @@
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.405"
+                app:layout_constraintHorizontal_bias="0.394"
                 app:layout_constraintStart_toEndOf="@+id/textViewUserName"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar"
-                app:layout_constraintVertical_bias="0.25" />
+                app:layout_constraintVertical_bias="0.328" />
 
             <Switch
                 android:id="@+id/switchUser"
@@ -85,7 +85,7 @@
                 android:textOn="ガイドです"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.534"
+                app:layout_constraintHorizontal_bias="0.516"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.6" />
@@ -94,22 +94,21 @@
                 android:id="@+id/buttonFeedback"
                 android:layout_width="91dp"
                 android:layout_height="56dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
                 android:text="フィードバック"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:id="@+id/imageViewNationalFlag"
-                android:layout_width="74dp"
-                android:layout_height="28dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="84dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="12dp"
                 app:layout_constraintEnd_toStartOf="@+id/switchUser"
-                app:layout_constraintHorizontal_bias="0.235"
+                app:layout_constraintHorizontal_bias="0.301"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
-                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/guideicon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,7 +120,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/selectCountryBox"
+                android:id="@+id/selectJobBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -143,6 +142,7 @@
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
                     android:text="未選択"
+                    android:visibility="gone"
                     android:textColor="#000"
                     android:textSize="15dp" />
 
@@ -155,7 +155,7 @@
                     android:text="選択完了"
                     android:textColor="#000"
                     android:textSize="15dp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -177,24 +177,25 @@
 
                 <TextView
                     android:id="@+id/edit_selectLang"
-                    android:layout_width="186dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
                     android:text="未選択"
                     android:textColor="#000"
+                    android:visibility="gone"
                     android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/entry_selectLang"
-                    android:layout_width="186dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
                     android:text="選択完了"
                     android:textColor="#000"
                     android:textSize="15dp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -207,7 +208,7 @@
 
                 <TextView
                     android:id="@+id/textArea"
-                    android:layout_width="173dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
@@ -218,7 +219,7 @@
 
                 <TextView
                     android:id="@+id/edit_selectArea"
-                    android:layout_width="93dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
@@ -228,7 +229,7 @@
 
                 <TextView
                     android:id="@+id/entry_selectArea"
-                    android:layout_width="93dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
@@ -645,7 +646,7 @@
                     android:background="@drawable/border"
                     android:inputType="textMultiLine"
                     android:textSize="15sp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.533"
                     app:layout_constraintStart_toStartOf="parent"
@@ -653,16 +654,18 @@
 
 
                 <TextView
-                    android:id="@+id/entryTextProfile"
-                    android:layout_width="302dp"
-                    android:layout_height="65dp"
+                    android:id="@+id/PrTextProfile"
+                    android:layout_width="308dp"
+                    android:layout_height="94dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/border"
-                    android:text="登録完了"
+                    android:text="よろしくお願いします。料金 ###円から案内可能です。可能エリア　〇〇区と〇〇県案内できます。交通費負担お願い致します。
+"
                     android:textSize="15sp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -682,20 +685,20 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/buttonEntryProfile"
+            android:id="@+id/buttonVisibleProfile"
             android:layout_width="149dp"
             android:layout_height="30dp"
             android:background="@drawable/border1"
             android:text="編集"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <Button
-            android:id="@+id/buttonEditProfile"
+            android:id="@+id/buttonGoneProfile"
             android:layout_width="143dp"
             android:layout_height="35dp"
             android:background="#fac"
             android:text="登録"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </LinearLayout>
 

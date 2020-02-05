@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String area;
     private String week;
     private String profile;
+    private String use_languages;
     private double rating;
 
 
@@ -25,7 +26,7 @@ public class User implements Serializable {
 
     }
 
-    public User(int userId, String name, String age, int gender, String job, String nationality, String introduction, int guideStatus, String area, String week, String profile, double rating) {
+    public User(int userId, String name, String age, int gender, String job, String nationality, String introduction, int guideStatus, String area, String week, String profile, String use_languages, double rating) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -37,6 +38,7 @@ public class User implements Serializable {
         this.area = area ;
         this.week = week;
         this.profile = profile;
+        this.use_languages = use_languages;
         this.rating = rating;
     }
 
@@ -52,6 +54,7 @@ public class User implements Serializable {
     public double getRating() {return rating; }
     public String getArea() { return area; }
     public String getWeek() { return week; }
+    public String getUse_languages() { return use_languages; }
 
     public void setUserId(int userId) { this.userId = userId; }
     public void setName(String name) { this.name = name; }
@@ -65,4 +68,6 @@ public class User implements Serializable {
     public void setRating(double rating) {this.rating = rating; }
     public void setArea(String area) { this.area = area; }
     public void setWeek(String week) { this.week = week; }
+
+    public void setUse_languages(String use_languages) { this.use_languages = use_languages; }
 }

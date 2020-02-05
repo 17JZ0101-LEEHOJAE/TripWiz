@@ -37,6 +37,7 @@ import com.jz_jec_g01.tripwiz.R;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,6 +46,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -260,122 +263,176 @@ public class MyPageFragment extends Fragment {
                                         try {
                                             String jsonData = response.body().string();
                                             Log.d("Json", jsonData);
-                                            JSONArray jArray = new JSONArray(jsonData);
-                                            for(int i = 0; i < jArray.length(); i++) {
+                                            JSONArray jArrayUser = new JSONArray(jsonData);
+                                            for(int i = 0; i < jArrayUser.length(); i++) {
                                                 myName.setText(user.getName());
-                                                user.setGender(jArray.getJSONObject(i).getInt("gender"));
-                                                user.setJob(jArray.getJSONObject(i).getString("job"));
-                                                user.setNationality(jArray.getJSONObject(i).getString("nationality"));
-                                                user.setIntroduction(jArray.getJSONObject(i).getString("introduction"));
-                                                user.setProfile(jArray.getJSONObject(i).getString("profile"));
-                                                user.setGuideStatus(jArray.getJSONObject(i).getInt("guide_status"));
-                                                user.setRating(jArray.getJSONObject(i).getDouble("rating_rate"));
-                                                user.setArea(jArray.getJSONObject(i).getString("information_area"));
-                                                user.setWeek(jArray.getJSONObject(i).getString("information_week"));
-                                                if(!user.getProfile().equals("")) {
-                                                    String imgUrl = url + "/image/userImage/" + user.getProfile();
-                                                    Log.d("URL", imgUrl);
+                                                user.setGender(jArrayUser.getJSONObject(i).getInt("gender"));
+                                                user.setJob(jArrayUser.getJSONObject(i).getString("job"));
+                                                user.setNationality(jArrayUser.getJSONObject(i).getString("nationality"));
+                                                user.setIntroduction(jArrayUser.getJSONObject(i).getString("introduction"));
+                                                user.setProfile(jArrayUser.getJSONObject(i).getString("profile"));
+                                                user.setGuideStatus(jArrayUser.getJSONObject(i).getInt("guide_status"));
+                                                user.setRating(jArrayUser.getJSONObject(i).getDouble("rating_rate"));
+                                                user.setArea(jArrayUser.getJSONObject(i).getString("information_area"));
+                                                user.setWeek(jArrayUser.getJSONObject(i).getString("information_week"));
+                                            }
+                                            if(user.getUserId() > 0) {
+                                                String json = "{\"user_id\":\"" + user.getUserId() + "\"}";
+                                                RequestBody body = RequestBody.create(json, JSON);
+                                                String langUrl = url + "/Info_Languages.php";
 
-                                                    Request request = new Request.Builder()
-                                                            .url(imgUrl)
-                                                            .get()
-                                                            .build();
+                                                Request request = new Request.Builder()
+                                                        .url(langUrl)
+                                                        .post(body)
+                                                        .build();
 
-                                                    client.newCall(request).enqueue(new Callback() {
-                                                        @Override
-                                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                                client.newCall(request).enqueue(new Callback() {
+                                                    @Override
+                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
-                                                        }
+                                                    }
 
-                                                        @Override
-                                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                                            if(response.isSuccessful()) {
-                                                                final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                                                                mHandler.post(new Runnable() {
-                                                                    @Override
-                                                                    public void run() {
-                                                                        try {
-                                                                            myProfile.setImageBitmap(bitmap);
-                                                                        } catch(NetworkOnMainThreadException e) {
-                                                                            e.printStackTrace();
-                                                                        }
+                                                    @Override
+                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                        mHandler.post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                try {
+                                                                    String jsonData = response.body().string();
+                                                                    Log.d("Json", jsonData);
+                                                                    JSONArray jArrayLang = new JSONArray(jsonData);
+                                                                    ArrayList<String> langList = new ArrayList<>();
+                                                                    for(int i = 0; i < jArrayLang.length(); i++) {
+                                                                        langList.add(jArrayLang.getJSONObject(i).getString("language"));
                                                                     }
-                                                                });
+                                                                    if(langList != null) {
+                                                                        StringBuilder sb = new StringBuilder();
+                                                                        for(int i = 0; i <langList.size(); i++) {
+                                                                            if(i > 0) {
+                                                                                sb.append(", ");
+                                                                            }
+                                                                            sb.append(langList.get(i));
+                                                                        }
+                                                                        String lang = sb.toString();
+                                                                        Log.d("langは？", lang);
+                                                                        user.setUse_languages(lang);
+                                                                        entSelectLang.setText(user.getUse_languages());
+                                                                    }
+                                                                } catch(NetworkOnMainThreadException e) {
+                                                                    e.printStackTrace();
+                                                                } catch (IOException e) {
+                                                                    e.printStackTrace();
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
                                                             }
-                                                        }
-                                                    });
-                                                }
-                                                if(!user.getNationality().equals("")) {
-                                                    String json = "{\"nationality\":\"" + user.getNationality() + "\"}";
-                                                    String urlS = url + "/NationalityFlagSearch.php";
-                                                    RequestBody body = RequestBody.create(json, JSON);
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            if(!user.getProfile().equals("")) {
+                                                String imgUrl = url + "/image/userImage/" + user.getProfile();
+                                                Log.d("URL", imgUrl);
 
-                                                    Request request = new Request.Builder()
-                                                            .url(urlS)
-                                                            .post(body)
-                                                            .build();
+                                                Request request = new Request.Builder()
+                                                        .url(imgUrl)
+                                                        .get()
+                                                        .build();
 
-                                                    client.newCall(request).enqueue(new Callback() {
-                                                        @Override
-                                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                                client.newCall(request).enqueue(new Callback() {
+                                                    @Override
+                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
-                                                        }
+                                                    }
 
-                                                        @Override
-                                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                    @Override
+                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                        if(response.isSuccessful()) {
+                                                            final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
                                                             mHandler.post(new Runnable() {
                                                                 @Override
                                                                 public void run() {
                                                                     try {
-                                                                        String jsonData = response.body().string();
-                                                                        Log.d("Json", jsonData);
-                                                                        JSONArray jArray = new JSONArray(jsonData);
-                                                                        String nationalFlag;
-                                                                        for(int i = 0; i < jArray.length(); i++) {
-                                                                            nationalFlag = jArray.getJSONObject(i).getString("country_flag");
-                                                                            if(!nationalFlag.equals("")) {
-                                                                                String imgFlagUrl = url + "/image/nationality/" + nationalFlag;
-
-                                                                                Request request = new Request.Builder()
-                                                                                        .url(imgFlagUrl)
-                                                                                        .get()
-                                                                                        .build();
-
-                                                                                client.newCall(request).enqueue(new Callback() {
-                                                                                    @Override
-                                                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
-                                                                                    }
-
-                                                                                    @Override
-                                                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                                                                        if(response.isSuccessful()) {
-                                                                                            final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                                                                                            mHandler.post(new Runnable() {
-                                                                                                @Override
-                                                                                                public void run() {
-                                                                                                    try {
-                                                                                                        myNationalFlag.setImageBitmap(bitmap);
-                                                                                                    } catch(NetworkOnMainThreadException e) {
-                                                                                                        e.printStackTrace();
-                                                                                                    }
-                                                                                                }
-                                                                                            });
-                                                                                        }
-                                                                                    }
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    } catch (IOException e) {
-                                                                        e.printStackTrace();
-                                                                    } catch (JSONException e) {
+                                                                        myProfile.setImageBitmap(bitmap);
+                                                                    } catch(NetworkOnMainThreadException e) {
                                                                         e.printStackTrace();
                                                                     }
                                                                 }
                                                             });
                                                         }
-                                                    });
-                                                }
+                                                    }
+                                                });
+                                            }
+                                            if(!user.getNationality().equals("")) {
+                                                String json = "{\"nationality\":\"" + user.getNationality() + "\"}";
+                                                String urlS = url + "/NationalityFlagSearch.php";
+                                                RequestBody body = RequestBody.create(json, JSON);
+
+                                                Request request = new Request.Builder()
+                                                        .url(urlS)
+                                                        .post(body)
+                                                        .build();
+
+                                                client.newCall(request).enqueue(new Callback() {
+                                                    @Override
+                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                        mHandler.post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                try {
+                                                                    String jsonData = response.body().string();
+                                                                    Log.d("Json", jsonData);
+                                                                    JSONArray jArray = new JSONArray(jsonData);
+                                                                    String nationalFlag;
+                                                                    for(int i = 0; i < jArray.length(); i++) {
+                                                                        nationalFlag = jArray.getJSONObject(i).getString("country_flag");
+                                                                        if(!nationalFlag.equals("")) {
+                                                                            String imgFlagUrl = url + "/image/nationality/" + nationalFlag;
+
+                                                                            Request request = new Request.Builder()
+                                                                                    .url(imgFlagUrl)
+                                                                                    .get()
+                                                                                    .build();
+
+                                                                            client.newCall(request).enqueue(new Callback() {
+                                                                                @Override
+                                                                                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                                                                }
+
+                                                                                @Override
+                                                                                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                                                    if(response.isSuccessful()) {
+                                                                                        final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+                                                                                        mHandler.post(new Runnable() {
+                                                                                            @Override
+                                                                                            public void run() {
+                                                                                                try {
+                                                                                                    myNationalFlag.setImageBitmap(bitmap);
+                                                                                                } catch(NetworkOnMainThreadException e) {
+                                                                                                    e.printStackTrace();
+                                                                                                }
+                                                                                            }
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                } catch (IOException e) {
+                                                                    e.printStackTrace();
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                });
                                             }
                                             setRatingBar();
                                             entSelectedJob.setText(user.getJob());
@@ -383,6 +440,8 @@ public class MyPageFragment extends Fragment {
                                         } catch(IOException e) {
                                             e.printStackTrace();
                                         } catch(JSONException e) {
+                                            e.printStackTrace();
+                                        } catch (NetworkOnMainThreadException e) {
                                             e.printStackTrace();
                                         }
                                     }
@@ -476,7 +535,7 @@ public class MyPageFragment extends Fragment {
                         String LangBox = "";
                         if(checkedItems.size() <= 3) {
                             for (Integer i : checkedItems) {
-                                String lang = String.join(MyPageFragment.this.langs[i], ",");
+                                String lang = String.join(",", MyPageFragment.this.langs[i]);
                                 LangBox = LangBox + " " + lang;
                             }
                         } else{
@@ -492,33 +551,32 @@ public class MyPageFragment extends Fragment {
     public void addJobOnCheckBox() {
         final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
         new AlertDialog.Builder(getActivity())
-                .setTitle("職種選択")
-                .setMultiChoiceItems(jobs, null, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) checkedItems.add(which);
-                        else checkedItems.remove((Integer) which);
+        .setTitle("職種選択")
+        .setSingleChoiceItems(jobs, -1, new DialogInterface.OnClickListener() {
+            // アイテム選択時の挙動
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                checkedItems.clear();
+                checkedItems.add(which);
+            }
+        })
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            // Yesが押された時の挙動
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!checkedItems.isEmpty()) {
+                    String jobBox = "";
+                    for (Integer i : checkedItems) {
+                        jobBox = jobs[i];
                     }
-                })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String JobBox = "";
-
-                        if(checkedItems.size() <= 1) {
-                            for (Integer i : checkedItems) {
-                                String job = String.join(",", MyPageFragment.this.jobs[i]);
-                                JobBox = JobBox + " " + job;
-                            }
-                        } else{
-                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　1つにしてください！", Toast.LENGTH_LONG).show();
-                        }
-                        editSelectedJob.setText(JobBox);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+                    editSelectedJob.setText(jobBox);
+                } else {
+                    Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　1つにしてください！", Toast.LENGTH_LONG).show();
+                }
+            }
+        })
+        .setNegativeButton("Cancel", null)
+        .show();
     }
 
     private class BtnAddAlermClickListener implements View.OnClickListener {
@@ -628,7 +686,7 @@ public class MyPageFragment extends Fragment {
         @Override
         public void onClick(View v){
             //編集モード
-            if (v == btnEditProfile) {
+            if (v == btnEntryProfile) {
                 //国籍入力　言語選択　エリア選択　　日付入力　プロフィール選択　
                 // 編集ボタン　ガイドスイッチ フィードバック
                 SwitchUser.setVisibility(View.VISIBLE);
@@ -637,7 +695,7 @@ public class MyPageFragment extends Fragment {
                 editSelectedArea.setVisibility(View.GONE);
                 editDayTable.setVisibility(View.GONE);
                 editTextProfile.setVisibility(View.GONE);
-                btnEditProfile.setVisibility(View.GONE);
+                btnEditProfile.setVisibility(View.VISIBLE);
                 // 01/28 変更点
                 if (gudieON == 1) {
                     editDayTable.setVisibility(View.GONE);
@@ -649,34 +707,24 @@ public class MyPageFragment extends Fragment {
                 entSelectedJob.setVisibility(View.VISIBLE);
                 entSelectLang.setVisibility(View.VISIBLE);
                 entTextProfile.setVisibility(View.VISIBLE);
-                btnEntryProfile.setVisibility(View.VISIBLE);
+                btnEntryProfile.setVisibility(View.GONE);
                 if (gudieON == 1) {
                     entDayTable.setVisibility(View.VISIBLE);
                     entSelectArea.setVisibility(View.VISIBLE);
                 }
-                for (int i = 0; i <= 6; i++) {
-                    Log.d("曜日判定", "曜日別: " + days[i]);
-
-                    /*判定イメージ
-                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 月null
-                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 火
-                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 水null
-                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 木null
-                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 金
-                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 土null
-                    2020-02-01 11:46:25.092 18996-18996/com.jz_jec_g01.tripwiz D/曜日判定: 曜日別: 日null
-                     */
-                }
             }
 
             //登録モード　登録ボタンクリック時
-            if (v == btnEntryProfile) {
+            if (v == btnEditProfile) {
                 //編集ボタン　国籍選択　言語選択　プロフィール選択 ガイドスイッチ
                 // ガイドであれば　　エリア選択　日付選択
                 editSelectedJob.setVisibility(View.VISIBLE);
                 editSelectedLang.setVisibility(View.VISIBLE);
                 editTextProfile.setVisibility(View.VISIBLE);
-                btnEditProfile.setVisibility(View.VISIBLE);
+                btnEditProfile.setVisibility(View.GONE);
+                editSelectedJob.setText(user.getJob());
+                editSelectedLang.setText(user.getUse_languages());
+                editTextProfile.setText(user.getIntroduction());
                 if (gudieON == 1) {
                     editDayTable.setVisibility(View.VISIBLE);
                     editSelectedArea.setVisibility(View.VISIBLE);
@@ -688,10 +736,13 @@ public class MyPageFragment extends Fragment {
                 entSelectedJob.setVisibility(View.GONE);
                 entSelectLang.setVisibility(View.GONE);
                 entTextProfile.setVisibility(View.GONE);
-                btnEntryProfile.setVisibility(View.GONE);
+                btnEntryProfile.setVisibility(View.VISIBLE);
                 if (gudieON == 1) {
                     entDayTable.setVisibility(View.GONE);
                     entSelectArea.setVisibility(View.GONE);
+                }
+                for (int i = 0; i <= 6; i++) {
+                    Log.d("曜日判定", "曜日別: " + days[i]);
                 }
             }
         }

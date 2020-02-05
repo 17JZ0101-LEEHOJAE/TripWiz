@@ -46,12 +46,10 @@ public class TamplateActivity extends AppCompatActivity {
         Log.d("ユーザー２", Integer.toString(user.getUserId()));
 
         navView = findViewById(R.id.nav_view);
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_guide, R.id.navigation_talk,R.id.navigation_myPage)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        NavigationUI.setupWithNavController(navView, navController);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("User", user);
+        Log.d("Bundle情報", String.valueOf(bundle));
 
         HomeFragment homeFragment = HomeFragment.newInstance();
 
@@ -60,13 +58,19 @@ public class TamplateActivity extends AppCompatActivity {
                 .replace(R.id.container, homeFragment)
                 .commit();
 
+        /**
+         *クリック時画面遷移メソッド
+         * XML bottom_nav_menu　activity_tamplete
+         * */
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Log.d(TAG, "ナビゲーション動作確認  " + item.getItemId());
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        HomeFragment homeFragment = HomeFragment.newInstance();
+                        HomeFragment homeFragment =  HomeFragment.newInstance();
 
+                        Log.d(TAG, "Homeボタンクリック");
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.container, homeFragment)
@@ -75,6 +79,7 @@ public class TamplateActivity extends AppCompatActivity {
                     case R.id.navigation_guide:
                         GuideFragment guideFragment = GuideFragment.newInstance();
 
+                        Log.d(TAG, "Guideボタンクリック");
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.container, guideFragment)
@@ -87,18 +92,18 @@ public class TamplateActivity extends AppCompatActivity {
                                 .beginTransaction()
                                 .replace(R.id.container, talkFragment)
                                 .commit();
-                        return true;
-                    case R.id.navigation_myPage:
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("User", user);
 
+                        Log.d(TAG, "Talkボタンクリック");
+                        return true;
+
+                    case R.id.navigation_myPage:
                         MyPageFragment myPageFragment = new MyPageFragment();
                         myPageFragment.setArguments(bundle);
 
-                        getSupportFragmentManager()
-                                .beginTransaction()
+                        getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, myPageFragment)
                                 .commit();
+                        Log.d(TAG, "Mypegeボタンクリック");
                         return true;
                 }
                 return false;
