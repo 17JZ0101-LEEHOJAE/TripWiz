@@ -129,7 +129,6 @@ public class SignupActivity extends AppCompatActivity {
                         "\"gender\":\"" + gender + "\", \"age\":\"" + age + "\", \"nationality\":\"" + nationality + "\", " +
                         "\"name\":\"" + name + "\"}";
                 RequestBody body = RequestBody.create(json, JSON);
-
                 try {
                     if(validateForm() == true) {
                         client.newCall(request).enqueue(new Callback() {
@@ -163,6 +162,7 @@ public class SignupActivity extends AppCompatActivity {
                                             public void run() {
                                                 Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
                                                 createAccount(email, password);
+                                                response.body().close();
                                             }
                                         });
                                     }

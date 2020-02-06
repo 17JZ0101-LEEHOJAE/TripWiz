@@ -318,6 +318,7 @@ public class MyPageFragment extends Fragment {
                                                                         user.setUse_languages(lang);
                                                                         entSelectLang.setText(user.getUse_languages());
                                                                     }
+
                                                                 } catch(NetworkOnMainThreadException e) {
                                                                     e.printStackTrace();
                                                                 } catch (IOException e) {
@@ -325,6 +326,7 @@ public class MyPageFragment extends Fragment {
                                                                 } catch (JSONException e) {
                                                                     e.printStackTrace();
                                                                 }
+                                                                response.body().close();
                                                             }
                                                         });
                                                     }
@@ -359,6 +361,7 @@ public class MyPageFragment extends Fragment {
                                                                     }
                                                                 }
                                                             });
+                                                            response.body().close();
                                                         }
                                                     }
                                                 });
@@ -429,6 +432,7 @@ public class MyPageFragment extends Fragment {
                                                                 } catch (JSONException e) {
                                                                     e.printStackTrace();
                                                                 }
+                                                                response.body().close();
                                                             }
                                                         });
                                                     }
@@ -437,6 +441,7 @@ public class MyPageFragment extends Fragment {
                                             setRatingBar();
                                             entSelectedJob.setText(user.getJob());
                                             entTextProfile.setText(user.getIntroduction());
+                                            response.body().close();
                                         } catch(IOException e) {
                                             e.printStackTrace();
                                         } catch(JSONException e) {
@@ -444,6 +449,7 @@ public class MyPageFragment extends Fragment {
                                         } catch (NetworkOnMainThreadException e) {
                                             e.printStackTrace();
                                         }
+                                        response.body().close();
                                     }
                                 });
                             }
@@ -500,16 +506,21 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String AreaBox = "";
                         if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
                             for (Integer i : checkedItems) {
-                                String area = String.join(",", MyPageFragment.this.areas[i]);
-                                AreaBox = AreaBox + " " + area;
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(areas[i]);
                             }
+                            String areaBox = sb.toString();
+                            Log.d("areaBoxは？", areaBox);
+                            editSelectedArea.setText(areaBox);
+                            user.setArea(areaBox);
                         } else{
                             Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
                         }
-                        editSelectedArea.setText(AreaBox);
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -532,16 +543,20 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String LangBox = "";
                         if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
                             for (Integer i : checkedItems) {
-                                String lang = String.join(",", MyPageFragment.this.langs[i]);
-                                LangBox = LangBox + " " + lang;
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(langs[i]);
                             }
+                            String langBox = sb.toString();
+                            editSelectedLang.setText(langBox);
+                            user.setArea(langBox);
                         } else{
                             Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つまでにしてください！", Toast.LENGTH_LONG).show();
                         }
-                        editSelectedLang.setText(LangBox);
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -570,8 +585,9 @@ public class MyPageFragment extends Fragment {
                         jobBox = jobs[i];
                     }
                     editSelectedJob.setText(jobBox);
+                    user.setJob(jobBox);
                 } else {
-                    Toast.makeText(getApplicationContext(), "選択個数が多すぎます。　1つにしてください！", Toast.LENGTH_LONG).show();
+                    editSelectedJob.setText(user.getJob());
                 }
             }
         })
@@ -693,7 +709,6 @@ public class MyPageFragment extends Fragment {
                 editSelectedJob.setVisibility(View.GONE);
                 editSelectedLang.setVisibility(View.GONE);
                 editSelectedArea.setVisibility(View.GONE);
-                editDayTable.setVisibility(View.GONE);
                 editTextProfile.setVisibility(View.GONE);
                 btnEditProfile.setVisibility(View.VISIBLE);
                 // 01/28 変更点
@@ -708,7 +723,7 @@ public class MyPageFragment extends Fragment {
                 entSelectLang.setVisibility(View.VISIBLE);
                 entTextProfile.setVisibility(View.VISIBLE);
                 btnEntryProfile.setVisibility(View.GONE);
-                if (gudieON == 1) {
+                if (gudieON == 0) {
                     entDayTable.setVisibility(View.VISIBLE);
                     entSelectArea.setVisibility(View.VISIBLE);
                 }
@@ -728,7 +743,9 @@ public class MyPageFragment extends Fragment {
                 if (gudieON == 1) {
                     editDayTable.setVisibility(View.VISIBLE);
                     editSelectedArea.setVisibility(View.VISIBLE);
-
+                    for (int i = 0; i <= 6; i++) {
+                        Log.d("曜日判定", "曜日別: " + days[i]);
+                    }
                 }
                 //国籍　言語　プロフィール　登録ボタン
                 //ガイドでなければ日付　エリア
@@ -737,12 +754,9 @@ public class MyPageFragment extends Fragment {
                 entSelectLang.setVisibility(View.GONE);
                 entTextProfile.setVisibility(View.GONE);
                 btnEntryProfile.setVisibility(View.VISIBLE);
-                if (gudieON == 1) {
+                if (gudieON == 0) {
                     entDayTable.setVisibility(View.GONE);
                     entSelectArea.setVisibility(View.GONE);
-                }
-                for (int i = 0; i <= 6; i++) {
-                    Log.d("曜日判定", "曜日別: " + days[i]);
                 }
             }
         }
