@@ -111,6 +111,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
                 app:srcCompat="@drawable/guideicon" />
 
+            <EditText
+                android:id="@+id/editTexteName"
+                android:layout_width="113dp"
+                android:layout_height="28dp"
+                android:background="@drawable/border"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewRate"
+                app:layout_constraintHorizontal_bias="0.275"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewUser"
+                app:layout_constraintVertical_bias="0.169" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -461,7 +479,6 @@
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:onClick="mon_clickDay"
                             android:text="×"
                             android:textSize="24dp" />
 
@@ -473,7 +490,6 @@
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:onClick="tues_clickDay"
                             android:text="×"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -535,107 +551,6 @@
 
                 </TableLayout>
 
-                <TableLayout
-                    android:id="@+id/entDayTableLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center"
-                    android:stretchColumns="0,1,2,3,4,5,6"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewDayOfTheWeek">
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="#000000">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewMon"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewTue"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewWed"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="3"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewThu"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="4"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewFri"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="5"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewSat"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="6"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewSun"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-                    </TableRow>
-
-
-                </TableLayout>
-
 
                 <EditText
                     android:id="@+id/editTextProfile"
@@ -645,6 +560,7 @@
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/border"
                     android:inputType="textMultiLine"
+                    android:textColor="#000"
                     android:textSize="15sp"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -660,8 +576,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/border"
-                    android:text="よろしくお願いします。料金 ###円から案内可能です。可能エリア　〇〇区と〇〇県案内できます。交通費負担お願い致します。
-"
+                    android:text="よろしくお願いします。料金 ###円から案内可能です。可能エリア　〇〇区と〇〇県案内できます。交通費負担お願い致します。"
                     android:textSize="15sp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"

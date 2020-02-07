@@ -127,6 +127,7 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
                                             } catch(NetworkOnMainThreadException e) {
                                                 e.printStackTrace();
                                             }
+                                            response.body().close();
                                         }
                                     });
                                 }

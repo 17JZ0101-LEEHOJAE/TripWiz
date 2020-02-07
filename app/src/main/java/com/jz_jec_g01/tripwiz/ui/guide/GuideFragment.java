@@ -174,6 +174,7 @@ public class GuideFragment extends Fragment {
                                         } catch(JSONException e) {
                                             e.printStackTrace();
                                         }
+                                        response.body().close();
                                     }
                                 });
                             }

@@ -46,6 +46,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,7 +74,7 @@ public class MyPageFragment extends Fragment {
     private View v;
     private LinearLayout selectLnagsBox;
     private LinearLayout selectAreaBox;
-    private TextView myName;
+    private TextView entTextName;
     private ImageView myProfile;
     private ImageView myNationalFlag;
     private TextView editSelectedLang;
@@ -85,6 +87,7 @@ public class MyPageFragment extends Fragment {
     private TextView entTextProfile;
     private TextView dayTitle;
     private EditText editTextProfile;
+    private EditText editTexteName;
     private Button mon_day_btn;
     private Button tues_day_btn;
     private Button wed_day_btn;
@@ -120,9 +123,10 @@ public class MyPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_my_page, container, false);
-        myName = v.findViewById(R.id.textViewUserName);
+        entTextName = v.findViewById(R.id.textViewUserName);
         myProfile = v.findViewById(R.id.imageViewUser);
         myNationalFlag = v.findViewById(R.id.imageViewNationalFlag);
+        editTexteName = v.findViewById(R.id.editTexteName);
         //ガイド切り替え
         SwitchUser = v.findViewById(R.id.switchUser);
         //言語とエリアと曜日テーブル
@@ -156,6 +160,7 @@ public class MyPageFragment extends Fragment {
         //プロフィールボタン取得buttonVisibleProfile
         btnEditProfile = v.findViewById(R.id.buttonVisibleProfile);
         btnEntryProfile = v.findViewById(R.id.buttonGoneProfile);
+
         //自己紹介text
         editTextProfile = v.findViewById(R.id.editTextProfile);
         entTextProfile = v.findViewById(R.id.PrTextProfile);
@@ -171,6 +176,8 @@ public class MyPageFragment extends Fragment {
                     if(isChecked){
                         selectAreaBox.setVisibility(View.VISIBLE);
                         dayTableLayout.setVisibility(View.VISIBLE);
+                        entDayTable.setVisibility(View.VISIBLE);
+                        editDayTable.setVisibility(View.GONE);
                         dayTitle.setVisibility(View.VISIBLE);
                         gudieON = 1;
                     }
@@ -178,6 +185,8 @@ public class MyPageFragment extends Fragment {
                     else{
                         selectAreaBox.setVisibility(View.GONE);
                         dayTableLayout.setVisibility(View.GONE);
+                        entDayTable.setVisibility(View.GONE);
+                        editDayTable.setVisibility(View.GONE);
                         dayTitle.setVisibility(View.GONE);
                         gudieON = 0;
                     }
@@ -265,7 +274,7 @@ public class MyPageFragment extends Fragment {
                                             Log.d("Json", jsonData);
                                             JSONArray jArrayUser = new JSONArray(jsonData);
                                             for(int i = 0; i < jArrayUser.length(); i++) {
-                                                myName.setText(user.getName());
+                                                entTextName.setText(user.getName());
                                                 user.setGender(jArrayUser.getJSONObject(i).getInt("gender"));
                                                 user.setJob(jArrayUser.getJSONObject(i).getString("job"));
                                                 user.setNationality(jArrayUser.getJSONObject(i).getString("nationality"));
@@ -420,6 +429,7 @@ public class MyPageFragment extends Fragment {
                                                                                                 } catch(NetworkOnMainThreadException e) {
                                                                                                     e.printStackTrace();
                                                                                                 }
+                                                                                                response.body().close();
                                                                                             }
                                                                                         });
                                                                                     }
@@ -430,6 +440,8 @@ public class MyPageFragment extends Fragment {
                                                                 } catch (IOException e) {
                                                                     e.printStackTrace();
                                                                 } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                } catch (NetworkOnMainThreadException e) {
                                                                     e.printStackTrace();
                                                                 }
                                                                 response.body().close();
@@ -506,18 +518,23 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        ArrayList<String> areaBox = new ArrayList<String>();
                         if(checkedItems.size() <= 3) {
                             StringBuilder sb = new StringBuilder();
                             for (Integer i : checkedItems) {
+                                areaBox.add(areas[i]);
+                            }
+                            Collections.sort(areaBox, Collections.reverseOrder());
+                            for(int i = 0; i < areaBox.size(); i++) {
                                 if(sb.length() > 0) {
                                     sb.append(", ");
                                 }
-                                sb.append(areas[i]);
+                                sb.append(areaBox.get(i));
                             }
-                            String areaBox = sb.toString();
-                            Log.d("areaBoxは？", areaBox);
-                            editSelectedArea.setText(areaBox);
-                            user.setArea(areaBox);
+                            String area = sb.toString();
+                            Log.d("areaBoxは？", area);
+                            editSelectedArea.setText(area);
+                            user.setArea(area);
                         } else{
                             Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
                         }
@@ -543,17 +560,22 @@ public class MyPageFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        ArrayList<String> langBox = new ArrayList<String>();
                         if(checkedItems.size() <= 3) {
                             StringBuilder sb = new StringBuilder();
                             for (Integer i : checkedItems) {
+                                langBox.add(langs[i]);
+                            }
+                            Collections.sort(langBox, Collections.reverseOrder());
+                            for(int i = 0; i < langBox.size(); i++) {
                                 if(sb.length() > 0) {
                                     sb.append(", ");
                                 }
-                                sb.append(langs[i]);
+                                sb.append(langBox.get(i));
                             }
-                            String langBox = sb.toString();
-                            editSelectedLang.setText(langBox);
-                            user.setArea(langBox);
+                            String lang = sb.toString();
+                            editSelectedLang.setText(lang);
+                            user.setUse_languages(lang);
                         } else{
                             Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つまでにしてください！", Toast.LENGTH_LONG).show();
                         }
@@ -625,7 +647,7 @@ public class MyPageFragment extends Fragment {
                     } else if (tues_day_btn.getText().equals("×")) {
                         tues_day_btn.setText("◯");
                         /**色指定**/
-                        tues_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[1] = "火";
                     }
                     break;
@@ -638,7 +660,7 @@ public class MyPageFragment extends Fragment {
                     } else if (wed_day_btn.getText().equals("×")) {
                         wed_day_btn.setText("◯");
                         /**色指定**/
-                        wed_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[2] = "水";
                     }
                     break;
@@ -651,7 +673,7 @@ public class MyPageFragment extends Fragment {
                     } else if (thurs_day_btn.getText().equals("×")) {
                         thurs_day_btn.setText("◯");
                         /**色指定**/
-                        thurs_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[3] = "木";
                     }
                     break;
@@ -664,7 +686,7 @@ public class MyPageFragment extends Fragment {
                     } else if (fri_day_btn.getText().equals("×")) {
                         fri_day_btn.setText("◯");
                         /**色指定**/
-                        fri_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[4] = "金";
                     }
                     break;
@@ -677,7 +699,7 @@ public class MyPageFragment extends Fragment {
                     } else if (saturs_day_btn.getText().equals( "×")) {
                         saturs_day_btn.setText("◯");
                         /**色指定**/
-                        saturs_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[5] = "土";
                     }
                     break;
@@ -690,7 +712,7 @@ public class MyPageFragment extends Fragment {
                     } else if (sun_day_btn.getText().equals("×")) {
                         sun_day_btn.setText("◯");
                         /**色指定**/
-                        sun_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[6] = "日";
                     }
                     break;
@@ -701,63 +723,108 @@ public class MyPageFragment extends Fragment {
     private class Visibilitys implements View.OnClickListener {
         @Override
         public void onClick(View v){
-            //編集モード
+            //登録完了状態
+            //編集ボタンが押されたあとの処理
             if (v == btnEntryProfile) {
-                //国籍入力　言語選択　エリア選択　　日付入力　プロフィール選択　
-                // 編集ボタン　ガイドスイッチ フィードバック
+                //編集結果をセット
+                entSelectedJob.setText(user.getJob());
+                entSelectLang.setText(user.getUse_languages());
+                entTextProfile.setText(user.getIntroduction());
+                entSelectArea.setText(user.getArea());
+                entTextName.setText(user.getName());
+
+
+                //表示・非表示の切り替え
                 SwitchUser.setVisibility(View.VISIBLE);
                 editSelectedJob.setVisibility(View.GONE);
+                entSelectedJob.setVisibility(View.VISIBLE);
+
                 editSelectedLang.setVisibility(View.GONE);
-                editSelectedArea.setVisibility(View.GONE);
+                entSelectLang.setVisibility(View.VISIBLE);
+
+                editTexteName.setVisibility(View.GONE);
+                entTextName.setVisibility(View.VISIBLE);
+
                 editTextProfile.setVisibility(View.GONE);
-                btnEditProfile.setVisibility(View.VISIBLE);
-                // 01/28 変更点
+                entTextProfile.setVisibility(View.VISIBLE);
+
+                //ガイド状態の判定
                 if (gudieON == 1) {
                     editDayTable.setVisibility(View.GONE);
-                    editSelectedArea.setVisibility(View.GONE);
-
-                }
-                //国籍　言語　プロフィール　登録ボタン
-                //ガイドでなければ日付　エリア
-                entSelectedJob.setVisibility(View.VISIBLE);
-                entSelectLang.setVisibility(View.VISIBLE);
-                entTextProfile.setVisibility(View.VISIBLE);
-                btnEntryProfile.setVisibility(View.GONE);
-                if (gudieON == 0) {
                     entDayTable.setVisibility(View.VISIBLE);
+                    editSelectedArea.setVisibility(View.GONE);
                     entSelectArea.setVisibility(View.VISIBLE);
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i <= 6; i++) {
+                        if(sb.length() > 0) {
+                            sb.append(", ");
+                        }
+                        sb.append(days[i]);
+                    }
+                    String month = sb.toString();
+                    user.setWeek(month);
+                } else {
+                    editDayTable.setVisibility(View.GONE);
+                    entDayTable.setVisibility(View.GONE);
+                    editSelectedArea.setVisibility(View.GONE);
+                    entSelectArea.setVisibility(View.GONE);
                 }
+                final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+                String json = "{\"name\":\"" + user.getName() + "\"}";
+
+                RequestBody body = RequestBody.create(json, JSON);
+
+                //ボタン表示の切り替え
+                btnEditProfile.setVisibility(View.VISIBLE);
+                btnEntryProfile.setVisibility(View.GONE);
             }
 
-            //登録モード　登録ボタンクリック時
+            //登録モード
+            //登録ボタンが押されたあとの処理
             if (v == btnEditProfile) {
-                //編集ボタン　国籍選択　言語選択　プロフィール選択 ガイドスイッチ
-                // ガイドであれば　　エリア選択　日付選択
-                editSelectedJob.setVisibility(View.VISIBLE);
-                editSelectedLang.setVisibility(View.VISIBLE);
-                editTextProfile.setVisibility(View.VISIBLE);
-                btnEditProfile.setVisibility(View.GONE);
+                //既存のデータをセット
                 editSelectedJob.setText(user.getJob());
                 editSelectedLang.setText(user.getUse_languages());
                 editTextProfile.setText(user.getIntroduction());
+                editSelectedArea.setText(user.getArea());
+                editTexteName.setText(user.getName());
+
+                //表示・非表示の切り替え
+                SwitchUser.setVisibility(View.GONE);
+                editSelectedJob.setVisibility(View.VISIBLE);
+                entSelectedJob.setVisibility(View.GONE);
+
+                editSelectedLang.setVisibility(View.VISIBLE);
+                entSelectLang.setVisibility(View.GONE);
+
+                editTexteName.setVisibility(View.VISIBLE);
+                entTextName.setVisibility(View.GONE);
+                if(!editTexteName.getText().toString().equals("")) {
+                    user.setName(editTexteName.getText().toString());
+                }
+
+                editTextProfile.setVisibility(View.VISIBLE);
+                entTextProfile.setVisibility(View.GONE);
+                if(!editTextProfile.getText().toString().equals("")) {
+                    user.setIntroduction(editTextProfile.getText().toString());
+                }
+
+                //ガイド状態の判定
                 if (gudieON == 1) {
                     editDayTable.setVisibility(View.VISIBLE);
-                    editSelectedArea.setVisibility(View.VISIBLE);
-                    for (int i = 0; i <= 6; i++) {
-                        Log.d("曜日判定", "曜日別: " + days[i]);
-                    }
-                }
-                //国籍　言語　プロフィール　登録ボタン
-                //ガイドでなければ日付　エリア
-                SwitchUser.setVisibility(View.GONE);
-                entSelectedJob.setVisibility(View.GONE);
-                entSelectLang.setVisibility(View.GONE);
-                entTextProfile.setVisibility(View.GONE);
-                btnEntryProfile.setVisibility(View.VISIBLE);
-                if (gudieON == 0) {
                     entDayTable.setVisibility(View.GONE);
+                    editSelectedArea.setVisibility(View.VISIBLE);
+                    entSelectArea.setVisibility(View.GONE);
+                } else {
+                    editDayTable.setVisibility(View.GONE);
+                    entDayTable.setVisibility(View.GONE);
+                    editSelectedArea.setVisibility(View.GONE);
                     entSelectArea.setVisibility(View.GONE);
                 }
+
+                //ボタン表示の切り替え
+                btnEditProfile.setVisibility(View.GONE);
+                btnEntryProfile.setVisibility(View.VISIBLE);
             }
         }
     }
