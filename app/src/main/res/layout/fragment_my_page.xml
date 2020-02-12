@@ -105,16 +105,18 @@
                 android:layout_width="84dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/switchUser"
                 app:layout_constraintHorizontal_bias="0.301"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
+                app:layout_constraintVertical_bias="0.125"
                 app:srcCompat="@drawable/guideicon" />
 
             <EditText
                 android:id="@+id/editTexteName"
-                android:layout_width="113dp"
-                android:layout_height="28dp"
+                android:layout_width="118dp"
+                android:layout_height="29dp"
                 android:background="@drawable/border"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -122,12 +124,12 @@
                 android:textColor="#000"
                 android:textSize="15sp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewNationalFlag"
                 app:layout_constraintEnd_toStartOf="@+id/textViewRate"
-                app:layout_constraintHorizontal_bias="0.275"
+                app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewUser"
-                app:layout_constraintVertical_bias="0.169" />
+                app:layout_constraintVertical_bias="0.434" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

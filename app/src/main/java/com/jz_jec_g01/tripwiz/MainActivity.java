@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String emailTAG = "EmailPassword";
     private static final String googleTAG = "GoogleActivity";
     private static final String facebookTAG = "FacebookLogin";
-    final String url = "http://10.210.20.161";
-//    final String url = "http://www.jz.jec.ac.jp/17jzg01";
+//    final String url = "http://10.210.20.161";
+    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private static final int RC_SIGN_IN = 9001;
@@ -226,20 +226,24 @@ public class MainActivity extends AppCompatActivity {
                                                             JSONArray jArray = new JSONArray(jsonData);
                                                             String strMail;
                                                             String strPass;
-                                                            for(int i = 0; i < jArray.length(); i++) {
-                                                                strMail = jArray.getJSONObject(i).getString("mailAddress");
-                                                                strPass = jArray.getJSONObject(i).getString("password");
-                                                                if(mailAddress.equals(strMail) && password.equals(strPass)) {
-                                                                    Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
-                                                                    user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
-                                                                    user.setName(jArray.getJSONObject(i).getString("name"));
-                                                                    Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
-                                                                    intent.putExtra("user", user);
-                                                                    startActivity(intent);
-                                                                    break;
-                                                                } else {
-                                                                    Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
+                                                            if(jArray != null) {
+                                                                for(int i = 0; i < jArray.length(); i++) {
+                                                                    strMail = jArray.getJSONObject(i).getString("mailAddress");
+                                                                    strPass = jArray.getJSONObject(i).getString("password");
+                                                                    if (mailAddress.equals(strMail) && password.equals(strPass)) {
+                                                                        Toast.makeText(getApplicationContext(), "会員確認成功", Toast.LENGTH_LONG).show();
+                                                                        user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
+                                                                        user.setName(jArray.getJSONObject(i).getString("name"));
+                                                                        Intent intent = new Intent(MainActivity.this, TamplateActivity.class);
+                                                                        intent.putExtra("user", user);
+                                                                        startActivity(intent);
+                                                                        break;
+                                                                    } else {
+                                                                        Toast.makeText(getApplicationContext(), "会員確認失敗", Toast.LENGTH_LONG).show();
+                                                                    }
                                                                 }
+                                                            } else {
+                                                                Toast.makeText(getApplicationContext(), "メールアドレスとパスワードを確認してください", Toast.LENGTH_LONG).show();
                                                             }
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();

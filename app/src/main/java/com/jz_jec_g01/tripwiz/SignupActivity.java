@@ -26,6 +26,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.jz_jec_g01.tripwiz.model.User;
+import com.jz_jec_g01.tripwiz.ui.myPage.MyPageFragment;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -43,7 +49,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText inputPassword;
     private EditText editTextName;
     private FirebaseAuth mAuth;
-    final String url = "http://10.210.20.161";
+//    final String url = "http://10.210.20.161";
+    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private Button btnSignUp;
@@ -51,6 +58,7 @@ public class SignupActivity extends AppCompatActivity {
     private String AgeSpinners[] = {"10代", "20代", "30代", "40代", "50代"};
     private RadioGroup genderGroup;
     private static final String TAG = "debug";
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +69,11 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.buttonSignup);
         inputEmail = findViewById(R.id.editTextMailAddress);
         inputPassword = findViewById(R.id.editTextPassword);
-//        genderGroup = findViewById(R.id.radioGroupGender);
+        genderGroup = findViewById(R.id.radioGroupGender);
         editTextName = findViewById(R.id.editTextName);
         Spinner Natiospinner = findViewById(R.id.NatioSpinner);
         Spinner Agespinner = findViewById(R.id.AgeSpinner);
+        user = new User();
 /*************************Spinner***************************/
         //ArrayAdapter
         ArrayAdapter<String> NatioAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, NatioSpinners);
@@ -133,8 +142,6 @@ public class SignupActivity extends AppCompatActivity {
                     if(validateForm() == true) {
                         client.newCall(request).enqueue(new Callback() {
                             final Handler mHandler = new Handler(Looper.getMainLooper());
-
-
                             @Override
                             public void onFailure(Call call, IOException e) {
 
@@ -163,6 +170,57 @@ public class SignupActivity extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
                                                 createAccount(email, password);
                                                 response.body().close();
+
+                                                String urlS = url + "/Information_User.php";
+
+                                                Request request = new Request.Builder()
+                                                        .url(urlS)
+                                                        .post(body)
+                                                        .build();
+
+                                                client.newCall(request).enqueue(new Callback() {
+                                                    @Override
+                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                        mHandler.post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                try {
+                                                                    String jsonData = response.body().string();
+                                                                    Log.d("Json", jsonData);
+                                                                    JSONArray jArray = new JSONArray(jsonData);
+                                                                    for(int i = 0; i < jArray.length(); i++) {
+                                                                        user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
+                                                                        user.setName(jArray.getJSONObject(i).getString("name"));
+                                                                        user.setGender(jArray.getJSONObject(i).getInt("gender"));
+                                                                        user.setJob(jArray.getJSONObject(i).getString("job"));
+                                                                        user.setNationality(jArray.getJSONObject(i).getString("nationality"));
+                                                                        user.setIntroduction(jArray.getJSONObject(i).getString("introduction"));
+                                                                        user.setProfile(jArray.getJSONObject(i).getString("profile"));
+                                                                        user.setGuideStatus(jArray.getJSONObject(i).getInt("guide_status"));
+                                                                        user.setRating(jArray.getJSONObject(i).getDouble("rating_rate"));
+                                                                        user.setArea(jArray.getJSONObject(i).getString("information_area"));
+                                                                        user.setWeek(jArray.getJSONObject(i).getString("information_week"));
+                                                                    }
+                                                                    if(user.getUserId() > 0) {
+                                                                        Intent intent = new Intent(SignupActivity.this, TamplateActivity.class);
+                                                                        intent.putExtra("user", user);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                } catch (IOException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                                response.body().close();
+                                                            }
+                                                        });
+                                                    }
+                                                });
                                             }
                                         });
                                     }
@@ -192,8 +250,6 @@ public class SignupActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(SignupActivity.this, ProfilePageActivity.class);
-                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

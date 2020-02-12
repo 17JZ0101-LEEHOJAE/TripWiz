@@ -38,8 +38,8 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
 
     private List<String> iImages;
     private List<String> iNames;
-    final String url = "http://10.210.20.161";
-//    final String url = "http://www.jz.jec.ac.jp/17jzg01";
+//    final String url = "http://10.210.20.161";
+    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
 

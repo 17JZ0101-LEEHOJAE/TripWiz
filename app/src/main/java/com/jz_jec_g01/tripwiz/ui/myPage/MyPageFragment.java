@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.NetworkOnMainThreadException;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +69,9 @@ import com.jz_jec_g01.tripwiz.feedbacks.FeedbackAdapter;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyPageFragment extends Fragment {
-    final String url = "http://10.210.20.161";
-    //    final String url = "http://www.jz.jec.ac.jp/17jzg01";
+    private static final int READ_REQUEST_CODE = 0;
+//    final String url = "http://10.210.20.161";
+        final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private View v;
@@ -102,11 +105,11 @@ public class MyPageFragment extends Fragment {
     private TableRow editDayTable;
     private TableLayout dayTableLayout;
     private String[] jobs = {"学生", "会社員", "専業主婦", "その他"};
-    private String[] langs = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
+    private String[] langs = {"日本語", "英語", "韓国語", "ベトナム語", "スペイン語", "中国語"};
     private String[] areas = {"足立区", "荒川区", "板橋区", "江戸川区", "大田区", "葛飾区", "北区", "江東区", "品川区", "渋谷区", "新宿区", "杉並区",
             "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"};
     private String[] days = {"月","火","水","木","金","土","日"};
-    private Switch SwitchUser;
+    private Switch switchUser;
     private RatingBar ratingBar;
     private User user;
 
@@ -128,7 +131,7 @@ public class MyPageFragment extends Fragment {
         myNationalFlag = v.findViewById(R.id.imageViewNationalFlag);
         editTexteName = v.findViewById(R.id.editTexteName);
         //ガイド切り替え
-        SwitchUser = v.findViewById(R.id.switchUser);
+        switchUser = v.findViewById(R.id.switchUser);
         //言語とエリアと曜日テーブル
         selectAreaBox = v.findViewById(R.id.selectAreasBox);
         selectLnagsBox = v.findViewById(R.id.selectLangsBox);
@@ -168,29 +171,32 @@ public class MyPageFragment extends Fragment {
 
         //ガイドユーザー切り替え
         // switchButtonのオンオフが切り替わった時の処理を設定
-        SwitchUser.setOnCheckedChangeListener(
+        switchUser.setOnCheckedChangeListener(
             new CompoundButton.OnCheckedChangeListener(){
                 public void onCheckedChanged(CompoundButton comButton, boolean isChecked){
                     // 表示する文字列をスイッチのオンオフで変える
                     // オンなら
-                    if(isChecked){
+                    if(user.getGuideStatus() == 1) {
+                        switchUser.setChecked(true);
                         selectAreaBox.setVisibility(View.VISIBLE);
                         dayTableLayout.setVisibility(View.VISIBLE);
                         entDayTable.setVisibility(View.VISIBLE);
                         editDayTable.setVisibility(View.GONE);
                         dayTitle.setVisibility(View.VISIBLE);
                         gudieON = 1;
+                        user.setGuideStatus(gudieON);
                     }
                     // オフなら
                     else{
+                        switchUser.setChecked(false);
                         selectAreaBox.setVisibility(View.GONE);
                         dayTableLayout.setVisibility(View.GONE);
                         entDayTable.setVisibility(View.GONE);
                         editDayTable.setVisibility(View.GONE);
                         dayTitle.setVisibility(View.GONE);
                         gudieON = 0;
+                        user.setGuideStatus(gudieON);
                     }
-
                 }
             }
         );
@@ -284,6 +290,14 @@ public class MyPageFragment extends Fragment {
                                                 user.setRating(jArrayUser.getJSONObject(i).getDouble("rating_rate"));
                                                 user.setArea(jArrayUser.getJSONObject(i).getString("information_area"));
                                                 user.setWeek(jArrayUser.getJSONObject(i).getString("information_week"));
+
+                                                if(user.getArea().equals("") || user.getArea().equals(null)) {
+                                                    entSelectArea.setText("未選択");
+                                                }
+
+                                                if(user.getJob().equals("") || user.getJob().equals(null)) {
+                                                    entSelectedJob.setText("未選択");
+                                                }
                                             }
                                             if(user.getUserId() > 0) {
                                                 String json = "{\"user_id\":\"" + user.getUserId() + "\"}";
@@ -470,7 +484,6 @@ public class MyPageFragment extends Fragment {
                 });
             }
         });
-
         return v;
     }
 
@@ -719,14 +732,24 @@ public class MyPageFragment extends Fragment {
             }
         }
     }
+
     //表示非表示切り替え
     private class Visibilitys implements View.OnClickListener {
         @Override
         public void onClick(View v){
+            gudieON = user.getGuideStatus();
             //登録完了状態
-            //編集ボタンが押されたあとの処理
+            //登録ボタンが押されたあとの処理
             if (v == btnEntryProfile) {
                 //編集結果をセット
+                user.setName(editTexteName.getText().toString());
+                Log.d("名前内容？", editTexteName.getText().toString());
+                user.setJob(editSelectedJob.getText().toString());
+                user.setUse_languages(editSelectedLang.getText().toString());
+                user.setIntroduction(editTextProfile.getText().toString());
+                Log.d("自己紹介テキスト内容？", editTextProfile.getText().toString());
+                user.setArea(editSelectedArea.getText().toString());
+
                 entSelectedJob.setText(user.getJob());
                 entSelectLang.setText(user.getUse_languages());
                 entTextProfile.setText(user.getIntroduction());
@@ -735,7 +758,7 @@ public class MyPageFragment extends Fragment {
 
 
                 //表示・非表示の切り替え
-                SwitchUser.setVisibility(View.VISIBLE);
+                switchUser.setVisibility(View.VISIBLE);
                 editSelectedJob.setVisibility(View.GONE);
                 entSelectedJob.setVisibility(View.VISIBLE);
 
@@ -748,7 +771,8 @@ public class MyPageFragment extends Fragment {
                 editTextProfile.setVisibility(View.GONE);
                 entTextProfile.setVisibility(View.VISIBLE);
 
-                //ガイド状態の判定
+                //ガイド状態の判定及びデータの更新処理
+                final MediaType JSON = MediaType.get("application/json; charset=utf-8");
                 if (gudieON == 1) {
                     editDayTable.setVisibility(View.GONE);
                     entDayTable.setVisibility(View.VISIBLE);
@@ -763,16 +787,105 @@ public class MyPageFragment extends Fragment {
                     }
                     String month = sb.toString();
                     user.setWeek(month);
+
+
+                    String json = "{\"name\":\"" + user.getName() + "\", \"job\":\"" + user.getJob() + "\", \"introduction\":\"" + user.getIntroduction() + "\", " +
+                                    "\"information_area\":\"" + user.getArea() + "\", \"information_week\":\"" + user.getWeek() + "\" , " +
+                                    "\"profile\":\"" + user.getProfile() + "\", \"language\":\"" + user.getUse_languages() + "\", \"user_id\":\"" + user.getUserId() + "\"}";
+                    RequestBody body = RequestBody.create(json, JSON);
+
+                    if(user.getUserId() > 0) {
+                        try {
+                            client.newCall(request).enqueue(new Callback() {
+                                final Handler mHandler = new Handler(Looper.getMainLooper());
+                                @Override
+                                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                }
+
+                                @Override
+                                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                    String urlS = url + "/Modification_MyPage.php";
+                                    Request request = new Request.Builder()
+                                            .url(urlS)
+                                            .post(body)
+                                            .build();
+
+                                    OkHttpClient client = new OkHttpClient.Builder().build();
+                                    client.newCall(request).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                        }
+
+                                        @Override
+                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getApplicationContext(),"プロフィールがアップデートされました。", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        } catch(NetworkOnMainThreadException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 } else {
                     editDayTable.setVisibility(View.GONE);
                     entDayTable.setVisibility(View.GONE);
                     editSelectedArea.setVisibility(View.GONE);
                     entSelectArea.setVisibility(View.GONE);
-                }
-                final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-                String json = "{\"name\":\"" + user.getName() + "\"}";
+                    String json = "{\"name\":\"" + user.getName() + "\", \"job\":\"" + user.getJob() + "\", \"introduction\":\"" + user.getIntroduction() + "\", " +
+                                    "\"profile\":\"" + user.getProfile() + "\", \"language\":\"" + user.getUse_languages() + "\", \"user_id\":\"" + user.getUserId() + "\"}";
+                    RequestBody body = RequestBody.create(json, JSON);
 
-                RequestBody body = RequestBody.create(json, JSON);
+                    if(user.getUserId() > 0) {
+                        try {
+                            client.newCall(request).enqueue(new Callback() {
+                                final Handler mHandler = new Handler(Looper.getMainLooper());
+                                @Override
+                                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                }
+
+                                @Override
+                                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                    String urlS = url + "/Modification_MyPage.php";
+                                    Request request = new Request.Builder()
+                                            .url(urlS)
+                                            .post(body)
+                                            .build();
+
+                                    OkHttpClient client = new OkHttpClient.Builder().build();
+                                    client.newCall(request).enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+                                        }
+
+                                        @Override
+                                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                            mHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getApplicationContext(),"プロフィールがアップデートされました。", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        } catch(NetworkOnMainThreadException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                myProfile.setOnClickListener(null);
 
                 //ボタン表示の切り替え
                 btnEditProfile.setVisibility(View.VISIBLE);
@@ -780,7 +893,7 @@ public class MyPageFragment extends Fragment {
             }
 
             //登録モード
-            //登録ボタンが押されたあとの処理
+            //編集ボタンが押されたあとの処理
             if (v == btnEditProfile) {
                 //既存のデータをセット
                 editSelectedJob.setText(user.getJob());
@@ -790,7 +903,7 @@ public class MyPageFragment extends Fragment {
                 editTexteName.setText(user.getName());
 
                 //表示・非表示の切り替え
-                SwitchUser.setVisibility(View.GONE);
+                switchUser.setVisibility(View.GONE);
                 editSelectedJob.setVisibility(View.VISIBLE);
                 entSelectedJob.setVisibility(View.GONE);
 
@@ -798,6 +911,7 @@ public class MyPageFragment extends Fragment {
                 entSelectLang.setVisibility(View.GONE);
 
                 editTexteName.setVisibility(View.VISIBLE);
+                entTextName.setVisibility(View.GONE);
                 entTextName.setVisibility(View.GONE);
                 if(!editTexteName.getText().toString().equals("")) {
                     user.setName(editTexteName.getText().toString());
@@ -822,9 +936,36 @@ public class MyPageFragment extends Fragment {
                     entSelectArea.setVisibility(View.GONE);
                 }
 
+                myProfile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, READ_REQUEST_CODE);
+                    }
+                });
+
                 //ボタン表示の切り替え
                 btnEditProfile.setVisibility(View.GONE);
                 btnEntryProfile.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    //マイページのプロフィールの編集
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData){
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+                    myProfile.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

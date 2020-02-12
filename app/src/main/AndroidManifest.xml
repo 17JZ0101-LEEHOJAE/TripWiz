@@ -15,15 +15,8 @@
 
         <activity android:name=".HistoryActivity"/>
 
-        <activity
-            android:name=".ProfilePageActivity"
-            android:label="ProfilePageActivity" />
-
         <activity android:name=".SearchGuideActivity" />
 
-        <activity
-            android:name=".TimeLineActivity"
-            android:label="TimeLineActivity" />
         <activity
             android:name=".TamplateActivity"
             android:label="@string/title_activity_tamplate" />

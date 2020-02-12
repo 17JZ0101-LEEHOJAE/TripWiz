@@ -40,8 +40,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class GuideFragment extends Fragment {
-    final String url = "http://10.210.20.161";
-//    final String url = "http://www.jz.jec.ac.jp/17jzg01";
+//    final String url = "http://10.210.20.161";
+    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
 
@@ -118,9 +118,9 @@ public class GuideFragment extends Fragment {
                     public void run() {
                         Log.d("データベース接続", "接続成功");
 
-                        String url = "http://10.210.20.161/GuideDisplay.php";
+                        String guideUrl = url + "/GuideDisplay.php";
                         Request request = new Request.Builder()
-                                .url(url)
+                                .url(guideUrl)
                                 .get()
                                 .build();
                         client.newCall(request).enqueue(new Callback() {
