@@ -386,7 +386,6 @@
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:onClick="mon_clickDay"
                             android:text="◯"
                             android:textSize="24dp" />
 
@@ -398,7 +397,6 @@
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:onClick="tues_clickDay"
                             android:text="◯"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -475,7 +473,6 @@
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:onClick="mon_clickDay"
                             android:text="×"
                             android:textSize="24dp" />
 
@@ -487,7 +484,6 @@
                             android:layout_margin="1dp"
                             android:background="#FFFFFF"
                             android:gravity="center"
-                            android:onClick="tues_clickDay"
                             android:text="×"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -546,107 +542,6 @@
                             android:text="×"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
-
-                </TableLayout>
-
-                <TableLayout
-                    android:id="@+id/entDayTableLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center"
-                    android:stretchColumns="0,1,2,3,4,5,6"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewDayOfTheWeek">
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="1dp"
-                        android:layout_weight="1"
-                        android:background="#000000">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewMon"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewTue"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewWed"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="3"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewThu"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="4"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewFri"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="5"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewSat"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="6"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text="@string/textViewSun"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textStyle="bold" />
-                    </TableRow>
-
 
                 </TableLayout>
 

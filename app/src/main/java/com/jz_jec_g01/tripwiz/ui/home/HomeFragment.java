@@ -99,9 +99,6 @@ public class HomeFragment extends Fragment {
                 mAuth.signOut();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().remove(HomeFragment.this).commit();
-                fragmentManager.popBackStack();
             }
         });
         //Chat 画面遷移

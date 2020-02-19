@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword.setFilters(filtersPass);
 
         // 新規登録画面遷移
-        textViewSignup.setClickable(true);
         textViewSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // パスワード再設定画面遷移
-        textViewResetPass.setClickable(true);
         textViewResetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -337,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        } else {
+        } else if(fUser == null) {
             String mailAddress = editTextMailAddress.getText().toString();
             String password = editTextPassword.getText().toString();
             EditText passErr = findViewById(R.id.editTextPassword);
@@ -448,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
 
         String email = editTextMailAddress.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            editTextMailAddress.setError("Required.");
+            editTextMailAddress.setError("メールアドレスを正しく入力してください.");
             valid = false;
         } else {
             editTextMailAddress.setError(null);
@@ -456,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
 
         String password = editTextPassword.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            editTextPassword.setError("Required.");
+            editTextPassword.setError("パスワードを正しく入力してください");
             valid = false;
         } else {
             editTextPassword.setError(null);

@@ -11,31 +11,31 @@
     android:paddingBottom="5dp">
 
     <RelativeLayout
-        android:layout_width="146dp"
-        android:layout_height="187dp">
+        android:layout_width="107dp"
+        android:layout_height="188dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_image_view"
-            android:layout_width="66dp"
+            android:layout_width="72dp"
             android:layout_height="86dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="22dp"
-            android:layout_marginBottom="93dp" />
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="92dp" />
 
         <TextView
             android:id="@+id/user_name_view"
-            android:layout_width="92dp"
+            android:layout_width="93dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="7dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="95dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="51dp"
             android:gravity="center"
             android:textColor="#00f"
@@ -44,32 +44,32 @@
         <RatingBar
             android:id="@+id/ratingBar"
             style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
+            android:layout_width="81dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="9dp"
             android:layout_marginLeft="18dp"
             android:layout_marginTop="130dp"
-            android:layout_marginEnd="27dp"
+            android:layout_marginEnd="15dp"
             android:maxHeight="20dp"
             android:numStars="5"
             android:rating="4" />
 
         <Button
             android:id="@+id/btnRequest"
-            android:layout_width="81dp"
-            android:layout_height="21dp"
+            android:layout_width="94dp"
+            android:layout_height="22dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="5dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="158dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginTop="153dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginRight="15dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="6dp"
             android:background="@drawable/border1"
             android:gravity="center"
             android:text="request"

@@ -54,7 +54,7 @@ public class SignupActivity extends AppCompatActivity {
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private Button btnSignUp;
-    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
+    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "ベトナム", "スペイン", "忠告"};
     private String AgeSpinners[] = {"10代", "20代", "30代", "40代", "50代"};
     private RadioGroup genderGroup;
     private static final String TAG = "debug";
@@ -231,9 +231,9 @@ public class SignupActivity extends AppCompatActivity {
                 } catch(NetworkOnMainThreadException e) {
                     e.printStackTrace();
                 }
+                finish();
             }
         });
-        finish();
     }
 
     private void createAccount(String email, String password) {

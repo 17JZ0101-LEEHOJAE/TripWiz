@@ -70,6 +70,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyPageFragment extends Fragment {
     private static final int READ_REQUEST_CODE = 0;
+    private String TAG = "com.toridge.okhttptest.MyPageFragment";
+    final private int ID_REQUEST_READ_EXTERNAL_STORAGE = 99;
 //    final String url = "http://10.210.20.161";
         final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
@@ -91,6 +93,7 @@ public class MyPageFragment extends Fragment {
     private TextView dayTitle;
     private EditText editTextProfile;
     private EditText editTexteName;
+    //曜日ボタン取得（入力）
     private Button mon_day_btn;
     private Button tues_day_btn;
     private Button wed_day_btn;
@@ -98,6 +101,14 @@ public class MyPageFragment extends Fragment {
     private Button fri_day_btn;
     private Button saturs_day_btn;
     private Button sun_day_btn;
+    //曜日ボタン取得（出力）
+    private Button entMondayBtn;
+    private Button entTueDayBtn;
+    private Button entWedDayBtn;
+    private Button entThursDayBtn;
+    private Button entFriDayBtn;
+    private Button entSatuDayBtn;
+    private Button entSunDayBtn;
     private Button btnEditProfile;
     private Button btnEntryProfile;
     private Button feedbackBtn;
@@ -147,7 +158,7 @@ public class MyPageFragment extends Fragment {
         entSelectedJob =v.findViewById(R.id.entry_selectJob);
         entSelectLang = v.findViewById(R.id.entry_selectLang);
         entSelectArea = v.findViewById(R.id.entry_selectArea);
-        //曜日ボタン取得
+        //曜日ボタン取得（入力）
         mon_day_btn = v.findViewById(R.id.mon_day);
         tues_day_btn = v.findViewById(R.id.tues_day);
         wed_day_btn = v.findViewById(R.id.wed_day);
@@ -155,6 +166,14 @@ public class MyPageFragment extends Fragment {
         fri_day_btn = v.findViewById(R.id.fri_day);
         saturs_day_btn = v.findViewById(R.id.saturs_day);
         sun_day_btn = v.findViewById(R.id.sun_day);
+        //曜日ボタン取得（出力）
+        entMondayBtn = v.findViewById(R.id.entry_mon_day);
+        entTueDayBtn = v.findViewById(R.id.entry_tues_day);
+        entWedDayBtn = v.findViewById(R.id.entry_wed_day);
+        entThursDayBtn = v.findViewById(R.id.entry_thurs_day);
+        entFriDayBtn = v.findViewById(R.id.entry_fri_day);
+        entSatuDayBtn = v.findViewById(R.id.entry_saturs_day);
+        entSunDayBtn = v.findViewById(R.id.entry_sun_day);
         //日付テーブル
         editDayTable = v.findViewById(R.id.edit_day_table);
         entDayTable = v.findViewById(R.id.entry_day_table);
@@ -180,37 +199,20 @@ public class MyPageFragment extends Fragment {
                         entDayTable.setVisibility(View.VISIBLE);
                         editDayTable.setVisibility(View.GONE);
                         dayTitle.setVisibility(View.VISIBLE);
+                        user.setGuideStatus(1);
                     }
-//                        if(user.getGuideStatus() == 0) {
-//                            switchUser.setChecked(true);
-//                            selectAreaBox.setVisibility(View.VISIBLE);
-//                            dayTableLayout.setVisibility(View.VISIBLE);
-//                            entDayTable.setVisibility(View.VISIBLE);
-//                            editDayTable.setVisibility(View.GONE);
-//                            dayTitle.setVisibility(View.VISIBLE);
-//                            if(user.getGuideStatus() == 0) {
-//                                user.setGuideStatus(1);
-//                            }
-//                        } else if(user.getGuideStatus() == 1) {
-//                            switchUser.setChecked(true);
-//                            selectAreaBox.setVisibility(View.VISIBLE);
-//                            dayTableLayout.setVisibility(View.VISIBLE);
-//                            entDayTable.setVisibility(View.VISIBLE);
-//                            editDayTable.setVisibility(View.GONE);
-//                            dayTitle.setVisibility(View.VISIBLE);
-//                        }
-                        // オンからオフ
-                        else {
-                            switchUser.setChecked(false);
-                            selectAreaBox.setVisibility(View.GONE);
-                            dayTableLayout.setVisibility(View.GONE);
-                            entDayTable.setVisibility(View.GONE);
-                            editDayTable.setVisibility(View.GONE);
-                            dayTitle.setVisibility(View.GONE);
-                            user.setGuideStatus(0);
-                        }
+                    // オンからオフ
+                    else {
+                        switchUser.setChecked(false);
+                        selectAreaBox.setVisibility(View.GONE);
+                        dayTableLayout.setVisibility(View.GONE);
+                        entDayTable.setVisibility(View.GONE);
+                        editDayTable.setVisibility(View.GONE);
+                        dayTitle.setVisibility(View.GONE);
+                        user.setGuideStatus(0);
                     }
                 }
+            }
         );
         btnEditProfile.setOnClickListener(new Visibilitys());
         btnEntryProfile.setOnClickListener(new Visibilitys());
@@ -291,6 +293,7 @@ public class MyPageFragment extends Fragment {
                                             String jsonData = response.body().string();
                                             Log.d("Json", jsonData);
                                             JSONArray jArrayUser = new JSONArray(jsonData);
+                                            ArrayList<String> weekList = new ArrayList<>();
                                             for(int i = 0; i < jArrayUser.length(); i++) {
                                                 entTextName.setText(user.getName());
                                                 user.setGender(jArrayUser.getJSONObject(i).getInt("gender"));
@@ -303,12 +306,44 @@ public class MyPageFragment extends Fragment {
                                                 user.setArea(jArrayUser.getJSONObject(i).getString("information_area"));
                                                 user.setWeek(jArrayUser.getJSONObject(i).getString("information_week"));
 
-                                                if(user.getArea().equals("") || user.getArea().equals(null)) {
+                                                if(user.getArea() == null) {
                                                     entSelectArea.setText("未選択");
+                                                    user.setArea("未選択");
                                                 }
 
-                                                if(user.getJob().equals("") || user.getJob().equals(null)) {
+                                                if(user.getJob() == null) {
                                                     entSelectedJob.setText("未選択");
+                                                    user.setJob("未選択");
+                                                }
+
+                                                if(user.getWeek() != null) {
+                                                    String nowWeek[] = user.getWeek().split(", ");
+                                                    for(i = 0; i < nowWeek.length; i++) {
+                                                        Log.d("日付情報", nowWeek[i]);
+                                                        switch (nowWeek[i]) {
+                                                            case "月":
+                                                                entMondayBtn.setText("〇");
+                                                                break;
+                                                            case "火":
+                                                                entTueDayBtn.setText("〇");
+                                                                break;
+                                                            case "水":
+                                                                entWedDayBtn.setText("〇");
+                                                                break;
+                                                            case "木":
+                                                                entThursDayBtn.setText("〇");
+                                                                break;
+                                                            case "金":
+                                                                entFriDayBtn.setText("〇");
+                                                                break;
+                                                            case "土":
+                                                                entSatuDayBtn.setText("〇");
+                                                                break;
+                                                            case "日":
+                                                                entSunDayBtn.setText("〇");
+                                                                break;
+                                                        }
+                                                    }
                                                 }
                                             }
                                             if(user.getUserId() > 0) {
@@ -656,11 +691,13 @@ public class MyPageFragment extends Fragment {
                 case R.id.mon_day:
                     if (mon_day_btn.getText().equals("◯")) {
                         mon_day_btn.setText("×");
+                        entMondayBtn.setText("×");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.RED);
                         days[0] = "";
                     } else if (mon_day_btn.getText().equals("×")) {
                         mon_day_btn.setText("◯");
+                        entMondayBtn.setText("◯");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
                         days[0] = "月";
@@ -669,11 +706,13 @@ public class MyPageFragment extends Fragment {
                 case R.id.tues_day:
                     if (tues_day_btn.getText().equals("◯")) {
                         tues_day_btn.setText("×");
+                        entTueDayBtn.setText("×");
                         /**色指定**/
                         tues_day_btn.setTextColor(Color.RED);
                         days[1] = "";
                     } else if (tues_day_btn.getText().equals("×")) {
                         tues_day_btn.setText("◯");
+                        entTueDayBtn.setText("◯");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
                         days[1] = "火";
@@ -682,11 +721,13 @@ public class MyPageFragment extends Fragment {
                 case R.id.wed_day:
                     if (wed_day_btn.getText().equals("◯")) {
                         wed_day_btn.setText("×");
+                        entWedDayBtn.setText("×");
                         /**色指定**/
                         wed_day_btn.setTextColor(Color.RED);
                         days[2] = "";
                     } else if (wed_day_btn.getText().equals("×")) {
                         wed_day_btn.setText("◯");
+                        entWedDayBtn.setText("◯");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
                         days[2] = "水";
@@ -695,11 +736,13 @@ public class MyPageFragment extends Fragment {
                 case R.id.thurs_day:
                     if (thurs_day_btn.getText().equals("◯")) {
                         thurs_day_btn.setText("×");
+                        entThursDayBtn.setText("×");
                         /**色指定**/
                         thurs_day_btn.setTextColor(Color.RED);
                         days[3] = "";
                     } else if (thurs_day_btn.getText().equals("×")) {
                         thurs_day_btn.setText("◯");
+                        entThursDayBtn.setText("〇");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
                         days[3] = "木";
@@ -708,11 +751,13 @@ public class MyPageFragment extends Fragment {
                 case R.id.fri_day:
                     if (fri_day_btn.getText().equals("◯")) {
                         fri_day_btn.setText("×");
+                        entFriDayBtn.setText("×");
                         /**色指定**/
                         fri_day_btn.setTextColor(Color.RED);
                         days[4] = "";
                     } else if (fri_day_btn.getText().equals("×")) {
                         fri_day_btn.setText("◯");
+                        entFriDayBtn.setText("〇");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
                         days[4] = "金";
@@ -721,11 +766,13 @@ public class MyPageFragment extends Fragment {
                 case R.id.saturs_day:
                     if (saturs_day_btn.getText().equals("◯")) {
                         saturs_day_btn.setText("×");
+                        entSatuDayBtn.setText("×");
                         /**色指定**/
                         saturs_day_btn.setTextColor(Color.RED);
                         days[5] = "";
                     } else if (saturs_day_btn.getText().equals( "×")) {
                         saturs_day_btn.setText("◯");
+                        entSatuDayBtn.setText("〇");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
                         days[5] = "土";
@@ -734,11 +781,13 @@ public class MyPageFragment extends Fragment {
                 case R.id.sun_day:
                     if (sun_day_btn.getText().equals("◯")) {
                         sun_day_btn.setText("×");
+                        entSunDayBtn.setText("×");
                         /**色指定**/
                         sun_day_btn.setTextColor(Color.RED);
                         days[6] = "";
                     } else if (sun_day_btn.getText().equals("×")) {
                         sun_day_btn.setText("◯");
+                        entSunDayBtn.setText("〇");
                         /**色指定**/
                         mon_day_btn.setTextColor(Color.GREEN);
                         days[6] = "日";
