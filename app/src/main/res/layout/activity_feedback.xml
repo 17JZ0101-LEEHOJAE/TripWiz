@@ -14,8 +14,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="229dp"
-            android:background="@color/colorMain">
+            android:layout_height="80dp"
+            android:background="@color/colorPrimary">
 
             <TextView
                 android:id="@+id/textView3"
@@ -57,7 +57,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="495dp" />
+            android:layout_height="650dp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -115,12 +115,10 @@ public class MyPageFragment extends Fragment {
 
     private Activity mActivity = null;
     int dayBtn = 0;
-    int gudieON = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -175,30 +173,44 @@ public class MyPageFragment extends Fragment {
             new CompoundButton.OnCheckedChangeListener(){
                 public void onCheckedChanged(CompoundButton comButton, boolean isChecked){
                     // 表示する文字列をスイッチのオンオフで変える
-                    // オンなら
-                    if(user.getGuideStatus() == 1) {
-                        switchUser.setChecked(true);
+                    // オフからオン
+                    if(isChecked) {
                         selectAreaBox.setVisibility(View.VISIBLE);
                         dayTableLayout.setVisibility(View.VISIBLE);
                         entDayTable.setVisibility(View.VISIBLE);
                         editDayTable.setVisibility(View.GONE);
                         dayTitle.setVisibility(View.VISIBLE);
-                        gudieON = 1;
-                        user.setGuideStatus(gudieON);
                     }
-                    // オフなら
-                    else{
-                        switchUser.setChecked(false);
-                        selectAreaBox.setVisibility(View.GONE);
-                        dayTableLayout.setVisibility(View.GONE);
-                        entDayTable.setVisibility(View.GONE);
-                        editDayTable.setVisibility(View.GONE);
-                        dayTitle.setVisibility(View.GONE);
-                        gudieON = 0;
-                        user.setGuideStatus(gudieON);
+//                        if(user.getGuideStatus() == 0) {
+//                            switchUser.setChecked(true);
+//                            selectAreaBox.setVisibility(View.VISIBLE);
+//                            dayTableLayout.setVisibility(View.VISIBLE);
+//                            entDayTable.setVisibility(View.VISIBLE);
+//                            editDayTable.setVisibility(View.GONE);
+//                            dayTitle.setVisibility(View.VISIBLE);
+//                            if(user.getGuideStatus() == 0) {
+//                                user.setGuideStatus(1);
+//                            }
+//                        } else if(user.getGuideStatus() == 1) {
+//                            switchUser.setChecked(true);
+//                            selectAreaBox.setVisibility(View.VISIBLE);
+//                            dayTableLayout.setVisibility(View.VISIBLE);
+//                            entDayTable.setVisibility(View.VISIBLE);
+//                            editDayTable.setVisibility(View.GONE);
+//                            dayTitle.setVisibility(View.VISIBLE);
+//                        }
+                        // オンからオフ
+                        else {
+                            switchUser.setChecked(false);
+                            selectAreaBox.setVisibility(View.GONE);
+                            dayTableLayout.setVisibility(View.GONE);
+                            entDayTable.setVisibility(View.GONE);
+                            editDayTable.setVisibility(View.GONE);
+                            dayTitle.setVisibility(View.GONE);
+                            user.setGuideStatus(0);
+                        }
                     }
                 }
-            }
         );
         btnEditProfile.setOnClickListener(new Visibilitys());
         btnEntryProfile.setOnClickListener(new Visibilitys());
@@ -467,6 +479,9 @@ public class MyPageFragment extends Fragment {
                                             setRatingBar();
                                             entSelectedJob.setText(user.getJob());
                                             entTextProfile.setText(user.getIntroduction());
+                                            if(user.getGuideStatus() == 1) {
+                                                switchUser.setChecked(true);
+                                            }
                                             response.body().close();
                                         } catch(IOException e) {
                                             e.printStackTrace();
@@ -737,7 +752,7 @@ public class MyPageFragment extends Fragment {
     private class Visibilitys implements View.OnClickListener {
         @Override
         public void onClick(View v){
-            gudieON = user.getGuideStatus();
+            int gudieStatus = user.getGuideStatus();
             //登録完了状態
             //登録ボタンが押されたあとの処理
             if (v == btnEntryProfile) {
@@ -773,7 +788,7 @@ public class MyPageFragment extends Fragment {
 
                 //ガイド状態の判定及びデータの更新処理
                 final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-                if (gudieON == 1) {
+                if (gudieStatus == 1) {
                     editDayTable.setVisibility(View.GONE);
                     entDayTable.setVisibility(View.VISIBLE);
                     editSelectedArea.setVisibility(View.GONE);
@@ -924,7 +939,7 @@ public class MyPageFragment extends Fragment {
                 }
 
                 //ガイド状態の判定
-                if (gudieON == 1) {
+                if (gudieStatus == 1) {
                     editDayTable.setVisibility(View.VISIBLE);
                     entDayTable.setVisibility(View.GONE);
                     editSelectedArea.setVisibility(View.VISIBLE);

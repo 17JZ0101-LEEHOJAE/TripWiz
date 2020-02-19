@@ -1,6 +1,7 @@
 package com.jz_jec_g01.tripwiz.ui.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,17 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.CallbackManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.jz_jec_g01.tripwiz.MainActivity;
 import com.jz_jec_g01.tripwiz.R;
+import com.jz_jec_g01.tripwiz.TamplateActivity;
 import com.jz_jec_g01.tripwiz.ui.guide.GuideAdapter;
 
 import java.util.ArrayList;
@@ -34,6 +41,11 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView = null;
     private GuideAdapter rAdapter = null;
     private Activity mActivity = null;
+    private Button ChatBtn;
+    private Button logoutBtn;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser fUser = mAuth.getCurrentUser();
+    private CallbackManager callbackManager = CallbackManager.Factory.create();
 //    private Button location
 
 
@@ -80,6 +92,27 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         // レイアウトマネージャを設定(ここで縦方向の標準リストであることを指定)
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        logoutBtn = v.findViewById(R.id.btnLogout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(HomeFragment.this).commit();
+                fragmentManager.popBackStack();
+            }
+        });
+        //Chat 画面遷移
+//        ChatBtn = v.findViewById(R.id.ChatButton);
+//        ChatBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(v.getContext(), ChatActivity.class);
+//                v.getContext().startActivity(intent);
+//            }
+//        });
         //        //ナビゲーション画面遷移
 //        locationBtn = v.findViewById(R.id.LocationButton);
 //        locationBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +133,6 @@ public class HomeFragment extends Fragment {
 //        });
 
         imagesList();
-
        return v;
 
 

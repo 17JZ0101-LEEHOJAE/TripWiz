@@ -17,13 +17,15 @@
     <string name="title_person">Person</string>
     <string name="title_sharp">Sharp</string>
     <string name="title_location">Location</string>
-    <string name="textViewMailAddress">MailAddress</string>
-    <string name="textViewPw">Password</string>
-    <string name="textViewName">Name</string>
-    <string name="textViewGender">Gender</string>
-    <string name="textViewNationality">Nationality</string>
-    <string name="textViewBirthday">Age</string>
-    <string name="textViewYear">Year</string>
+    <string name="textViewMailAddress">メールアドレス</string>
+    <string name="textViewPw">パスワード</string>
+    <string name="textViewName">氏名</string>
+    <string name="textViewGender">性別</string>
+    <string name="radioButtonMale">男</string>
+    <string name="radioButtonFemale">女</string>
+    <string name="textViewNationality">国籍</string>
+    <string name="textViewAge">年齢層</string>
+    <string name="buttonSignUp">登録</string>
 
     <!--プロフィール画面-->
     <string name="textViewUserNameProfile">NIHON DENSHI</string>
@@ -40,8 +42,7 @@
     <string name="textViewSat">土</string>
     <string name="textViewSun">日</string>
 
-    <string name="radioButtonBusy">Busy</string>
-    <string name="radioButtonFree">Free</string>
+
     /**ガイド表示用**/
     <string name="description">picture</string>
 

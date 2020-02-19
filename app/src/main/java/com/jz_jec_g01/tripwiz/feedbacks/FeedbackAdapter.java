@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jz_jec_g01.tripwiz.feedbacks.FeedbackActivity;
 import com.jz_jec_g01.tripwiz.R;
-import com.jz_jec_g01.tripwiz.ui.talk.TalkAdapter;
 
 import java.util.List;
 

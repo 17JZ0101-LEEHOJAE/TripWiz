@@ -1,5 +1,6 @@
 package com.jz_jec_g01.tripwiz.ui.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.jz_jec_g01.tripwiz.R;
+import com.jz_jec_g01.tripwiz.chats.ChatActivity;
 import com.jz_jec_g01.tripwiz.ui.guide.GuideAdapter;
 
 import java.util.List;
@@ -21,7 +23,6 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<Integer> iImages;
     private List<String> iNames;
-    int likeCnt = 1;
 
 
     // Provide a reference to the views for each data item
@@ -32,13 +33,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         // each data item is just a string in this case
         ImageView imageView;
         TextView textView;
-        Button likeBtn;
 
         ViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.user_image_view);
             textView = v.findViewById(R.id.user_comment_view);
-//            likeBtn = v.findViewById(R.id.likeButton);
+
         }
 
 
@@ -72,8 +72,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.imageView.setImageResource(iImages.get(position));
         holder.textView.setText(iNames.get(position));
 
-        // like Action いいねアクション未完成
-        Log.d("likeCnt", "いいねアクション１: ");
+//        // like Action いいねアクション未完成
+//        Log.d("likeCnt", "いいねアクション１: ");
 //        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

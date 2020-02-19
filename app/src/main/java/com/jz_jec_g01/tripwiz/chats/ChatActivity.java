@@ -1,110 +1,209 @@
 package com.jz_jec_g01.tripwiz.chats;
 
-import android.app.ListActivity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.Firebase;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toolbar;
+
+import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jz_jec_g01.tripwiz.MainActivity;
+import com.jz_jec_g01.tripwiz.MapsActivity;
 import com.jz_jec_g01.tripwiz.R;
+import com.jz_jec_g01.tripwiz.TamplateActivity;
+import com.jz_jec_g01.tripwiz.chats.ChatFragments.ChatsFragment;
+import com.jz_jec_g01.tripwiz.chats.ChatFragments.UsersFragment;
+import com.jz_jec_g01.tripwiz.feedbacks.FeedbackActivity;
+import com.jz_jec_g01.tripwiz.model.Chat;
+import com.jz_jec_g01.tripwiz.model.ChatUser;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class ChatActivity extends ListActivity {
-    private ImageButton buttonImage;
-    private static final int READ_REQUEST_CODE = 42;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    // TODO: change this to your own Firebase URL
-    private static final String FIREBASE_URL = "https://android-chat.firebaseio-demo.com";
-    private String mUsername;
-    private Firebase mFirebaseRef;
-    private ValueEventListener mConnectedListener;
-    private ChatListAdapter mChatListAdapter;
+public class ChatActivity extends AppCompatActivity {
+
+    CircleImageView profile_image;
+    TextView username;
+
+    FirebaseUser firebaseUser;
+    DatabaseReference reference;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-//        // Make sure we have a mUsername
-//        setupUsername();
-//        setTitle("Chatting as " + mUsername);
-//
-//        // Setup our Firebase mFirebaseRef
-//        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
-//
-//        // Setup our input methods. Enter key on the keyboard or pushing the send button
-//        EditText inputText = (EditText) findViewById(R.id.messageInput);
-//        inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-//                if (actionId == EditorInfo.IME_NULL && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-//                    sendMessage();
-//                }
-//                return true;
-//            }
-//        });
-//
-//        findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                sendMessage();
-//            }
-//        });
-//
-//        buttonImage = findViewById(R.id.buttonChatImage);
-//        buttonImage.setOnClickListener(new View.OnClickListener() {
-//            //端末標準ギャラリーを起動し、画像のURIを取得
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//                intent.addCategory(Intent.CATEGORY_OPENABLE);
-//                intent.setType("image/*");
-//
-//                startActivityForResult(intent, READ_REQUEST_CODE);
-//            }
-//        });
+
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+////        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("");
+
+        profile_image = findViewById(R.id.imageViewUser);
+        username = findViewById(R.id.textName);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ChatUser chatUser = dataSnapshot.getValue(ChatUser.class);
+                username.setText(chatUser.getUsername());
+                if (chatUser.getImageURL().equals("default")){
+                    profile_image.setImageResource(R.mipmap.ic_launcher);
+                } else {
+
+                    //change this
+                    Glide.with(getApplicationContext()).load(chatUser.getImageURL()).into(profile_image);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        final TabLayout tabLayout = findViewById(R.id.tab_layout);
+        final ViewPager viewPager = findViewById(R.id.view_pager);
+
+
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+                int unread = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) && !chat.isIsseen()){
+                        unread++;
+                    }
+                }
+
+                if (unread == 0){
+                    viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
+                } else {
+                    viewPagerAdapter.addFragment(new ChatsFragment(), "("+unread+") Chats");
+                }
+
+                viewPagerAdapter.addFragment(new UsersFragment(), "Users");
+//                viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
+
+                viewPager.setAdapter(viewPagerAdapter);
+
+                tabLayout.setupWithViewPager(viewPager);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
+
     @Override
-    public void onStop() {
-        super.onStop();
-        mFirebaseRef.getRoot().child(".info/connected").removeEventListener((ChildEventListener) mConnectedListener);
-        mChatListAdapter.cleanup();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+//ログアウト機能　無視でOK
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case  R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                // change this code beacuse your app will crash
+                startActivity(new Intent(ChatActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                return true;
+            case R.id.navigation:
+                startActivity(new Intent(ChatActivity.this, MapsActivity.class));
+                return true;
+            case R.id.Main:
+                startActivity(new Intent(ChatActivity.this, TamplateActivity.class));
+                return true;
+            case R.id.feedback:
+                startActivity(new Intent(ChatActivity.this, FeedbackActivity.class));
+                return true;
+        }
+        return false;
     }
 
-    private void setupUsername() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
-        mUsername = prefs.getString("username", null);
-        if (mUsername == null) {
-            Random r = new Random();
-            // Assign a random user name if we don't have one saved.
-            mUsername = "JavaUser" + r.nextInt(100000);
-            prefs.edit().putString("username", mUsername).commit();
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private ArrayList<Fragment> fragments;
+        private ArrayList<String> titles;
+
+        ViewPagerAdapter(FragmentManager fm){
+            super(fm);
+            this.fragments = new ArrayList<>();
+            this.titles = new ArrayList<>();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        public void addFragment(Fragment fragment, String title){
+            fragments.add(fragment);
+            titles.add(title);
+        }
+
+        // Ctrl + O
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
         }
     }
 
-    private void sendMessage() {
-        EditText inputText = (EditText) findViewById(R.id.messageInput);
-        String input = inputText.getText().toString();
-        if (!input.equals("")) {
-            // Create our 'model', a Chat object
-            Chat chat = new Chat(input, mUsername);
-            // Create a new, auto-generated child of that chat location, and save our chat data there
-            mFirebaseRef.push().setValue(chat);
-            inputText.setText("");
-        }
+    private void status(String status){
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+
+        reference.updateChildren(hashMap);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }
-

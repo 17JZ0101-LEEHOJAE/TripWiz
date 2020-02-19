@@ -11,10 +11,10 @@
         android:icon="@drawable/guide"
         android:title="@string/title_guide" />
 
-    <item
-        android:id="@+id/navigation_talk"
-        android:icon="@drawable/talk"
-        android:title="@string/title_talk" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_talk"-->
+<!--        android:icon="@drawable/talk"-->
+<!--        android:title="@string/title_talk" />-->
     <item
         android:id="@+id/navigation_myPage"
         android:icon="@drawable/mypage"

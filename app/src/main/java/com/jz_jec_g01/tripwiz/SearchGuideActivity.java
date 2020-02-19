@@ -2,22 +2,38 @@ package com.jz_jec_g01.tripwiz;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jz_jec_g01.tripwiz.ui.guide.GuideFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
-public class SearchGuideActivity extends AppCompatActivity {
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+public class SearchGuideActivity extends AppCompatActivity implements LocationListener {
     private Button serchBtn;
     private TextView selectedArea;
     private TextView selectDays;
@@ -27,13 +43,14 @@ public class SearchGuideActivity extends AppCompatActivity {
     private TextView selectCountry;
     //現在地取得後　指定の区をデフォルト選択
     private String[] areas = {"足立区", "荒川区", "板橋区", "江戸川区", "大田区", "葛飾区", "北区", "江東区", "品川区", "渋谷区", "新宿区", "杉並区",
-            "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"
-    };
+            "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"};
     private String[] days = {"月曜","火曜","水曜","木曜","金曜","土曜","日曜"};
-    private String[] langs = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
+    private String[] langs = {"日本語", "英語", "韓国語", "ベトナム語", "スペイン語", "中国語"};
     private String[] old = {"10代","20代","30代","40代","50代"};
     private String[] gender = {"男性","女性"};
-    private String[] country = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "ドイツ"};
+    private String[] country = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "中国"};
+    private LocationManager manager;
+    private int managerCnt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +91,7 @@ public class SearchGuideActivity extends AppCompatActivity {
 //                startActivity(intent);
             }
         });
+
         //条件クリックアクション
         selectedArea.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +129,8 @@ public class SearchGuideActivity extends AppCompatActivity {
                 addCountryOnCheckBox();
             }
         });
+        //座標取得
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
     //条件ダイアログ
     public void addAreaOnCheckBox() {
@@ -128,12 +148,24 @@ public class SearchGuideActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String AreaBox = "";
-                        for (Integer i : checkedItems) {
-                            String Area = String.join(",", areas[i]);
-                            AreaBox = AreaBox + " " + Area;
-                            selectedArea.setText(AreaBox);
-
+                        ArrayList<String> areaBox = new ArrayList<String>();
+                        if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
+                            for (Integer i : checkedItems) {
+                                areaBox.add(areas[i]);
+                            }
+                            Collections.sort(areaBox, Collections.reverseOrder());
+                            for(int i = 0; i < areaBox.size(); i++) {
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(areaBox.get(i));
+                            }
+                            String area = sb.toString();
+                            Log.d("areaBoxは？", area);
+                            selectedArea.setText(area);
+                        } else{
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
                         }
                     }
                 })
@@ -143,7 +175,7 @@ public class SearchGuideActivity extends AppCompatActivity {
     public void addDaysOnCheckBox() {
         final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
         new AlertDialog.Builder(this)
-                .setTitle("Area Select")
+                .setTitle("Days Select")
                 .setMultiChoiceItems(days, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -155,12 +187,23 @@ public class SearchGuideActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String AreaBox = "";
-                        for (Integer i : checkedItems) {
-                            String Area = String.join(",", days[i]);
-                            AreaBox = AreaBox + " " + Area;
-                            selectDays.setText(AreaBox);
-
+                        ArrayList<String> daysBox = new ArrayList<String>();
+                        if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
+                            for (Integer i : checkedItems) {
+                                daysBox.add(days[i]);
+                            }
+                            Collections.sort(daysBox, Collections.reverseOrder());
+                            for(int i = 0; i < daysBox.size(); i++) {
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(daysBox.get(i));
+                            }
+                            String days = sb.toString();
+                            selectDays.setText(days);
+                        } else{
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
                         }
                     }
                 })
@@ -182,17 +225,23 @@ public class SearchGuideActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String LangBox = "";
-                        for (Integer i : checkedItems) {
-                            int cnt = 0;
-                            if(cnt < 4) {
-                                cnt++;
-                                String Lang = String.join(",", langs[i]);
-
-                                LangBox = LangBox + " "+ Lang;
+                        ArrayList<String> langBox = new ArrayList<String>();
+                        if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
+                            for (Integer i : checkedItems) {
+                                langBox.add(langs[i]);
                             }
-                            selectedLang.setText(LangBox);
-
+                            Collections.sort(langBox, Collections.reverseOrder());
+                            for(int i = 0; i < langBox.size(); i++) {
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(langBox.get(i));
+                            }
+                            String lang = sb.toString();
+                            selectedLang.setText(lang);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
                         }
                     }
                 })
@@ -214,13 +263,25 @@ public class SearchGuideActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String AreaBox = "";
-                        for (Integer i : checkedItems) {
-                            String Area = String.join(",", old[i]);
-                            AreaBox = AreaBox + " " + Area;
-                            selectOld.setText(AreaBox);
-
+                        ArrayList<String> oldBox = new ArrayList<String>();
+                        if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
+                            for (Integer i : checkedItems) {
+                                oldBox.add(old[i]);
+                            }
+                            Collections.sort(oldBox, Collections.reverseOrder());
+                            for(int i = 0; i < oldBox.size(); i++) {
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(oldBox.get(i));
+                            }
+                            String old = sb.toString();
+                            selectOld.setText(old);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
                         }
+
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -241,43 +302,139 @@ public class SearchGuideActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String AreaBox = "";
-                        for (Integer i : checkedItems) {
-                            String Area = String.join(",", gender[i]);
-                            AreaBox = AreaBox + " " + Area;
-                            selectGender.setText(AreaBox);
-
+                        ArrayList<String> genderBox = new ArrayList<String>();
+                        if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
+                            for (Integer i : checkedItems) {
+                                genderBox.add(gender[i]);
+                            }
+                            Collections.sort(genderBox, Collections.reverseOrder());
+                            for(int i = 0; i < genderBox.size(); i++) {
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(genderBox.get(i));
+                            }
+                            String gender = sb.toString();
+                            selectGender.setText(gender);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。2つにしてください！", Toast.LENGTH_LONG).show();
                         }
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
-    public void addCountryOnCheckBox() {
+    public void addCountryOnCheckBox()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          {
         final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
         new AlertDialog.Builder(this)
-            .setTitle("Area Select")
-            .setMultiChoiceItems(country, null, new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    if (isChecked) checkedItems.add(which);
-                    else checkedItems.remove((Integer) which);
-                }
-            })
-            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String AreaBox = "";
-                    for (Integer i : checkedItems) {
-                        String Area = String.join(",", country[i]);
-                        AreaBox = AreaBox + " " + Area;
-                        selectCountry.setText(AreaBox);
+                .setTitle("Area Select")
+                .setMultiChoiceItems(country, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) checkedItems.add(which);
+                        else checkedItems.remove((Integer) which);
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ArrayList<String> countryBox = new ArrayList<String>();
+                        if(checkedItems.size() <= 3) {
+                            StringBuilder sb = new StringBuilder();
+                            for (Integer i : checkedItems) {
+                                countryBox.add(country[i]);
+                            }
+                            Collections.sort(countryBox, Collections.reverseOrder());
+                            for(int i = 0; i < countryBox.size(); i++) {
+                                if(sb.length() > 0) {
+                                    sb.append(", ");
+                                }
+                                sb.append(countryBox.get(i));
+                            }
+                            String country = sb.toString();
+                            selectCountry.setText(country);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "選択個数が多すぎます。3つにしてください！", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                return;
+            }
+            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, SearchGuideActivity.this);
+            manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 1, SearchGuideActivity.this);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        if (manager != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            manager.removeUpdates(this);
+        }
+    }
+
+    public void getAddress(double latitude,double longitute) {
+        StringBuffer strAddr = new StringBuffer();
+        Geocoder gcoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> lstAddrs = gcoder.getFromLocation(latitude, longitute, 1);
+            for (Address addr : lstAddrs) {
+                int idx = addr.getMaxAddressLineIndex();
+                for (int i = 0; i <= idx; i++) {
+                    strAddr.append(addr.getAddressLine(i));
+                }
+            }
+            String newStr = strAddr.toString();
+            String[] names = newStr.split(" ");
+            String add = names[1];
+            //表示ダイアログに区セット
+            for (int i = 0; i <= areas.length - 1; i++) {
+                if(add.matches(".*"+ areas[i] + ".*")){
+                    if (managerCnt == 0) {
+                        selectedArea.setText(areas[i]);
+                    } else {
+                        selectedArea.setText("未選択");
                     }
                 }
-            })
-            .setNegativeButton("Cancel", null)
-            .show();
+            }
+            Toast.makeText(this, "現住所　"+ names[1], Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+    //座標取得
+    @Override
+    public void onLocationChanged(Location location) {
+
+        String text = "緯度：" + location.getLatitude() + "経度：" + location.getLongitude();
+        getAddress(location.getLatitude(),location.getLongitude());
+    }
+
+
 }

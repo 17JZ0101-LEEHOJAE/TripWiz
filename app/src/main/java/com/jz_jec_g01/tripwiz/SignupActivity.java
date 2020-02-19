@@ -233,6 +233,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+        finish();
     }
 
     private void createAccount(String email, String password) {

@@ -1,9 +1,7 @@
 package com.jz_jec_g01.tripwiz.ui.guide;
 
-//AndroidX
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-//import android.support.v7.widget.RecyclerView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,14 +9,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.jz_jec_g01.tripwiz.R;
+import com.jz_jec_g01.tripwiz.chats.ChatActivity;
+import com.jz_jec_g01.tripwiz.guidePageActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,14 +36,12 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> {
-
     private List<String> iImages;
     private List<String> iNames;
-//    final String url = "http://10.210.20.161";
+    //    final String url = "http://10.210.20.161";
     final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
-
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -51,11 +50,28 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
         // each data item is just a string in this case
         private ImageView imageView;
         private TextView textView;
-
+        private Button btnRequest;
         ViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.user_image_view);
             textView = v.findViewById(R.id.user_name_view);
+
+            btnRequest = v.findViewById(R.id.btnRequest);
+            btnRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(v.getContext(), ChatActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+            });
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(v.getContext(), guidePageActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 
@@ -72,8 +88,6 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.show_guide, parent, false);
-
-        // set the view's size, margins, paddings and layout parameters
 
         return new ViewHolder(view);
     }

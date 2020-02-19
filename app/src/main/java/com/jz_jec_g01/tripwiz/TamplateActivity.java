@@ -17,7 +17,6 @@ import com.jz_jec_g01.tripwiz.model.User;
 import com.jz_jec_g01.tripwiz.ui.guide.GuideFragment;
 import com.jz_jec_g01.tripwiz.ui.home.HomeFragment;
 import com.jz_jec_g01.tripwiz.ui.myPage.MyPageFragment;
-import com.jz_jec_g01.tripwiz.ui.talk.TalkFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,16 +83,6 @@ public class TamplateActivity extends AppCompatActivity {
                                 .beginTransaction()
                                 .replace(R.id.container, guideFragment)
                                 .commit();
-                        return true;
-                    case R.id.navigation_talk:
-                        TalkFragment talkFragment = new TalkFragment();
-
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.container, talkFragment)
-                                .commit();
-
-                        Log.d(TAG, "Talkボタンクリック");
                         return true;
 
                     case R.id.navigation_myPage:
