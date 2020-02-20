@@ -165,7 +165,7 @@
                     android:layout_height="wrap_content"
                     android:paddingVertical="10dp"
                     android:paddingStart="20dp"
-                    android:text="選択完了"
+                    android:text="未選択"
                     android:textColor="#000"
                     android:textSize="15dp"
                     android:visibility="visible" />

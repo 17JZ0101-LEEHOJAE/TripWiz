@@ -165,10 +165,11 @@ public class GuideFragment extends Fragment {
                                             JSONArray jArray = new JSONArray(jsonData);
                                             List<String> itemNames = new ArrayList<>();
                                             List<String> itemImages = new ArrayList<>();
-
+                                            List<Integer> itemLatings = new ArrayList<>();
                                             for(int i = 0; i < jArray.length(); i++) {
                                                 itemNames.add(jArray.getJSONObject(i).getString("name"));
                                                 itemImages.add(jArray.getJSONObject(i).getString("profile"));
+                                                itemLatings.add(jArray.getJSONObject(i).getInt("rating_rate"));
                                             }
                                             // use this setting to improve performance if you know that changes
                                             // in content do not change the layout size of the RecyclerView
@@ -180,7 +181,7 @@ public class GuideFragment extends Fragment {
                                             recyclerView.setLayoutManager(rLayoutManager);
 
                                             // specify an adapter (see also next example)
-                                            RecyclerView.Adapter rAdapter = new GuideAdapter(itemImages, itemNames);
+                                            RecyclerView.Adapter rAdapter = new GuideAdapter(itemImages, itemNames, itemLatings);
                                             recyclerView.setAdapter(rAdapter);
 
                                             LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());

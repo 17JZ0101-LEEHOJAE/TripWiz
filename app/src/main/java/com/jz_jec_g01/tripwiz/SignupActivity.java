@@ -62,7 +62,6 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "debug";
     DatabaseReference reference;
     private User user;
-    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

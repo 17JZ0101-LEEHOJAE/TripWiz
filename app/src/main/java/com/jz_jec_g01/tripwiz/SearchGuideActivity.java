@@ -93,21 +93,6 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                 String genders  = selectGender.getText().toString();
                 String countrys = selectCountry.getText().toString();
 
-                //フラグメントに値を渡す
-                Intent returnIntent = new Intent();                  //intent 設定
-
-                returnIntent.putExtra("key.StringAreas",areas);  //returndataに１をセット
-                returnIntent.putExtra("key.StringDays",days);
-                returnIntent.putExtra("key.StringLangs",langs);
-                returnIntent.putExtra("key.StringOlds",olds);
-                returnIntent.putExtra("key.StringGenders",genders);
-                returnIntent.putExtra("key.StringCountrys",countrys);
-                setResult(RESULT_OK, returnIntent);
-                finish();
-//                Intent intent = new Intent(SearchGuideActivity.this, TamplateActivity.class);
-//                intent.putExtra("goto", "GuideFragment");
-//                startActivity(intent);
-
                 final MediaType JSON = MediaType.get("application/json; charset=utf-8");
                 String json = "{\"area\":\"" + areas + "\", \"week\":\"" + days + "\", \"language\":\"" + langs + "\", \"" +
                                 "age\":\"" + olds + "\", \"gender\":\"" + genders + "\", \"nationality\":\"" + countrys + "\"}";
@@ -146,7 +131,28 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                                                 try {
                                                     String jsonData = response.body().string();
                                                     Log.d("Json", jsonData);
-                                                    JSONArray jsonGuide = new JSONArray(jsonData);
+                                                    JSONArray jArrayGuide = new JSONArray(jsonData);
+                                                    //intent 設定
+                                                    Intent returnIntent = new Intent();
+                                                    int guideId = 0;
+                                                    String name = "";
+                                                    String profile = "";
+                                                    int rating_rate;
+                                                    for(int i = 0; i < jArrayGuide.length(); i++) {
+                                                        //フラグメントに値を渡す
+                                                        guideId = jArrayGuide.getJSONObject(i).getInt("user_id");
+                                                        name = jArrayGuide.getJSONObject(i).getString("name");
+                                                        profile = jArrayGuide.getJSONObject(i).getString("profile");
+
+                                                    }
+                                                    returnIntent.putExtra("key.StringAreas",guideId);  //returndataに１をセット
+                                                    returnIntent.putExtra("key.StringDays",name);
+                                                    returnIntent.putExtra("key.StringLangs",profile);
+                                                    setResult(RESULT_OK, returnIntent);
+                                                    finish();
+                                                    // Intent intent = new Intent(SearchGuideActivity.this, TamplateActivity.class);
+                                                    // intent.putExtra("goto", "GuideFragment");
+                                                    // startActivity(intent);
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
                                                 } catch (JSONException e) {
@@ -228,7 +234,7 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                             Collections.sort(areaBox, Collections.reverseOrder());
                             for(int i = 0; i < areaBox.size(); i++) {
                                 if(sb.length() > 0) {
-                                    sb.append(", ");
+                                    sb.append("|");
                                 }
                                 sb.append(areaBox.get(i));
                             }
@@ -267,7 +273,7 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                             Collections.sort(daysBox, Collections.reverseOrder());
                             for(int i = 0; i < daysBox.size(); i++) {
                                 if(sb.length() > 0) {
-                                    sb.append(", ");
+                                    sb.append("|");
                                 }
                                 sb.append(daysBox.get(i));
                             }
@@ -305,7 +311,7 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                             Collections.sort(langBox, Collections.reverseOrder());
                             for(int i = 0; i < langBox.size(); i++) {
                                 if(sb.length() > 0) {
-                                    sb.append(", ");
+                                    sb.append("|");
                                 }
                                 sb.append(langBox.get(i));
                             }
@@ -343,7 +349,7 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                             Collections.sort(oldBox, Collections.reverseOrder());
                             for(int i = 0; i < oldBox.size(); i++) {
                                 if(sb.length() > 0) {
-                                    sb.append(", ");
+                                    sb.append("|");
                                 }
                                 sb.append(oldBox.get(i));
                             }
@@ -382,7 +388,7 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                             Collections.sort(genderBox, Collections.reverseOrder());
                             for(int i = 0; i < genderBox.size(); i++) {
                                 if(sb.length() > 0) {
-                                    sb.append(", ");
+                                    sb.append("|");
                                 }
                                 sb.append(genderBox.get(i));
                             }
@@ -420,7 +426,7 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                             Collections.sort(countryBox, Collections.reverseOrder());
                             for(int i = 0; i < countryBox.size(); i++) {
                                 if(sb.length() > 0) {
-                                    sb.append(", ");
+                                    sb.append("|");
                                 }
                                 sb.append(countryBox.get(i));
                             }

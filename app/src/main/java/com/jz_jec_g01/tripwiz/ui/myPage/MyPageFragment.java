@@ -315,32 +315,31 @@ public class MyPageFragment extends Fragment {
                                                     entSelectedJob.setText("未選択");
                                                     user.setJob("未選択");
                                                 }
-
-                                                if(user.getWeek() != null) {
+                                                if(user.getWeek() == null) {
                                                     String nowWeek[] = user.getWeek().split(", ");
                                                     for(i = 0; i < nowWeek.length; i++) {
                                                         Log.d("日付情報", nowWeek[i]);
                                                         switch (nowWeek[i]) {
                                                             case "月":
-                                                                entMondayBtn.setText("〇");
+                                                                entMondayBtn.setText("×");
                                                                 break;
                                                             case "火":
-                                                                entTueDayBtn.setText("〇");
+                                                                entTueDayBtn.setText("×");
                                                                 break;
                                                             case "水":
-                                                                entWedDayBtn.setText("〇");
+                                                                entWedDayBtn.setText("×");
                                                                 break;
                                                             case "木":
-                                                                entThursDayBtn.setText("〇");
+                                                                entThursDayBtn.setText("×");
                                                                 break;
                                                             case "金":
-                                                                entFriDayBtn.setText("〇");
+                                                                entFriDayBtn.setText("×");
                                                                 break;
                                                             case "土":
-                                                                entSatuDayBtn.setText("〇");
+                                                                entSatuDayBtn.setText("×");
                                                                 break;
                                                             case "日":
-                                                                entSunDayBtn.setText("〇");
+                                                                entSunDayBtn.setText("×");
                                                                 break;
                                                         }
                                                     }
@@ -512,7 +511,6 @@ public class MyPageFragment extends Fragment {
                                                 });
                                             }
                                             setRatingBar();
-                                            entSelectedJob.setText(user.getJob());
                                             entTextProfile.setText(user.getIntroduction());
                                             if(user.getGuideStatus() == 1) {
                                                 switchUser.setChecked(true);
@@ -684,6 +682,13 @@ public class MyPageFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            mon_day_btn.performClick();
+            tues_day_btn.performClick();
+            wed_day_btn.performClick();
+            tues_day_btn.performClick();
+            fri_day_btn.performClick();
+            saturs_day_btn.performClick();
+            sun_day_btn.performClick();
             /**
              * color and Text decisions
              */
@@ -960,9 +965,15 @@ public class MyPageFragment extends Fragment {
             //編集ボタンが押されたあとの処理
             if (v == btnEditProfile) {
                 //既存のデータをセット
+                if(user.getJob() == null) {
+                    editSelectedJob.setText("未選択");
+                }
                 editSelectedJob.setText(user.getJob());
                 editSelectedLang.setText(user.getUse_languages());
                 editTextProfile.setText(user.getIntroduction());
+                if(user.getArea() == null) {
+                    editSelectedArea.setText("未選択");
+                }
                 editSelectedArea.setText(user.getArea());
                 editTexteName.setText(user.getName());
 

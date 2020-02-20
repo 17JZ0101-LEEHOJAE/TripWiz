@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.jz_jec_g01.tripwiz.R;
@@ -35,6 +36,7 @@ import okhttp3.Response;
 public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> {
     private List<String> iImages;
     private List<String> iNames;
+    private List<Integer> iRating;
     //    final String url = "http://10.210.20.161";
     final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
@@ -47,11 +49,13 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
         // each data item is just a string in this case
         private ImageView imageView;
         private TextView textView;
+        private RatingBar ratingBar;
         private Button btnRequest;
         ViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.user_image_view);
             textView = v.findViewById(R.id.user_name_view);
+            ratingBar = v.findViewById(R.id.ratingBar);
 
             btnRequest = v.findViewById(R.id.btnRequest);
             btnRequest.setOnClickListener(new View.OnClickListener() {
@@ -73,9 +77,10 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    GuideAdapter(List<String> itemImages, List<String> itemNames) {
+    GuideAdapter(List<String> itemImages, List<String> itemNames, List<Integer> itemRating) {
         this.iImages = itemImages;
         this.iNames = itemNames;
+        this.iRating = itemRating;
     }
 
     // Create new views (invoked by the layout manager)
@@ -149,6 +154,8 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
             }
         });
         holder.textView.setText(iNames.get(position));
+
+        holder.ratingBar.setRating(iRating.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
