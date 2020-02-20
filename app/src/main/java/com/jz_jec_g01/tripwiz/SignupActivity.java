@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.NetworkOnMainThreadException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,16 +23,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jz_jec_g01.tripwiz.model.User;
-import com.jz_jec_g01.tripwiz.ui.myPage.MyPageFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,11 +56,12 @@ public class SignupActivity extends AppCompatActivity {
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private Button btnSignUp;
-    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "ベトナム", "スペイン", "忠告"};
+    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "ベトナム", "ペルー", "中国"};
     private String AgeSpinners[] = {"10代", "20代", "30代", "40代", "50代"};
     private RadioGroup genderGroup;
     private static final String TAG = "debug";
     private User user;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class SignupActivity extends AppCompatActivity {
         Spinner Natiospinner = findViewById(R.id.NatioSpinner);
         Spinner Agespinner = findViewById(R.id.AgeSpinner);
         user = new User();
-/*************************Spinner***************************/
+        /*************************Spinner***************************/
         //ArrayAdapter
         ArrayAdapter<String> NatioAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, NatioSpinners);
         ArrayAdapter<String> AgeAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, AgeSpinners);
@@ -121,146 +124,165 @@ public class SignupActivity extends AppCompatActivity {
                 String name = editTextName.getText().toString().trim();
                 int checkedId = genderGroup.getCheckedRadioButtonId();
                 int gender = 0;
-                if(-1 != checkedId) {
+                if (-1 != checkedId) {
                     View radioButton = genderGroup.findViewById(checkedId);
                     int radioId = genderGroup.indexOfChild(radioButton);
                     RadioButton btnRadio = (RadioButton) genderGroup.getChildAt(radioId);
                     String selection = (String) btnRadio.getText();
-                    if(selection.equals("男性")) {
+                    if (selection.equals("男性")) {
                         gender = 0;
-                    } else if(selection.equals("女性")) {
+                    } else if (selection.equals("女性")) {
                         gender = 1;
                     }
                 }
+
+                createAccount(email, password,name);
+                Log.d(TAG, "チャットテスト" + email + " " + password + " " + name);
 
                 final MediaType JSON = MediaType.get("application/json; charset=utf-8");
                 String json = "{\"mailAddress\":\"" + email + "\", \"password\":\"" + password + "\", " +
                         "\"gender\":\"" + gender + "\", \"age\":\"" + age + "\", \"nationality\":\"" + nationality + "\", " +
                         "\"name\":\"" + name + "\"}";
                 RequestBody body = RequestBody.create(json, JSON);
-                try {
-                    if(validateForm() == true) {
-                        client.newCall(request).enqueue(new Callback() {
-                            final Handler mHandler = new Handler(Looper.getMainLooper());
-                            @Override
-                            public void onFailure(Call call, IOException e) {
 
-                            }
+                if (validateForm() == true) {
+                    client.newCall(request).enqueue(new Callback() {
+                        final Handler mHandler = new Handler(Looper.getMainLooper());
 
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                String urlS = url + "/Signup.php";
-                                Request request = new Request.Builder()
-                                        .url(urlS)
-                                        .post(body)
-                                        .build();
+                        @Override
+                        public void onFailure(Call call, IOException e) {
 
-                                OkHttpClient client = new OkHttpClient.Builder().build();
-                                client.newCall(request).enqueue(new Callback() {
-                                    @Override
-                                    public void onFailure(Call call, IOException e) {
+                        }
 
-                                    }
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String urlS = url + "/Signup.php";
+                            Request request = new Request.Builder()
+                                    .url(urlS)
+                                    .post(body)
+                                    .build();
 
-                                    @Override
-                                    public void onResponse(Call call, Response response) throws IOException {
-                                        mHandler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
-                                                createAccount(email, password);
-                                                response.body().close();
+                            OkHttpClient client = new OkHttpClient.Builder().build();
+                            client.newCall(request).enqueue(new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
 
-                                                String urlS = url + "/Information_User.php";
+                                }
 
-                                                Request request = new Request.Builder()
-                                                        .url(urlS)
-                                                        .post(body)
-                                                        .build();
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
+                                            response.body().close();
 
-                                                client.newCall(request).enqueue(new Callback() {
-                                                    @Override
-                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                            String urlS = url + "/Information_User.php";
 
-                                                    }
+                                            Request request = new Request.Builder()
+                                                    .url(urlS)
+                                                    .post(body)
+                                                    .build();
 
-                                                    @Override
-                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                                        mHandler.post(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                try {
-                                                                    String jsonData = response.body().string();
-                                                                    Log.d("Json", jsonData);
-                                                                    JSONArray jArray = new JSONArray(jsonData);
-                                                                    for(int i = 0; i < jArray.length(); i++) {
-                                                                        user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
-                                                                        user.setName(jArray.getJSONObject(i).getString("name"));
-                                                                        user.setGender(jArray.getJSONObject(i).getInt("gender"));
-                                                                        user.setJob(jArray.getJSONObject(i).getString("job"));
-                                                                        user.setNationality(jArray.getJSONObject(i).getString("nationality"));
-                                                                        user.setIntroduction(jArray.getJSONObject(i).getString("introduction"));
-                                                                        user.setProfile(jArray.getJSONObject(i).getString("profile"));
-                                                                        user.setGuideStatus(jArray.getJSONObject(i).getInt("guide_status"));
-                                                                        user.setRating(jArray.getJSONObject(i).getDouble("rating_rate"));
-                                                                        user.setArea(jArray.getJSONObject(i).getString("information_area"));
-                                                                        user.setWeek(jArray.getJSONObject(i).getString("information_week"));
-                                                                    }
-                                                                    if(user.getUserId() > 0) {
-                                                                        Intent intent = new Intent(SignupActivity.this, TamplateActivity.class);
-                                                                        intent.putExtra("user", user);
-                                                                        startActivity(intent);
-                                                                    }
-                                                                } catch (JSONException e) {
-                                                                    e.printStackTrace();
-                                                                } catch (IOException e) {
-                                                                    e.printStackTrace();
+                                            client.newCall(request).enqueue(new Callback() {
+                                                @Override
+                                                public void onFailure(@NonNull Call call, @NotNull IOException e) {
+
+                                                }
+
+                                                @Override
+                                                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                    mHandler.post(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                String jsonData = response.body().string();
+                                                                Log.d("Json", jsonData);
+                                                                JSONArray jArray = new JSONArray(jsonData);
+                                                                for (int i = 0; i < jArray.length(); i++) {
+                                                                    user.setUserId(jArray.getJSONObject(i).getInt("user_id"));
+                                                                    user.setName(jArray.getJSONObject(i).getString("name"));
+                                                                    user.setGender(jArray.getJSONObject(i).getInt("gender"));
+                                                                    user.setJob(jArray.getJSONObject(i).getString("job"));
+                                                                    user.setNationality(jArray.getJSONObject(i).getString("nationality"));
+                                                                    user.setIntroduction(jArray.getJSONObject(i).getString("introduction"));
+                                                                    user.setProfile(jArray.getJSONObject(i).getString("profile"));
+                                                                    user.setGuideStatus(jArray.getJSONObject(i).getInt("guide_status"));
+                                                                    user.setRating(jArray.getJSONObject(i).getDouble("rating_rate"));
+                                                                    user.setArea(jArray.getJSONObject(i).getString("information_area"));
+                                                                    user.setWeek(jArray.getJSONObject(i).getString("information_week"));
                                                                 }
-                                                                response.body().close();
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            } catch (IOException e) {
+                                                                e.printStackTrace();
                                                             }
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                } catch(NetworkOnMainThreadException e) {
-                    e.printStackTrace();
+                                                            response.body().close();
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 }
-                finish();
             }
         });
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-        //showProgressDialog();
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password).
-                addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignupActivity.this, "Authentication failed." + ((FirebaseAuthWeakPasswordException)task.getException()).getReason(), //画面にエラーを表示する
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
+    private void createAccount(String email, String password,String username) {
+        try {
+            Log.d(TAG, "createAccount:" + email);
+            if (!validateForm()) {
+                return;
+            }
+            //showProgressDialog();
+            // [START create_user_with_email]
+            mAuth.createUserWithEmailAndPassword(email, password).
+                    addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser fuser = mAuth.getCurrentUser();
 
-                });
-        // [END create_user_with_email]
+                                assert fuser != null;
+                                String userid = fuser.getUid();
+
+                                reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+
+                                HashMap<String, String> hashMap = new HashMap<>();
+                                hashMap.put("id", userid);
+                                hashMap.put("username", username);
+                                hashMap.put("imageURL", "default");
+                                hashMap.put("status", "offline");
+                                hashMap.put("search", username.toLowerCase());
+                                hashMap.put("location","default");
+
+                                reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            Intent intent = new Intent(SignupActivity.this, TamplateActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.putExtra("user",user);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+            // [END create_user_with_email]
+        } catch (Exception e) {
+            Toast.makeText(SignupActivity.this, "Chat Exception", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     /**

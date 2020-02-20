@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,18 +25,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jz_jec_g01.tripwiz.MapsActivity;
 import com.jz_jec_g01.tripwiz.R;
+import com.jz_jec_g01.tripwiz.TamplateActivity;
 import com.jz_jec_g01.tripwiz.chats.ChatAdapter.MessageAdapter;
+import com.jz_jec_g01.tripwiz.feedbacks.FeedbackActivity;
 import com.jz_jec_g01.tripwiz.model.Chat;
 import com.jz_jec_g01.tripwiz.model.ChatUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageActivity extends AppCompatActivity {
+    private static final int SUB_ACTIVITY = 101;
     CircleImageView profile_image;
     TextView username;
 
@@ -42,6 +49,8 @@ public class MessageActivity extends AppCompatActivity {
     DatabaseReference reference;
 
     ImageButton btn_send;
+    Button mapBtn;
+    Button feedBackBtn;
     EditText text_send;
 
     MessageAdapter messageAdapter;
@@ -54,6 +63,8 @@ public class MessageActivity extends AppCompatActivity {
     ValueEventListener seenListener;
 
     String userid;
+    String locationArea ="";
+    String UserName = "";
 
 //    APIService apiService;
 
@@ -87,6 +98,9 @@ public class MessageActivity extends AppCompatActivity {
         username = findViewById(R.id.textName);
         btn_send = findViewById(R.id.sendButtoon);
         text_send = findViewById(R.id.messageInput);
+        mapBtn = findViewById(R.id.mapButton);
+        feedBackBtn = findViewById(R.id.feedbackButton);
+
 
         intent = getIntent();
         userid = intent.getStringExtra("userid");
@@ -105,6 +119,22 @@ public class MessageActivity extends AppCompatActivity {
                 text_send.setText("");
             }
         });
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MessageActivity.this, MapsActivity.class);
+                intent.putExtra("TestMaps", locationArea);
+                startActivityForResult(intent, SUB_ACTIVITY);
+            }
+        });
+        feedBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MessageActivity.this, FeedbackActivity.class);
+                intent.putExtra("TestFeedBack", UserName);
+                startActivityForResult(intent, SUB_ACTIVITY);
+            }
+        });
 
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
@@ -114,6 +144,10 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ChatUser chatUser = dataSnapshot.getValue(ChatUser.class);
                 username.setText(chatUser.getUsername());
+                //現在地の取得と名前の取得
+                locationArea =  chatUser.getLocation();
+                UserName = chatUser.getUsername();
+                Log.d("取得テスト", "onDataChange: "+ locationArea + " " + UserName);
                 if (chatUser.getImageURL().equals("default")){
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
@@ -261,8 +295,7 @@ public class MessageActivity extends AppCompatActivity {
                 mchat.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
-                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
+                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
                         mchat.add(chat);
                     }
 

@@ -73,7 +73,7 @@ public class MyPageFragment extends Fragment {
     private String TAG = "com.toridge.okhttptest.MyPageFragment";
     final private int ID_REQUEST_READ_EXTERNAL_STORAGE = 99;
 //    final String url = "http://10.210.20.161";
-        final String url = "http://www.jz.jec.ac.jp/17jzg01";
+    final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private View v;

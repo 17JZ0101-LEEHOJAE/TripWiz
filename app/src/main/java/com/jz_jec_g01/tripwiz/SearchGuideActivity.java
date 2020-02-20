@@ -48,7 +48,7 @@ import okhttp3.Response;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class SearchGuideActivity extends AppCompatActivity implements LocationListener {
-    //    final String url = "http://10.210.20.161";
+//    final String url = "http://10.210.20.161";
     final String url = "http://www.jz.jec.ac.jp/17jzg01";
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
@@ -62,11 +62,11 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
     //現在地取得後　指定の区をデフォルト選択
     private String[] areas = {"足立区", "荒川区", "板橋区", "江戸川区", "大田区", "葛飾区", "北区", "江東区", "品川区", "渋谷区", "新宿区", "杉並区",
             "墨田区", "世田谷区", "台東区", "中央区", "練馬区", "文京区", "港区", "目黒区"};
-    private String[] days = {"月曜","火曜","水曜","木曜","金曜","土曜","日曜"};
+    private String[] days = {"月","火","水","木","金","土","日"};
     private String[] langs = {"日本語", "英語", "韓国語", "ベトナム語", "スペイン語", "中国語"};
     private String[] old = {"10代","20代","30代","40代","50代"};
     private String[] gender = {"男性","女性"};
-    private String[] country = {"日本", "アメリカ", "韓国", "台湾", "スペイン", "中国"};
+    private String[] country = {"日本", "アメリカ", "韓国", "ベトナム", "ペルー", "中国"};
     private LocationManager manager;
     private int managerCnt = 0;
     @Override
@@ -378,9 +378,9 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                             StringBuilder sb = new StringBuilder();
                             for (Integer i : checkedItems) {
                                 if(gender[i].equals("男性")) {
-                                    genderBox.add("0");
+                                    genderBox.add(gender[i]);
                                 } else if(gender[i].equals("女性"))
-                                    genderBox.add("1");
+                                    genderBox.add(gender[i]);
                             }
                             Collections.sort(genderBox, Collections.reverseOrder());
                             for(int i = 0; i < genderBox.size(); i++) {
