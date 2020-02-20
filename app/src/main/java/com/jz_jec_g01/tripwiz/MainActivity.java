@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextMailAddress;
     private EditText editTextPassword;
     private Button buttonLogin;
-    private Button buttonLogout;
     private LoginButton faceBookLoginBtn;
     private SignInButton googleLoginBtn;
     private FirebaseAuth mAuth;
@@ -84,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         editTextMailAddress = findViewById(R.id.editTextMailAddress);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
-        buttonLogout = findViewById(R.id.btnLogout);
         faceBookLoginBtn = findViewById(R.id.facebookLoginBtn);
         faceBookLoginBtn.setReadPermissions("email", "public_profile");
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
@@ -159,16 +157,6 @@ public class MainActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
 
                 emailSignIn(mailAddress, password);
-            }
-        });
-
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                updateUI(null);
-                editTextMailAddress.setText("");
-                editTextPassword.setText("");
             }
         });
 
@@ -553,7 +541,6 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.editTextPassword).setVisibility(View.VISIBLE);
             findViewById(R.id.buttonLogin).setVisibility(View.VISIBLE);
             findViewById(R.id.textViewResetPass).setVisibility(View.VISIBLE);
-            findViewById(R.id.btnLogout).setVisibility(View.GONE);
         }
     }
 

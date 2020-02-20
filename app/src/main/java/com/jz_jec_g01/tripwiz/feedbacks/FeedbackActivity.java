@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jz_jec_g01.tripwiz.R;
 import com.jz_jec_g01.tripwiz.SignupActivity;
 import com.jz_jec_g01.tripwiz.TamplateActivity;
+import com.jz_jec_g01.tripwiz.chats.MessageActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public class FeedbackActivity extends AppCompatActivity {
     private TextView textView;
     private TextView locationText;
     private RecyclerView recyclerView = null;
+    private EditText guide_name_text;
+    private String UserName ="名前を入力してください";
 
     private static final String[] names = {
             "katakuriko", "mai",
@@ -62,6 +65,12 @@ public class FeedbackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+        Toast.makeText(getApplicationContext(), "Activity Restart しました", Toast.LENGTH_SHORT).show();
+
+        //デフォルト名前セット取得
+        Intent intent = getIntent();
+        UserName = intent.getStringExtra("TestFeedBack");
+        Log.d("受け取りテスト1 ", "onCreate: " + UserName);
         recyclerView = findViewById(R.id.recycler_view);
         // レイアウトマネージャを設定(ここで縦方向の標準リストであることを指定)
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -114,6 +123,10 @@ public class FeedbackActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         final View dialog_view = inflater.inflate(R.layout.my_dialog, null);
+        guide_name_text = dialog_view.findViewById(R.id.guide_name_text);
+        guide_name_text.setText(UserName);
+        Log.d("受け取りテスト ", "onCreate: " + guide_name_text);
+
         RatingBar ratingBar = dialog_view.findViewById(R.id.ratingBar_title_text);
         ratingBar.setIsIndicator(false);
         ratingBar.setMax(5);
@@ -127,7 +140,8 @@ public class FeedbackActivity extends AppCompatActivity {
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                /*OKのときの処理内容*/
+                                 Intent intent= new Intent(FeedbackActivity.this, FeedbackActivity.class);
+                                 startActivity(intent);
                             }
                         })
                 .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {

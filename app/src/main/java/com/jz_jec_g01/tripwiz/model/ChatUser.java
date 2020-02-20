@@ -7,19 +7,31 @@ public class ChatUser {
     private String imageURL;
     private String status;
     private String search;
+    private String location;
 
-    public ChatUser(String id, String username, String imageURL, String status, String search) {
+
+
+
+
+    public ChatUser(String id, String username, String imageURL, String status, String search, String location) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
         this.status = status;
         this.search = search;
+        this.location = location;
     }
 
     public ChatUser() {
 
     }
+    public String getLocation() {
+        return location;
+    }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
     public String getId() {
         return id;
     }

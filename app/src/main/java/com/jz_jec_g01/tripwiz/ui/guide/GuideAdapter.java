@@ -19,14 +19,11 @@ import android.widget.TextView;
 
 import com.jz_jec_g01.tripwiz.R;
 import com.jz_jec_g01.tripwiz.chats.ChatActivity;
-import com.jz_jec_g01.tripwiz.guidePageActivity;
+import com.jz_jec_g01.tripwiz.GuidePageActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import okhttp3.Call;
@@ -68,7 +65,7 @@ public class GuideAdapter extends RecyclerView.Adapter<GuideAdapter.ViewHolder> 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(v.getContext(), guidePageActivity.class);
+                    Intent intent = new Intent(v.getContext(), GuidePageActivity.class);
                     v.getContext().startActivity(intent);
                 }
             });
