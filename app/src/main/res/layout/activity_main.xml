@@ -10,14 +10,13 @@
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="184dp"
-        android:layout_height="66dp"
+        android:layout_width="193dp"
+        android:layout_height="65dp"
         android:layout_marginTop="40dp"
         android:text="TripWiz"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jz_jec_g01.tripwiz.model.User;
 import com.jz_jec_g01.tripwiz.ui.myPage.MyPageFragment;
 
@@ -34,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,10 +57,11 @@ public class SignupActivity extends AppCompatActivity {
     final Request request = new Request.Builder().url(url).build();
     final OkHttpClient client = new OkHttpClient.Builder().build();
     private Button btnSignUp;
-    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "ベトナム", "スペイン", "忠告"};
+    private String NatioSpinners[] = {"日本", "アメリカ", "韓国", "ベトナム", "スペイン", "中国"};
     private String AgeSpinners[] = {"10代", "20代", "30代", "40代", "50代"};
     private RadioGroup genderGroup;
     private static final String TAG = "debug";
+    DatabaseReference reference;
     private User user;
 
     @Override
@@ -168,7 +172,6 @@ public class SignupActivity extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 Toast.makeText(getApplicationContext(), "会員登録成功", Toast.LENGTH_SHORT).show();
-                                                createAccount(email, password);
                                                 response.body().close();
 
                                                 String urlS = url + "/Information_User.php";
@@ -206,17 +209,14 @@ public class SignupActivity extends AppCompatActivity {
                                                                         user.setArea(jArray.getJSONObject(i).getString("information_area"));
                                                                         user.setWeek(jArray.getJSONObject(i).getString("information_week"));
                                                                     }
-                                                                    if(user.getUserId() > 0) {
-                                                                        Intent intent = new Intent(SignupActivity.this, TamplateActivity.class);
-                                                                        intent.putExtra("user", user);
-                                                                        startActivity(intent);
-                                                                    }
+                                                                    createAccount(email, password, name);
                                                                 } catch (JSONException e) {
                                                                     e.printStackTrace();
                                                                 } catch (IOException e) {
                                                                     e.printStackTrace();
                                                                 }
                                                                 response.body().close();
+                                                                finish();
                                                             }
                                                         });
                                                     }
@@ -231,36 +231,59 @@ public class SignupActivity extends AppCompatActivity {
                 } catch(NetworkOnMainThreadException e) {
                     e.printStackTrace();
                 }
-                finish();
             }
         });
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
-        //showProgressDialog();
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password).
-                addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(SignupActivity.this, "Authentication failed." + ((FirebaseAuthWeakPasswordException)task.getException()).getReason(), //画面にエラーを表示する
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
+    private void createAccount(String email, String password, String username) {
+        try {
+            Log.d(TAG, "createAccount:" + email);
+            if (!validateForm()) {
+                return;
+            }
+            //showProgressDialog();
+            // [START create_user_with_email]
+            mAuth.createUserWithEmailAndPassword(email, password).
+                    addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
 
-                });
-        // [END create_user_with_email]
+                                assert user != null;
+                                String userid = user.getUid();
+
+                                reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+
+                                HashMap<String, String> hashMap = new HashMap<>();
+                                hashMap.put("id", userid);
+                                hashMap.put("username", username);
+                                hashMap.put("imageURL", "default");
+                                hashMap.put("status", "offline");
+                                hashMap.put("search", username.toLowerCase());
+                                hashMap.put("location", "default");
+
+                                reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(SignupActivity.this, TamplateActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.putExtra("user", user);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+            // [END create_user_with_email]
+        } catch (Exception e) {
+            Toast.makeText(SignupActivity.this, "Chat Exception", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

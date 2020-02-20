@@ -377,10 +377,7 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                         if(checkedItems.size() <= 3) {
                             StringBuilder sb = new StringBuilder();
                             for (Integer i : checkedItems) {
-                                if(gender[i].equals("男性")) {
-                                    genderBox.add("0");
-                                } else if(gender[i].equals("女性"))
-                                    genderBox.add("1");
+                                    genderBox.add(gender[i]);
                             }
                             Collections.sort(genderBox, Collections.reverseOrder());
                             for(int i = 0; i < genderBox.size(); i++) {
