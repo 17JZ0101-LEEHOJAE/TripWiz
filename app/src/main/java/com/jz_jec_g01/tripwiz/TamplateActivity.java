@@ -66,9 +66,9 @@ public class TamplateActivity extends AppCompatActivity implements LocationListe
         user = (User) intent.getSerializableExtra("user");
         Log.d("ユーザ", user.getName());
         Log.d("ユーザー２", Integer.toString(user.getUserId()));
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
 
         navView = findViewById(R.id.nav_view);
-
         Bundle bundle = new Bundle();
         bundle.putSerializable("User", user);
         Log.d("Bundle情報", String.valueOf(bundle));
@@ -207,12 +207,10 @@ public class TamplateActivity extends AppCompatActivity implements LocationListe
             case 123 :
                 Log.d("" + requestCode, "requestCode　ガイド　値　取得");
                 Log.d("" + resultCode, "resultCode　ガイド値　取得");
-                Log.d("" + bundle.getString("key.StringAreas"), "エリア　ガイド　値　取得");
-                Log.d("" + bundle.getString("key.StringDays"), "日付　ガイド　値　取得");
-                Log.d("" + bundle.getString("key.StringLangs"), "言語　ガイド　値　取得");
-                Log.d("" + bundle.getString("key.StringLangs"), "年齢　ガイド　値　取得");
-                Log.d("" + bundle.getString("key.StringGenders"), "性別　ガイド　値　取得");
-                Log.d("" + bundle.getString("key.StringCountrys"), "国籍　ガイド　値　取得");
+                Log.d("" + bundle.getString("key.StringUserid"), "エリア　ガイド　値　取得");
+                Log.d("" + bundle.getString("key.StringName"), "日付　ガイド　値　取得");
+                Log.d("" + bundle.getString("key.StringProfile"), "言語　ガイド　値　取得");
+                Log.d("" + bundle.getString("key.StringRatingRate"), "年齢　ガイド　値　取得");
                 break;
             default:
                 break;

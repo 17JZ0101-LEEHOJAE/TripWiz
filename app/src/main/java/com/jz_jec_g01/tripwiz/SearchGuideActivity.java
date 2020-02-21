@@ -137,17 +137,18 @@ public class SearchGuideActivity extends AppCompatActivity implements LocationLi
                                                     int guideId = 0;
                                                     String name = "";
                                                     String profile = "";
-                                                    int rating_rate;
+                                                    int rating_rate = 0;
                                                     for(int i = 0; i < jArrayGuide.length(); i++) {
                                                         //フラグメントに値を渡す
                                                         guideId = jArrayGuide.getJSONObject(i).getInt("user_id");
                                                         name = jArrayGuide.getJSONObject(i).getString("name");
                                                         profile = jArrayGuide.getJSONObject(i).getString("profile");
-
+                                                        rating_rate = jArrayGuide.getJSONObject(i).getInt("rating_rate");
                                                     }
-                                                    returnIntent.putExtra("key.StringAreas",guideId);  //returndataに１をセット
-                                                    returnIntent.putExtra("key.StringDays",name);
-                                                    returnIntent.putExtra("key.StringLangs",profile);
+                                                    returnIntent.putExtra("key.StringGuideId",guideId);  //returndataに１をセット
+                                                    returnIntent.putExtra("key.StringName",name);
+                                                    returnIntent.putExtra("key.StringProfile",profile);
+                                                    returnIntent.putExtra("key.StringRating_rate",rating_rate);
                                                     setResult(RESULT_OK, returnIntent);
                                                     finish();
                                                     // Intent intent = new Intent(SearchGuideActivity.this, TamplateActivity.class);
