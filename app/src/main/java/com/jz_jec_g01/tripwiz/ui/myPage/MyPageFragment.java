@@ -682,6 +682,13 @@ public class MyPageFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            mon_day_btn.performClick();
+            tues_day_btn.performClick();
+            wed_day_btn.performClick();
+            tues_day_btn.performClick();
+            fri_day_btn.performClick();
+            saturs_day_btn.performClick();
+            sun_day_btn.performClick();
             /**
              * color and Text decisions
              */
@@ -712,7 +719,7 @@ public class MyPageFragment extends Fragment {
                         tues_day_btn.setText("◯");
                         entTueDayBtn.setText("◯");
                         /**色指定**/
-                        tues_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[1] = "火";
                     }
                     break;
@@ -727,7 +734,7 @@ public class MyPageFragment extends Fragment {
                         wed_day_btn.setText("◯");
                         entWedDayBtn.setText("◯");
                         /**色指定**/
-                        wed_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[2] = "水";
                     }
                     break;
@@ -742,7 +749,7 @@ public class MyPageFragment extends Fragment {
                         thurs_day_btn.setText("◯");
                         entThursDayBtn.setText("〇");
                         /**色指定**/
-                        thurs_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[3] = "木";
                     }
                     break;
@@ -757,7 +764,7 @@ public class MyPageFragment extends Fragment {
                         fri_day_btn.setText("◯");
                         entFriDayBtn.setText("〇");
                         /**色指定**/
-                        fri_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[4] = "金";
                     }
                     break;
@@ -772,7 +779,7 @@ public class MyPageFragment extends Fragment {
                         saturs_day_btn.setText("◯");
                         entSatuDayBtn.setText("〇");
                         /**色指定**/
-                        saturs_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[5] = "土";
                     }
                     break;
@@ -787,7 +794,7 @@ public class MyPageFragment extends Fragment {
                         sun_day_btn.setText("◯");
                         entSunDayBtn.setText("〇");
                         /**色指定**/
-                        sun_day_btn.setTextColor(Color.GREEN);
+                        mon_day_btn.setTextColor(Color.GREEN);
                         days[6] = "日";
                     }
                     break;
@@ -966,9 +973,8 @@ public class MyPageFragment extends Fragment {
                 editTextProfile.setText(user.getIntroduction());
                 if(user.getArea() == null) {
                     editSelectedArea.setText("未選択");
-                } else {
-                    editSelectedArea.setText(user.getArea());
                 }
+                editSelectedArea.setText(user.getArea());
                 editTexteName.setText(user.getName());
 
                 //表示・非表示の切り替え
