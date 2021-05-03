@@ -1,2 +1,3 @@
+include ':tripwiz'
 include ':app'
 rootProject.name='TripWiz'
